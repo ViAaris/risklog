@@ -7,10 +7,13 @@ import com.bygst.risikolog.exceptions.InvalidDataException;
 import com.bygst.risikolog.model.User;
 import com.bygst.risikolog.service.RegistrationService;
 import com.bygst.risikolog.util.UserValidator;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,19 +33,16 @@ public class AuthController {
     private final RegistrationService registrationService;
     private final UserValidator userValidator;
     private final ModelMapper modelMapper;
-    private final UserDTO userDTO;
     private final AuthenticationManager authenticationManager;
-    private final AuthenticationDTO authenticationDTO;
 
 
     @Autowired
-    public AuthController(RegistrationService registrationService, UserValidator userValidator, ModelMapper modelMapper, UserDTO userDTO, AuthenticationManager authenticationManager, AuthenticationDTO authenticationDTO) {
+    public AuthController(RegistrationService registrationService, UserValidator userValidator,
+                          ModelMapper modelMapper, AuthenticationManager authenticationManager) {
         this.registrationService = registrationService;
         this.userValidator = userValidator;
         this.modelMapper = modelMapper;
-        this.userDTO = userDTO;
         this.authenticationManager = authenticationManager;
-        this.authenticationDTO = authenticationDTO;
     }
 
     @PostMapping("/reg")

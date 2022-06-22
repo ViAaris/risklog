@@ -10,13 +10,18 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "User")
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
+
+    @Column(name="username")
+    private String username;
+    @Column(name = "password")
+    private String password;
 
     @Column(name="first_name")
     private String firstName;
@@ -25,15 +30,11 @@ public class User {
     @Column(name = "department")
     private String department;
 
-    @Column(name="username")
-    private String username;
-    @Column(name = "password")
-    private String password;
 
     @ManyToMany
     @JoinTable(name="team",
             joinColumns = @JoinColumn(name="project_id"),
-            inverseJoinColumns = @JoinColumn(name="user_id"))
+            inverseJoinColumns = @JoinColumn(name="users_id"))
     private List<Project> projects;
 
 
