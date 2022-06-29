@@ -48,5 +48,7 @@ public class Project {
             inverseJoinColumns = @JoinColumn(name="project_id"))
     private List<User> team;
 
+    @OneToMany
+    private List<Risk> risks;
 
 }

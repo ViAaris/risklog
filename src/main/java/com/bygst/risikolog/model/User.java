@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @Data
@@ -29,7 +30,8 @@ public class User {
     private String surname;
     @Column(name = "department")
     private String department;
-
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Role> roles;
 
     @ManyToMany
     @JoinTable(name="team",

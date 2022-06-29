@@ -3,14 +3,17 @@ import React, { Component } from 'react';
 import {Button, Container, Form, FormGroup, Input, Label} from 'reactstrap';
 import { Link, withRouter } from 'react-router-dom';
 
-class Registration extends Component {
+class AddProject extends Component {
 
     emptyItem = {
-        username: "",
-        firstName: "",
-        surname: "",
-        password: "",
-        department: "",
+        title: "",
+        address: "",
+        budget: "",
+        startingDate: "",
+        finishingDate: "",
+        contractors: [],
+        advisers: [],
+        team: [],
     };
 
     constructor(props) {
@@ -36,7 +39,7 @@ class Registration extends Component {
         event.preventDefault();
         const {item} = this.state;
 
-        await fetch('/auth/reg', {
+        await fetch('/api/admin/new_project', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -44,7 +47,7 @@ class Registration extends Component {
             },
             body: JSON.stringify(item),
         });
-        this.props.history.push('/auth/reg');
+        this.props.history.push('/api/admin/new_project');
     }
 
 
@@ -57,7 +60,7 @@ class Registration extends Component {
                 <Form onSubmit={this.handleSubmit}>
                     <h1>User Registration</h1>
                     <FormGroup>
-                        <Label for="username">Username</Label>
+                        <Label for="title">Title</Label>
                         <Input type="text" name="username" id="username" value={item.username || ''}
                                onChange={this.handleChange} autoComplete="username"/>
                     </FormGroup>
@@ -81,10 +84,10 @@ class Registration extends Component {
                         <Label for="department">Department :</Label>
                         <select value={item.department || ''} name="department" id="department"
                                 onChange={this.handleChange}  >
-                        <option>Select Department</option>
-                        <option value="Risks and planning">Risks and planning</option>
-                        <option value="Project management">Project management</option>
-                    </select>
+                            <option>Select Department</option>
+                            <option value="Risks and planning">Risks and planning</option>
+                            <option value="Project management">Project management</option>
+                        </select>
                     </FormGroup>
                     <FormGroup>
                         <Button color="primary" type="submit">Save</Button>{' '}
@@ -93,21 +96,7 @@ class Registration extends Component {
                 </Form>
             </Container>
 
-                {/*<form onSubmit={this.handleSubmit}>*/}
-                {/*    <h1>User Registration</h1>*/}
-                {/*    <label>FirstName :</label> <input type="text" value={item.firstName} onChange={this.handleChange} placeholder="FirstName..." /><br />*/}
-                {/*    <label>Surname :</label> <input type="text" value={item.surname} onChange={this.handleChange} placeholder="Surname..." /><br />*/}
-                {/*    <label>Password :</label> <input type="password" value={item.password} onChange={this.handleChange} placeholder="Password..." /><br />*/}
-                {/*    <label>Department :</label><select onChange={this.handleChange} defaultValue="Select Department">*/}
-                {/*    <option defaultValue>Select Department</option>*/}
-                {/*    <option value="Risks and planning">Risks and planning</option>*/}
-                {/*    <option value="Project management">Project management</option>*/}
-                {/*</select>*/}
-                {/*    <br />*/}
-                {/*    <input type="submit" value="Submit" />*/}
-                {/*</form>*/}
-
-            </div>
+        </div>
 
     }
 }
