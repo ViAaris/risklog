@@ -15,7 +15,7 @@ public class Risk {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "risk_id")
+    @Column(name = "id")
     private int id;
 
     private String title;
@@ -25,14 +25,14 @@ public class Risk {
     private String consequences;
     @Temporal(TemporalType.DATE)
     private Date changingDate;
-    private int probability;
-    private int minCost;
-    private int midCost;
-    private int maxCost;
-    private int value;
+    private Integer probability;
+    private Integer minCost;
+    private Integer midCost;
+    private Integer maxCost;
+    private Integer value;
     private String owner;
     private String actions;
-    private boolean isActive;
+    private Boolean isActive;
 
 
 }

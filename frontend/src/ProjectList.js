@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Container, Table } from 'reactstrap';
 import AppNavbar from './AppNavbar';
 import {Link, withRouter} from 'react-router-dom';
+import AddProject from "./AddProject";
 
 
 class ProjectList extends Component {
@@ -57,10 +58,10 @@ class ProjectList extends Component {
 
         return (
             <div>
-                <AppNavbar/>
+
                 <Container fluid>
                     <div className="float-right">
-                        <Button color="success" tag={Link} to="/auth/reg">Add Client</Button>
+                        <Button color="success" tag={Link} to="/api/admin/new_project">Add Project</Button>
                     </div>
                     <h3>Projects</h3>
                     <Table className="mt-4">

@@ -3,6 +3,7 @@ package com.bygst.risikolog.controllers;
 import com.bygst.risikolog.dto.ProjectDTO;
 import com.bygst.risikolog.exceptions.InvalidDataException;
 import com.bygst.risikolog.model.Project;
+import com.bygst.risikolog.model.Risk;
 import com.bygst.risikolog.service.ProjectService;
 import com.bygst.risikolog.util.ProjectValidator;
 import org.modelmapper.ModelMapper;
@@ -13,6 +14,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -46,6 +49,12 @@ public class ProjectsController {
         projectService.add(project);//зарегали
         return new ResponseEntity<>("Project added successfully", HttpStatus.OK);
     }
+
+    @GetMapping("/projects/{id}")
+    public List<Risk> getProjectsRisks(@PathVariable("id") int id){
+        return projectService.getAllRisks(id);
+    }
+
 
     public Project convertToProject(ProjectDTO projectDTO){
         return this.modelMapper.map(projectDTO, Project.class);

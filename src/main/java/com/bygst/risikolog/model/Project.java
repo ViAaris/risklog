@@ -48,7 +48,7 @@ public class Project {
             inverseJoinColumns = @JoinColumn(name="project_id"))
     private List<User> team;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Risk> risks;
 
 }

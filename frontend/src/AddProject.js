@@ -1,7 +1,10 @@
-import React, { Component } from 'react';
+import React, {Component, useRef, useState} from 'react';
 //import './components/css/todo.css';
 import {Button, Container, Form, FormGroup, Input, Label} from 'reactstrap';
 import { Link, withRouter } from 'react-router-dom';
+
+
+
 
 class AddProject extends Component {
 
@@ -11,9 +14,8 @@ class AddProject extends Component {
         budget: "",
         startingDate: "",
         finishingDate: "",
-        contractors: [],
-        advisers: [],
-        team: [],
+        // contractors: "",
+        // advisers: "",
     };
 
     constructor(props) {
@@ -24,6 +26,7 @@ class AddProject extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit=this.handleSubmit.bind(this);
     }
+
 
     handleChange(event) {
         const target = event.target;
@@ -58,37 +61,44 @@ class AddProject extends Component {
 
             <Container>
                 <Form onSubmit={this.handleSubmit}>
-                    <h1>User Registration</h1>
+                    <h1>Add new project</h1>
                     <FormGroup>
                         <Label for="title">Title</Label>
-                        <Input type="text" name="username" id="username" value={item.username || ''}
-                               onChange={this.handleChange} autoComplete="username"/>
+                        <Input type="text" name="title" id="title" value={item.title || ''}
+                               onChange={this.handleChange} autoComplete="title"/>
                     </FormGroup>
                     <FormGroup>
-                        <Label for="firstName">First name</Label>
-                        <Input type="text" name="firstName" id="firstName" value={item.firstName || ''}
-                               onChange={this.handleChange} autoComplete="firstName"/>
+                        <Label for="address">Address</Label>
+                        <Input type="text" name="address" id="address" value={item.address || ''}
+                               onChange={this.handleChange} autoComplete="address"/>
                     </FormGroup>
                     <FormGroup>
-                        <Label for="surname">Surname</Label>
-                        <Input type="text" name="surname" id="surname" value={item.surname || ''}
-                               onChange={this.handleChange} autoComplete="surname"/>
+                        <Label for="budget">Budget</Label>
+                        <Input type="text" name="budget" id="budget" value={item.budget || ''}
+                               onChange={this.handleChange} autoComplete="budget"/>
                     </FormGroup>
                     <FormGroup>
-                        <Label for="password">Password</Label>
-                        <Input type="password" name="password" id="password" value={item.password || ''}
-                               onChange={this.handleChange} autoComplete="password"/>
+                        <Label for="startingdate">Starting date</Label>
+                        <Input type="date" name="startingDate" id="startingDate" value={item.startingDate || ''}
+                               onChange={this.handleChange} />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="finishingDate">Finishing date</Label>
+                        <Input type="date" name="finishingDate" id="finishingDate" value={item.finishingDate || ''}
+                               onChange={this.handleChange} />
                     </FormGroup>
 
-                    <FormGroup>
-                        <Label for="department">Department :</Label>
-                        <select value={item.department || ''} name="department" id="department"
-                                onChange={this.handleChange}  >
-                            <option>Select Department</option>
-                            <option value="Risks and planning">Risks and planning</option>
-                            <option value="Project management">Project management</option>
-                        </select>
-                    </FormGroup>
+                    {/*<FormGroup>*/}
+                    {/*    <Label for="contractors">Contractors</Label>*/}
+                    {/*    <Input type="text" name="contractors" id="contractors" value={item.contractors || ''}*/}
+                    {/*           onChange={this.handleChange} />*/}
+                    {/*</FormGroup>*/}
+                    {/*<FormGroup>*/}
+                    {/*    <Label for="advisers">Advisers</Label>*/}
+                    {/*    <Input type="text" name="advisers" id="advisers" value={item.advisers || ''}*/}
+                    {/*           onChange={this.handleChange} />*/}
+                    {/*</FormGroup>*/}
+
                     <FormGroup>
                         <Button color="primary" type="submit">Save</Button>{' '}
 
@@ -101,4 +111,4 @@ class AddProject extends Component {
     }
 }
 
-export default withRouter(Registration);
+export default withRouter(AddProject);
