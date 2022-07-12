@@ -3,18 +3,16 @@ import AppBar from 'material-ui/AppBar';
 
 import TextField from 'material-ui/TextField';
 
-import axios from "axios";
-import {Button, FormGroup} from "reactstrap";
+import {Button, Form, FormGroup, Input} from "reactstrap";
 import React, { Component } from 'react';
-import {withRouter} from "react-router-dom";
+import {Redirect, useHistory, withRouter} from "react-router-dom";
 
-function UploadScreen(props) {
-    return null;
-}
 
-UploadScreen.propTypes = {};
 
 class Login extends Component {
+
+    csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
+
     constructor(props){
         super(props);
         this.state={
@@ -24,38 +22,47 @@ class Login extends Component {
     }
 
     handleClick(event){
-        const apiBaseUrl = "http://localhost:3000/auth/";
-        const self = this;
-        const payload = {
-            "username": this.state.username,
-            "password": this.state.password
+
+        const url = "http://localhost:3000/auth/login";
+        const options = {
+            method: "POST",
+            headers: {
+                "X-XSRF-TOKEN": this.csrfToken,
+                Accept: "application/json",
+                "Content-Type": "application/json;charset=UTF-8",
+
+            },
+            body: JSON.stringify({
+                "username": this.state.username,
+                "password": this.state.password
+            }),
         };
-        axios.post(apiBaseUrl+'login', payload)
-            .then(function (response) {
-                console.log(response);
-                if(response.data.code == 200){
-                    console.log("Login successfully");
-                    const uploadScreen = [];
-                    uploadScreen.push(<UploadScreen appContext={self.props.appContext}/>)
-                    self.props.appContext.setState({loginPage:[],uploadScreen:uploadScreen})
-                }
-                else if(response.data.code == 401){
-                    console.log("Username password do not match");
-                    alert("username password do not match")
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
+        const refreshPage = ()=>{
+            window.location.reload();
+        }
+        fetch(url, options)
+            .then((response) => response.json())
+            .then(this.props.history.push('/api/projects'), refreshPage)
+            .then((data) => {
+
+                console.log(data);
             });
+
+
     }
     render() {
         return (
+           // <meta name="csrf-token" content="{{ csrf_token() }}">
             <div>
+                <Form>
                 <MuiThemeProvider>
                     <div>
                         <AppBar
                             title="Login"
                         />
+                        {/*<FormGroup>*/}
+                        {/*    <Input type="hidden" name={_csrf.parameterName} value={_csrf.token}/>*/}
+                        {/*</FormGroup>*/}
                         <TextField
                             hintText="Enter your Username"
                             floatingLabelText="Username"
@@ -76,6 +83,7 @@ class Login extends Component {
                         {/*<RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)}/>*/}
                     </div>
                 </MuiThemeProvider>
+                </Form>
             </div>
         );
     }

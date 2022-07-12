@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,7 @@ public class ProjectsController {
     }
 
     @PostMapping("/admin/new_project")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity addNewProject(@RequestBody @Valid ProjectDTO projectDTO, BindingResult bindingResult){
         Project project = convertToProject(projectDTO);
         projectValidator.validate(project, bindingResult);

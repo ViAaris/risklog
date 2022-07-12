@@ -75,7 +75,7 @@ public class AuthController {
                     authenticationDTO.getUsername(), authenticationDTO.getPassword()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            return new ResponseEntity<>("User signed-in successfully", HttpStatus.OK);
+            return new ResponseEntity<>("redirect:/api/projects", HttpStatus.TEMPORARY_REDIRECT);
         }catch (BadCredentialsException exception){
             return new ResponseEntity<>("Bad credentials", HttpStatus.UNAUTHORIZED);
         }

@@ -28,6 +28,7 @@ public class RiskService {
         //System.out.println(risk.getId());
         if(risk.getId() == 0) {
             Risk savedRisk = riskRepository.save(risk);
+            //projectRepository.findById(projectId).get().getRisks().add(risk);
             jdbcTemplate.update("INSERT INTO PROJECT_RISKS VALUES (?, ?)", projectId, savedRisk.getId());
         }
         return riskRepository.save(risk);

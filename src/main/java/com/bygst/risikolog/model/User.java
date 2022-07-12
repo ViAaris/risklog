@@ -30,7 +30,7 @@ public class User {
     private String surname;
     @Column(name = "department")
     private String department;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Role> roles;
 
     @ManyToMany

@@ -4,6 +4,7 @@ import {Button, Container, Form, FormGroup, Input, Label} from 'reactstrap';
 import { Link, withRouter } from 'react-router-dom';
 
 class Registration extends Component {
+    csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
 
     emptyItem = {
         username: "",
@@ -31,20 +32,25 @@ class Registration extends Component {
         this.setState({item});
     }
 
-    async handleSubmit(event) {
+    handleSubmit(event) {
 
         event.preventDefault();
         const {item} = this.state;
 
-        await fetch('/auth/reg', {
+        fetch('/auth/reg', {
             method: 'POST',
             headers: {
+                "X-XSRF-TOKEN": this.csrfToken,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(item),
-        });
-        this.props.history.push('/auth/reg');
+        }).then((response) => response.json())
+            .then(this.props.history.push('/auth/login'))
+            .then((data) => {
+
+                console.log(data);
+            });
     }
 
 

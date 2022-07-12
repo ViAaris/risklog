@@ -30,31 +30,25 @@ class OneRisk extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        //this.handleSubmit = this.handleSubmit.bind(this);
     }
     /*Let's add the componentDidMount function to check whether we're dealing with the create or edit feature;
     in the case of editing, it'll fetch our client from the API:*/
     async componentDidMount() {
         if (this.props.match.params.id !== 'new') {
-            const risks = await (await fetch(`/api/projects/${this.props.match.params.id}/risks/`)).json();
+            const risks = await (await fetch(`/api/projects/${this.props.match.params.id}/risks/${this.props.match.params.riskId}`)).json();
             this.setState({item: risks});
         }
     }
     /*Then in the handleChange function, we'll update our component
     state item property that will be used when submitting our form:*/
-    handleChange(event) {
+    async handleChange(event) {
         const target = event.target;
         const value = target.value;
         const name = target.name;
         let item = {...this.state.item};
         item[name] = value;
         this.setState({item});
-    }
-    /*In handeSubmit, we'll call our API, sending the request to a PUT or POST method depending on the feature we're invoking.
-    For that, we can check if the id property is filled:*/
-    async handleSubmit(event) {
-        event.preventDefault();
-        const {item} = this.state;
 
         await fetch('/api/projects/' + this.props.match.params.id + '/risks/' + (item.id ? '/' + item.id : ''), {
             method: (item.id) ? 'PUT' : 'POST',
@@ -64,8 +58,24 @@ class OneRisk extends Component {
             },
             body: JSON.stringify(item),
         });
-        this.props.history.push(`/api/projects/${this.props.match.params.id}`);
+
     }
+    /*In handeSubmit, we'll call our API, sending the request to a PUT or POST method depending on the feature we're invoking.
+    For that, we can check if the id property is filled:*/
+    // async handleSubmit(event) {
+    //     event.preventDefault();
+    //     const {item} = this.state;
+    //
+    //     await fetch('/api/projects/' + this.props.match.params.id + '/risks/' + (item.id ? '/' + item.id : ''), {
+    //         method: (item.id) ? 'PUT' : 'POST',
+    //         headers: {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify(item),
+    //     });
+    //     this.props.history.push(`/api/projects/${this.props.match.params.id}`);
+    // }
 
 //our render function will be handling our form:
     render() {
@@ -88,7 +98,7 @@ class OneRisk extends Component {
 
                     <tbody>
                     <Container>
-                <Form onSubmit={this.handleSubmit}>
+                <Form>
                     <tr>
                        <td>
                         <Input type="text" name="title" id="title" value={item.title || ''}

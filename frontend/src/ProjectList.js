@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Button, Container, Table } from 'reactstrap';
+import {Button, Container, Form, Table} from 'reactstrap';
 import AppNavbar from './AppNavbar';
 import {Link, withRouter} from 'react-router-dom';
 import AddProject from "./AddProject";
+import AuthenticationService from "./AuthenticationService";
+import {Logout} from "./Logout";
 
 
 class ProjectList extends Component {
@@ -79,6 +81,12 @@ class ProjectList extends Component {
                         {projectList}
                         </tbody>
                     </Table>
+
+                    <div className="float-right">
+                        <Form onSubmit={Logout}>
+                            <Button color="primary" type="submit">Logout</Button>{' '}
+                        </Form>
+                    </div>
                 </Container>
             </div>
         );

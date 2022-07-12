@@ -38,7 +38,6 @@ class Risks extends Component {
                 <Container fluid>
                     <h3>Risks</h3>
                     <Table className="mt-4">
-
                         <tbody>
                         {risksList}
                         </tbody>
