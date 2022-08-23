@@ -21,6 +21,7 @@ public class RiskService {
     public RiskService(RiskRepository riskRepository, ProjectRepository projectRepository, JdbcTemplate jdbcTemplate) {
         this.riskRepository = riskRepository;
         this.projectRepository = projectRepository;
+
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -30,6 +31,14 @@ public class RiskService {
             Risk savedRisk = riskRepository.save(risk);
             //projectRepository.findById(projectId).get().getRisks().add(risk);
             jdbcTemplate.update("INSERT INTO PROJECT_RISKS VALUES (?, ?)", projectId, savedRisk.getId());
+        }
+        return riskRepository.save(risk);
+    }
+
+    public Risk save(Risk risk){
+
+        if(risk.getId() != 0) {
+            Risk savedRisk = riskRepository.save(risk);
         }
         return riskRepository.save(risk);
     }

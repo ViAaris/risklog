@@ -13,7 +13,7 @@ class AddProject extends Component {
         address: "",
         budget: "",
         startingDate: "",
-        finishingDate: "",
+        finishingDate: ""
         // contractors: "",
         // advisers: "",
     };
@@ -24,7 +24,7 @@ class AddProject extends Component {
             item: this.emptyItem
         };
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit=this.handleSubmit.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
 
@@ -78,7 +78,7 @@ class AddProject extends Component {
                                onChange={this.handleChange} autoComplete="budget"/>
                     </FormGroup>
                     <FormGroup>
-                        <Label for="startingdate">Starting date</Label>
+                        <Label for="startingDate">Starting date</Label>
                         <Input type="date" name="startingDate" id="startingDate" value={item.startingDate || ''}
                                onChange={this.handleChange} />
                     </FormGroup>

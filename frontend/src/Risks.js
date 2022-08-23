@@ -4,6 +4,7 @@ import {Button, Container, Table} from 'reactstrap';
 import {Link, withRouter} from 'react-router-dom';
 
 import OneRisk from "./OneRisk";
+import AddNewRisk from "./AddNewRisk";
 
 
 class Risks extends Component {
@@ -28,15 +29,18 @@ class Risks extends Component {
         }
 
         const risksList = risks.map(risk => {
-            return  <tr key={risk.id}>
-                <OneRisk/>
-            </tr>
+            return  (<tr key={risk.id}>
+               <OneRisk riskId = {risk.id}/>
+            </tr>)
         });
+
+
 
         return (
             <div>
                 <Container fluid>
-                    <h3>Risks</h3>
+                    <h3>Add new risk</h3>
+                    <AddNewRisk/>
                     <Table className="mt-4">
                         <tbody>
                         {risksList}

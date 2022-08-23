@@ -12,7 +12,6 @@ class ProjectList extends Component {
     constructor(props) {
         super(props);
         this.state = {projects: []};
-        this.remove = this.remove.bind(this);
     }
 
     componentDidMount() {
@@ -20,18 +19,7 @@ class ProjectList extends Component {
             .then(response => response.json())
             .then(data => this.setState({projects: data}));
     }
-    async remove(id) {
-        await fetch(`/api/projects/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then(() => {
-            let updatedEmployees = [...this.state.projects].filter(i => i.id !== id);
-            this.setState({projects: updatedEmployees});
-        });
-    }
+
 
 
     render() {

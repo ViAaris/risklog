@@ -10,11 +10,12 @@ import Risks from "./Risks";
 import OneRisk from "./OneRisk";
 import AuthenticatedRoute from "./AuthenticatedRoute";
 import MenuComponent from "./MenuComponent";
-import LogoutComponent from "./LogoutComponent";
 import LoginComponent from "./LoginComponent";
 import AuthenticationService from "./AuthenticationService";
 import {useState} from "react";
 import {Navigate} from "react-router";
+import Home from "./Home";
+import AddNewRisk from "./AddNewRisk";
 
 
 
@@ -23,31 +24,30 @@ import {Navigate} from "react-router";
 function App() {
 
 
-    // const [isAuthenticated, setIsAuthenticated] = useState(AuthenticationService.isUserLoggedIn());
-    // const setAuth = (boolean) => {
-    //     setIsAuthenticated(boolean);
-    // };
+    const [isAuthenticated, setIsAuthenticated] = useState(AuthenticationService.isUserLoggedIn());
+    const setAuth = (boolean) => {
+        setIsAuthenticated(boolean);
+    };
 
     return (
         <Router>
-            <MenuComponent />
             <Switch>
                 <Route path='/auth/reg' component={Registration}/>
                 <Route path='/auth/login' component={LoginComponent}/>
-                {/*<Route*/}
-                {/*    exact*/}
-                {/*    path='/auth/login'*/}
-                {/*    render={(props) =>*/}
-                {/*        !isAuthenticated ? (*/}
-                {/*            <LoginComponent {...props} setAuth={setAuth} />*/}
-                {/*        ) : (*/}
-                {/*            props.history.push('/api/projects')*/}
-                {/*        )*/}
-                {/*    }*/}
-                {/*/>*/}
+                <Route
+                    exact
+                    path='/'
+                    render={(props) =>
+                        !isAuthenticated ? (
+                            <Home {...props} setAuth={setAuth} />
+                        ) : (
+                            props.history.push('/api/projects')
+                        )
+                    }
+                />
 
                 <AuthenticatedRoute path='/api/projects/:id' component={Risks}/>
-                <AuthenticatedRoute path='/api/projects/:id/risks' component={Risks}/>
+                <AuthenticatedRoute path='/api/projects/:id/risks' component={AddNewRisk}/>
                 <AuthenticatedRoute path='/api/projects/:id/risks/:riskId' component={OneRisk}/>
                 <AuthenticatedRoute path='/api/projects' exact={true} component={ProjectList}/>
                 <AuthenticatedRoute path='/api/admin/new_project' component={AddProject}/>

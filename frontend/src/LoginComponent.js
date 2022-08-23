@@ -5,6 +5,7 @@ import {withRouter} from "react-router-dom";
 import {MuiThemeProvider, TextField} from "material-ui";
 import {Button, Form, FormGroup} from "reactstrap";
 import AppBar from "material-ui/AppBar";
+import Cookies from 'js-cookie';
 
 class LoginComponent extends Component {
 
@@ -29,14 +30,18 @@ class LoginComponent extends Component {
 
         AuthenticationService.registerSuccessfulLogin(this.state.username, this.state.password);
 
-        const url = "http://localhost:3000/auth/login";
+        const url = "http://localhost:8081/auth/login";
+        const cookies = Cookies.get();
+
         const options = {
             method: "POST",
             headers: {
                 "X-XSRF-TOKEN": this.csrfToken,
                 Accept: "application/json",
                 "Content-Type": "application/json;charset=UTF-8",
-
+                // "Access-Control-Allow-Headers":"Authorization,Content-Type, x-requested-with",
+                "Access-Control-Allow-Origin": "http://localhost:3000",
+                "X-Requested-With": "XMLHttpRequest",
             },
             body: JSON.stringify({
                 "username": this.state.username,
@@ -46,7 +51,7 @@ class LoginComponent extends Component {
         const refreshPage = () => {
             window.location.reload();
         }
-        fetch(url, options)
+        fetch('/auth/login', options)
             .then((response) => response.json())
             .then(this.props.history.push('/api/projects'), refreshPage)
             .then((data) => {

@@ -19,16 +19,20 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
 
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UsersDetailsService userDetailsService;
@@ -49,10 +53,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        http.addFilterAfter(new CsrfTokenResponseHeaderBindingFilter(), CsrfFilter.class);
 
         //.addFilterAfter(new LoginPageFilter(), UsernamePasswordAuthenticationFilter.class)
-        http.csrf()
+        http
+
+                .csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                //.sessionAuthenticationStrategy(new NullAuthenticatedSessionStrategy())
+                .and()
+                .cors()
                 .and()
                 .addFilterAfter(new CsrfTokenResponseHeaderBindingFilter(), CsrfFilter.class)
+                //.addFilterAfter(new LoginPageFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/admin/*").hasRole("ADMIN")
                 .antMatchers("/auth/login", "/auth/reg", "/error").permitAll()
@@ -65,12 +75,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().clearAuthentication(true)
                 .logoutUrl("/perform_logout")
-                .logoutSuccessUrl("/auth/login")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID");
+                .logoutSuccessUrl("/auth/login");
 
 
 
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:8081"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS", "PUT"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration.applyPermitDefaultValues());
+        return source;
     }
 
     @Bean

@@ -20,6 +20,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api")
 public class ProjectsController {
 

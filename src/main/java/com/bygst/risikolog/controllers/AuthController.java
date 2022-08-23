@@ -12,8 +12,10 @@ import com.bygst.risikolog.repositories.RiskRepository;
 import com.bygst.risikolog.service.RegistrationService;
 import com.bygst.risikolog.util.UserValidator;
 
+import org.jboss.logging.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -22,11 +24,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -75,7 +76,8 @@ public class AuthController {
                     authenticationDTO.getUsername(), authenticationDTO.getPassword()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            return new ResponseEntity<>("redirect:/api/projects", HttpStatus.TEMPORARY_REDIRECT);
+
+            return new ResponseEntity<>("redirect:/api/projects", HttpStatus.OK);
         }catch (BadCredentialsException exception){
             return new ResponseEntity<>("Bad credentials", HttpStatus.UNAUTHORIZED);
         }
