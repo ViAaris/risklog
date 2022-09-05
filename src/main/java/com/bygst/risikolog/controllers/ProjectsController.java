@@ -20,8 +20,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api")
+@CrossOrigin
 public class ProjectsController {
 
     private final ProjectService projectService;
@@ -46,7 +46,7 @@ public class ProjectsController {
         Project project = convertToProject(projectDTO);
         projectValidator.validate(project, bindingResult);
         if(bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(new InvalidDataException("you entered wrong data"));
+            return ResponseEntity.badRequest().body(new InvalidDataException( "this project already exists"));
         }
 
         projectService.add(project);//зарегали

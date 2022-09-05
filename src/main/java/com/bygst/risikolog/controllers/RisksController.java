@@ -27,7 +27,7 @@ public class RisksController {
     public ResponseEntity addRisk(@RequestBody RiskDTO riskDTO, @PathVariable("id") int projectId) throws URISyntaxException {
         Risk risk = convertToRisk(riskDTO);
         Risk savedRisk = riskService.save(risk, projectId);
-        return ResponseEntity.created(new URI("/api/projects/" + projectId + "/risks/" + savedRisk.getId())).body(savedRisk);
+        return ResponseEntity.created(new URI("/api/risks/" + savedRisk.getId())).body(savedRisk);
     }
 
     @PutMapping("/api/risks/{riskId}")

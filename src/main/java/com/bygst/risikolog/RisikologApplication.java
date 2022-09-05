@@ -2,9 +2,13 @@ package com.bygst.risikolog;
 
 import com.bygst.risikolog.model.Project;
 import com.bygst.risikolog.model.Risk;
+import org.apache.catalina.Context;
+import org.apache.tomcat.util.http.Rfc6265CookieProcessor;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
@@ -32,6 +36,18 @@ public class RisikologApplication {
 	@Bean
 	public ModelMapper modelMapper(){
 		return new ModelMapper();
+	}
+
+	@Bean
+	public ServletWebServerFactory servletContainer() {
+		return new TomcatServletWebServerFactory() {
+			@Override
+			protected void postProcessContext(Context context) {
+				Rfc6265CookieProcessor rfc6265Processor = new Rfc6265CookieProcessor();
+				rfc6265Processor.setSameSiteCookies("lax");
+				context.setCookieProcessor(rfc6265Processor);
+			}
+		};
 	}
 
 	private static final String[] ALLOWED_ORIGINS = {"http://localhost:3000",

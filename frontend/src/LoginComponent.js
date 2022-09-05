@@ -1,15 +1,20 @@
 import React, {Component} from 'react'
 import AuthenticationService from './AuthenticationService';
-import {withRouter} from "react-router-dom";
+import {Redirect, withRouter} from "react-router-dom";
 
 import {MuiThemeProvider, TextField} from "material-ui";
 import {Button, Form, FormGroup} from "reactstrap";
 import AppBar from "material-ui/AppBar";
 import Cookies from 'js-cookie';
+import ErrorBoundary from "antd/es/alert/ErrorBoundary";
+import {getCSRFToken} from "./getCSRFToken";
+import {Navigate} from "react-router";
+import {useHistory} from "react-router-dom"
 
 class LoginComponent extends Component {
 
-    csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
+    csrfToken = getCSRFToken('XSRF-TOKEN');
+
 
     constructor(props) {
         super(props)
@@ -18,80 +23,133 @@ class LoginComponent extends Component {
             username: '',
             password: '',
             hasLoginFailed: false,
-            showSuccessMessage: false,
-        }
+            //showSuccessMessage: false,
+            serverMessage: '',
+            loggedIn: false,
 
+        }
+        this.handleChange = this.handleChange.bind(this)
         this.loginClicked = this.loginClicked.bind(this)
     }
 
 
     loginClicked(event) {
+        // AuthenticationService.registerSuccessfulLogin(this.state.username, this.state.password);
 
-
-        AuthenticationService.registerSuccessfulLogin(this.state.username, this.state.password);
-
-        const url = "http://localhost:8081/auth/login";
-        const cookies = Cookies.get();
-
+        event.preventDefault();
+        // AuthenticationService
+        //     .executeBasicAuthenticationService(this.state.username, this.state.password)
+        //     .then(() => {
+        //         AuthenticationService.registerSuccessfulLogin(this.state.username, this.state.password)
+        //         this.props.history.push(`/api/projects`)
+        //     })
+        //     .catch(() => {
+        //     this.setState({ showSuccessMessage: false })
+        //     this.setState({ hasLoginFailed: true })
+        // })
         const options = {
             method: "POST",
+            withCredentials: true,
             headers: {
-                "X-XSRF-TOKEN": this.csrfToken,
+               // "X-XSRF-TOKEN": this.csrfToken,
+                "Authorization": AuthenticationService.createBasicAuthToken(this.state.username, this.state.password),
                 Accept: "application/json",
                 "Content-Type": "application/json;charset=UTF-8",
-                // "Access-Control-Allow-Headers":"Authorization,Content-Type, x-requested-with",
+                 "Access-Control-Allow-Headers":"Authorization, Content-Type, X-XSRF-TOKEN",
                 "Access-Control-Allow-Origin": "http://localhost:3000",
-                "X-Requested-With": "XMLHttpRequest",
+                // "X-Requested-With": "XMLHttpRequest",
             },
             body: JSON.stringify({
                 "username": this.state.username,
                 "password": this.state.password
             }),
         };
-        const refreshPage = () => {
-            window.location.reload();
-        }
-        fetch('/auth/login', options)
-            .then((response) => response.json())
-            .then(this.props.history.push('/api/projects'), refreshPage)
-            .then((data) => {
 
-                console.log(data);
+
+        fetch('/auth/login', options)
+            .then((response) => {
+                //console.log(response.status);
+                if (response.status >= 400 && response.status < 600) {
+                    //this.setState({showSuccessMessage: false})
+                    this.setState({hasLoginFailed: true})
+                }
+                else if(response.status === 200){
+                    this.setState({loggedIn: true});
+                    AuthenticationService.registerSuccessfulLogin(this.state.username, this.state.password);
+                }
+                return response.json();
+            })
+            .then(data => {
+            console.log(data);
+            this.setState({ serverMessage: data});
+        })
+            .catch(err => {
+                console.log(err)
             });
 
     }
+    handleChange = (event) =>{
+        this.setState(
+            {
+                [event.target.name]: event.target.value
+            }
+        )
+    }
 
     render() {
+
+        // if (this.state.error!=null) {
+        //     return <h1>Caught an error.</h1>
+        //     this.state.error = null;
+        //
+        // }
+        if (this.state.loggedIn === true){
+            window.location.href = '/api/projects';
+        }
+
         return (
+
+
+
             <div>
 
-                {this.state.hasLoginFailed && <div className="alert alert-warning">Invalid Credentials</div>}
-                {this.state.showSuccessMessage && <div>Login Successful</div>}
-
-                <Form>
+                {/*{this.state.hasLoginFailed && <div>Login failed</div>}*/}
+                {/*{this.state.showSuccessMessage && <div>Login Successful</div>}*/}
+                {this.state.serverMessage.error}
+                <Form onSubmit={(e) => this.loginClicked(e)}>
                     <MuiThemeProvider>
                         <div>
                             <AppBar
                                 title="Login"
                             />
-                    <TextField
-                        hintText="Enter your Username"
-                        floatingLabelText="Username" onChange={(event, newValue) => this.setState({username: newValue})}
-                    />
-                    <TextField
-                        type="password"
-                        hintText="Enter your password"
-                        floatingLabelText="Password" onChange={(event, newValue) => this.setState({password: newValue})}
-                    />
-                    <FormGroup>
-                        <Button type="submit" onClick={(event) => this.loginClicked(event)}>Login</Button>
-                    </FormGroup>
+
+                            <TextField
+                                hintText="Enter your Username"
+                                floatingLabelText="Username"
+                                name="username"
+                                value={this.state.username} onChange={this.handleChange}
+                            />
+                            <TextField
+                                type="password"
+                                hintText="Enter your password"
+                                floatingLabelText="Password"
+                                name="password"
+                                value={this.state.password} onChange={this.handleChange}
+                            />
+
+                            <FormGroup>
+                                <Button color="primary" type="submit">Save</Button>{' '}
+                            </FormGroup>
+
                         </div>
                     </MuiThemeProvider>
                 </Form>
             </div>
+
         )
+
     }
+
 }
 
 

@@ -2,20 +2,20 @@ package com.bygst.risikolog.controllers;
 
 
 import com.bygst.risikolog.dto.AuthenticationDTO;
+import com.bygst.risikolog.dto.Details;
 import com.bygst.risikolog.dto.UserDTO;
 import com.bygst.risikolog.exceptions.InvalidDataException;
-import com.bygst.risikolog.model.Project;
-import com.bygst.risikolog.model.Risk;
 import com.bygst.risikolog.model.User;
 import com.bygst.risikolog.repositories.ProjectRepository;
 import com.bygst.risikolog.repositories.RiskRepository;
 import com.bygst.risikolog.service.RegistrationService;
-import com.bygst.risikolog.util.UserValidator;
+import com.bygst.risikolog.service.UsersDetailsService;
 
-import org.jboss.logging.Logger;
+
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.DatabindContext;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -24,66 +24,71 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.server.csrf.CsrfToken;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.WebUtils;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/auth")
+@CrossOrigin
 public class AuthController {
 
     private final RegistrationService registrationService;
-    private final UserValidator userValidator;
     private final ModelMapper modelMapper;
     private final AuthenticationManager authenticationManager;
     private final ProjectRepository projectRepository;
     private final RiskRepository riskRepository;
+    private final UsersDetailsService usersDetailsService;
 
 
     @Autowired
-    public AuthController(RegistrationService registrationService, UserValidator userValidator,
-                          ModelMapper modelMapper, AuthenticationManager authenticationManager, ProjectRepository projectRepository, RiskRepository riskRepository) {
+    public AuthController(RegistrationService registrationService,
+                          ModelMapper modelMapper, AuthenticationManager authenticationManager, ProjectRepository projectRepository, RiskRepository riskRepository, UsersDetailsService usersDetailsService) {
         this.registrationService = registrationService;
-        this.userValidator = userValidator;
         this.modelMapper = modelMapper;
         this.authenticationManager = authenticationManager;
         this.projectRepository = projectRepository;
         this.riskRepository = riskRepository;
+        this.usersDetailsService = usersDetailsService;
     }
 
     @PostMapping("/reg")
-    public ResponseEntity performRegistration(@RequestBody @Valid UserDTO userDTO, BindingResult bindingResult){
-        User user = convertToUser(userDTO);
-       userValidator.validate(user, bindingResult);
-        if(bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(new InvalidDataException("you entered wrong data"));
-        }
+    @JsonView({Details.class})
+    public ResponseEntity<User> performRegistration(@Valid @RequestBody UserDTO userDTO) throws InvalidDataException,
+            MethodArgumentNotValidException {
 
-        registrationService.register(user);//зарегали
-        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
+        User user = convertToUser(userDTO);
+
+        User registeredUser = registrationService.register(user);//зарегали
+        return new ResponseEntity<>(registeredUser, HttpStatus.OK);
+
     }
 
+
     @PostMapping("/login")
-    public ResponseEntity<String> authenticateUser(@RequestBody AuthenticationDTO authenticationDTO){
-        try {
+    @JsonView({Details.class})
+    public ResponseEntity<String> authenticateUser(@RequestBody AuthenticationDTO authenticationDTO) throws BadCredentialsException {
+
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     authenticationDTO.getUsername(), authenticationDTO.getPassword()));
 
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            return new ResponseEntity<>("redirect:/api/projects", HttpStatus.OK);
-        }catch (BadCredentialsException exception){
-            return new ResponseEntity<>("Bad credentials", HttpStatus.UNAUTHORIZED);
-        }
+
+            return new ResponseEntity<>("user is logged in", HttpStatus.OK);
+
     }
 
-    public User convertToUser(UserDTO userDTO){
+    public User convertToUser(UserDTO userDTO) {
         return this.modelMapper.map(userDTO, User.class);
     }
 }

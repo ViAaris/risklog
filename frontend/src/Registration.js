@@ -1,10 +1,16 @@
-import React, { Component } from 'react';
+import React, {Component, useState} from 'react';
 //import './components/css/todo.css';
 import {Button, Container, Form, FormGroup, Input, Label} from 'reactstrap';
-import { Link, withRouter } from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
+import * as PropTypes from "prop-types";
+
+function HelpBlock(props) {
+    return null;
+}
+
+HelpBlock.propTypes = {children: PropTypes.node};
 
 class Registration extends Component {
-    csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
 
     emptyItem = {
         username: "",
@@ -17,10 +23,22 @@ class Registration extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            item: this.emptyItem
+            item: this.emptyItem,
+            // loading: false, // режим загрузки
+            statusCode: null, // статус ответа
+            message: "",
+            usernameError: '',
+            firstnameError: "",
+            surnameError: "",
+            passwordError: "",
+            departmentError: "",
+            errors: [],
+            success: false,
+            failed: false
         };
+
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit=this.handleSubmit.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleChange(event) {
@@ -40,24 +58,83 @@ class Registration extends Component {
         fetch('/auth/reg', {
             method: 'POST',
             headers: {
-                "X-XSRF-TOKEN": this.csrfToken,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(item),
-        }).then((response) => response.json())
-            .then(this.props.history.push('/auth/login'))
-            .then((data) => {
+        }).then((response) => {
+            this.setState({
+                usernameError: '',
+                firstnameError: "",
+                surnameError: "",
+                passwordError: "",
+                departmentError: ""});
 
-                console.log(data);
+            if (response.status == 200) {
+                this.setState({success: true});
+            }
+            return response.json();
+        }).then(data => {
+                if (data.fieldErrors) {
+                    //this.setState({errors: data.fieldErrors})
+                    data.fieldErrors.map((error) => {
+                        if (error.field === 'username') {
+                            this.setState({usernameError: error.message})
+                        } else if (error.field === 'password') {
+                            this.setState({passwordError: error.message})
+                        } else if (error.field === 'firstName') {
+                            this.setState({firstnameError: error.message})
+                        } else if (error.field === 'surname') {
+                            this.setState({surnameError: error.message})
+                        } else if (error.field === 'department') {
+                            this.setState({departmentError: error.message})
+                        }
+                    })
+                }
+
+            console.log(data);
+        })
+            .catch((error) => {
+                console.error(error);
+                this.setState({loading: true});
             });
+
     }
 
-
-
     render() {
+        // if (this.state.loading) {
+        //     return (<p>Loading...</p>);
+        // }
+
+        // const {message} = this.state;
+
+        // ответ получен, но нет статуса ответа (смотри консоль)
+
+        // if (this.state.loading && !this.state.statusCode) {
+        //     return (<p>Something went wrong. See console logging.</p>);
+        // }
+        //
+        // // ответ получен, статус 200
+        if (this.state.success) {
+            return (<p>User registered successfully!
+                <br/>
+                <br/>
+                <Button size="sm" color="primary" tag={Link} to={"/auth/login"}>Log in</Button>
+            </p>);
+        }
+        //
+        // // ответ получен, статус 400
+        // if (this.state.loading && this.state.statusCode == 400) {
+        //     return (<p>{this.state.message.info}</p>);
+        // }
+        //
+
         const {item} = this.state;
+
+
         return <div>
+            {this.state.errors.map((error) => <p style={{color: 'red', fontSize: '12px'}}
+                                                 key={error.field}>{error.field + " " + error.message}</p>)}
 
             <Container>
                 <Form onSubmit={this.handleSubmit}>
@@ -66,31 +143,51 @@ class Registration extends Component {
                         <Label for="username">Username</Label>
                         <Input type="text" name="username" id="username" value={item.username || ''}
                                onChange={this.handleChange} autoComplete="username"/>
+                        {
+                            this.state.usernameError ?
+                                <span style={{color: 'red', fontSize: '12px'}}>{this.state.usernameError}</span> : ''
+                        }
                     </FormGroup>
                     <FormGroup>
                         <Label for="firstName">First name</Label>
                         <Input type="text" name="firstName" id="firstName" value={item.firstName || ''}
                                onChange={this.handleChange} autoComplete="firstName"/>
+                        {
+                            this.state.firstnameError ?
+                                <span style={{color: 'red', fontSize: '12px'}}>{this.state.firstnameError}</span> : ''
+                        }
                     </FormGroup>
                     <FormGroup>
                         <Label for="surname">Surname</Label>
                         <Input type="text" name="surname" id="surname" value={item.surname || ''}
                                onChange={this.handleChange} autoComplete="surname"/>
+                        {
+                            this.state.surnameError ?
+                                <span style={{color: 'red', fontSize: '12px'}}>{this.state.surnameError}</span> : ''
+                        }
                     </FormGroup>
                     <FormGroup>
                         <Label for="password">Password</Label>
                         <Input type="password" name="password" id="password" value={item.password || ''}
                                onChange={this.handleChange} autoComplete="password"/>
+                        {
+                            this.state.passwordError ?
+                                <span style={{color: 'red', fontSize: '12px'}}>{this.state.passwordError}</span> : ''
+                        }
                     </FormGroup>
 
                     <FormGroup>
                         <Label for="department">Department :</Label>
                         <select value={item.department || ''} name="department" id="department"
-                                onChange={this.handleChange}  >
-                        <option>Select Department</option>
-                        <option value="Risks and planning">Risks and planning</option>
-                        <option value="Project management">Project management</option>
-                    </select>
+                                onChange={this.handleChange}>
+                            <option></option>
+                            <option value="Risks and planning">Risks and planning</option>
+                            <option value="Project management">Project management</option>
+                        </select>
+                        {
+                            this.state.departmentError ?
+                                <span style={{color: 'red', fontSize: '12px'}}>{this.state.departmentError}</span> : ''
+                        }
                     </FormGroup>
                     <FormGroup>
                         <Button color="primary" type="submit">Save</Button>{' '}
@@ -99,21 +196,21 @@ class Registration extends Component {
                 </Form>
             </Container>
 
-                {/*<form onSubmit={this.handleSubmit}>*/}
-                {/*    <h1>User Registration</h1>*/}
-                {/*    <label>FirstName :</label> <input type="text" value={item.firstName} onChange={this.handleChange} placeholder="FirstName..." /><br />*/}
-                {/*    <label>Surname :</label> <input type="text" value={item.surname} onChange={this.handleChange} placeholder="Surname..." /><br />*/}
-                {/*    <label>Password :</label> <input type="password" value={item.password} onChange={this.handleChange} placeholder="Password..." /><br />*/}
-                {/*    <label>Department :</label><select onChange={this.handleChange} defaultValue="Select Department">*/}
-                {/*    <option defaultValue>Select Department</option>*/}
-                {/*    <option value="Risks and planning">Risks and planning</option>*/}
-                {/*    <option value="Project management">Project management</option>*/}
-                {/*</select>*/}
-                {/*    <br />*/}
-                {/*    <input type="submit" value="Submit" />*/}
-                {/*</form>*/}
+            {/*<form onSubmit={this.handleSubmit}>*/}
+            {/*    <h1>User Registration</h1>*/}
+            {/*    <label>FirstName :</label> <input type="text" value={item.firstName} onChange={this.handleChange} placeholder="FirstName..." /><br />*/}
+            {/*    <label>Surname :</label> <input type="text" value={item.surname} onChange={this.handleChange} placeholder="Surname..." /><br />*/}
+            {/*    <label>Password :</label> <input type="password" value={item.password} onChange={this.handleChange} placeholder="Password..." /><br />*/}
+            {/*    <label>Department :</label><select onChange={this.handleChange} defaultValue="Select Department">*/}
+            {/*    <option defaultValue>Select Department</option>*/}
+            {/*    <option value="Risks and planning">Risks and planning</option>*/}
+            {/*    <option value="Project management">Project management</option>*/}
+            {/*</select>*/}
+            {/*    <br />*/}
+            {/*    <input type="submit" value="Submit" />*/}
+            {/*</form>*/}
 
-            </div>
+        </div>
 
     }
 }

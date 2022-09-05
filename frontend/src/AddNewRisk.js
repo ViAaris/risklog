@@ -35,7 +35,7 @@ class AddNewRisk extends Component {
         event.preventDefault();
         const {item} = this.state;
 
-        fetch('/api/projects/' + this.props.match.params.id + '/risks/', {
+        fetch('/api/projects/' + this.props.match.params.id + '/risks', {
             method: 'POST',
             headers: {
                 "X-XSRF-TOKEN": this.csrfToken,
@@ -45,6 +45,7 @@ class AddNewRisk extends Component {
             body: JSON.stringify(item),
         }).then((response) => response.json())
             .then(this.props.history.push('/api/projects/' + this.props.match.params.id))
+            .then(window.location.reload())
             .then((data) => {
 
                 console.log(data);

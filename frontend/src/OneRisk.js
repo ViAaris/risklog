@@ -55,7 +55,17 @@ class OneRisk extends Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(item),
-        });
+        }).then((response) => {
+            return response.json();
+
+        }).then(data => {
+            console.log(data);
+        }).then(window.location.reload())
+
+            .catch((error) => {
+                console.error(error);
+                this.setState({loading: true});
+            });
     }
 
 //our render function will be handling our form:

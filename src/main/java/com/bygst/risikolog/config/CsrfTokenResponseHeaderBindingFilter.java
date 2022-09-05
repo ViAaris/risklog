@@ -12,7 +12,7 @@ import java.io.IOException;
 
 
 public class CsrfTokenResponseHeaderBindingFilter extends OncePerRequestFilter {
-    protected static final String REQUEST_ATTRIBUTE_NAME = "_csrf";
+    protected static final String REQUEST_ATTRIBUTE_NAME = "XSRF-TOKEN";
     protected static final String RESPONSE_HEADER_NAME = "X-CSRF-HEADER";
     protected static final String RESPONSE_PARAM_NAME = "X-CSRF-PARAM";
     protected static final String RESPONSE_TOKEN_NAME = "X-CSRF-TOKEN";

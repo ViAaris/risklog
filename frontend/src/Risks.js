@@ -22,11 +22,8 @@ class Risks extends Component {
     }
 
     render(){
-        const {risks, isLoading} = this.state;
+        const {risks} = this.state;
 
-        if (isLoading) {
-            return <p>Loading...</p>;
-        }
 
         const risksList = risks.map(risk => {
             return  (<tr key={risk.id}>

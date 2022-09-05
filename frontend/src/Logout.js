@@ -1,19 +1,30 @@
 import AuthenticationService from "./AuthenticationService";
 import LoginComponent from "./LoginComponent";
-
-
+import React from 'react';
+import {getCSRFToken} from "./getCSRFToken";
 
 
 export function Logout(event) {
-     localStorage.clear();
-     event.preventDefault();
 
-     fetch('/perform_logout', {
-         method: 'POST',
-         headers: {"X-XSRF-TOKEN": document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1')},
-         body: '',
-     }).then(r => AuthenticationService.logout())
-         .then(window.location.href = '/auth/login');
-    AuthenticationService.logout()
 
- }
+    event.preventDefault();
+
+
+
+
+    fetch('/perform_logout', {
+        method: 'POST',
+        withCredentials: true,
+        headers: {
+            'X-XSRF-TOKEN': getCSRFToken('XSRF-TOKEN'),
+            "Access-Control-Allow-Origin": "http://localhost:3000"
+        },
+    }).then(response => response.json())
+        .then(data => console.log(data));
+    AuthenticationService.logout();
+    window.location.reload();
+
+    window.location.href="/auth/login";
+
+
+}

@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import {Button, Container, Form, Table} from 'reactstrap';
-import AppNavbar from './AppNavbar';
+import {Button, Container, Form, FormGroup, Table} from 'reactstrap';
+import { useNavigate } from 'react-router-dom';
 import {Link, withRouter} from 'react-router-dom';
-import AddProject from "./AddProject";
+
 import AuthenticationService from "./AuthenticationService";
 import {Logout} from "./Logout";
+
+
+
 
 
 class ProjectList extends Component {
@@ -15,19 +18,57 @@ class ProjectList extends Component {
     }
 
     componentDidMount() {
-        fetch('/api/projects')
+
+        const options = {
+            method: "GET",
+            withCredentials: true,
+            headers: {
+                // "X-XSRF-TOKEN": this.csrfToken,
+                // "Authorization": AuthenticationService.createBasicAuthToken(this.state.username, this.state.password),
+                Accept: "application/json",
+                "Content-Type": "application/json;charset=UTF-8",
+                // "Access-Control-Allow-Headers":"Authorization, Content-Type, X-XSRF-TOKEN",
+                "Access-Control-Allow-Origin": "http://localhost:8081",
+                // "X-Requested-With": "XMLHttpRequest",
+            }
+        };
+
+        fetch('/api/projects', options)
+            // .then(function (response) {
+            //     console.log(response.status);
+            //     if (response.status !== 200) {
+            //         this.props.history.push('/auth/login');
+            //     }
+            //
+            // }
             .then(response => response.json())
-            .then(data => this.setState({projects: data}));
+                .then(data => this.setState({projects: data}));
+
     }
 
 
 
-    render() {
-        const {projects, isLoading} = this.state;
 
-        if (isLoading) {
-            return <p>Loading...</p>;
+    render() {
+        const {projects} = this.state;
+
+        const useHasRoles =(roleNames)=>{
+            const roles = useUser();
+            if (typeof roleNames === "string") {
+                //check whether current user has specific role or not
+                return true/false
+                } else if (Array.isArray(roleNames)) {
+            // check if current user has all roles specified in roleNames
+                // return true/false
+                } else {  return false;  }
         }
+
+        const useUser = ()=>{
+            //get current user details and roles.
+            return {roles:[]}
+        }
+
+
 
         const projectList = projects.map(project => {
             return <tr key={project.id}>
@@ -48,6 +89,7 @@ class ProjectList extends Component {
 
         return (
             <div>
+
 
                 <Container fluid>
                     <div className="float-right">
@@ -71,9 +113,17 @@ class ProjectList extends Component {
                     </Table>
 
                     <div className="float-right">
-                        <Form onSubmit={Logout}>
-                            <Button color="primary" type="submit">Logout</Button>{' '}
+                        {/*<Form onSubmit={Logout}>*/}
+
+
+                        <Form onSubmit={(e) => Logout(e)}>
+                            <FormGroup>
+                                <Button color="primary" type="submit">logout</Button>{' '}
+                            </FormGroup>
                         </Form>
+                        {/*<Button color="success" tag={Link} to="/perform_logout">logout</Button>*/}
+
+
                     </div>
                 </Container>
             </div>
