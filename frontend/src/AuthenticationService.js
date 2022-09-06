@@ -2,52 +2,12 @@ import axios from 'axios'
 
 const API_URL = 'http://localhost:8081'
 
-export const USER_NAME_SESSION_ATTRIBUTE_NAME = 'token'
+export const USER_NAME_SESSION_ATTRIBUTE_NAME = 'username'
+
 
 
 class AuthenticationService {
 
-
-    csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
-
-    executeBasicAuthenticationService(username, password) {
-
-
-        const options = {
-            method: 'POST',
-            withCredentials: true,
-            headers: {
-                'X-XSRF-TOKEN': this.csrfToken,
-                'Authorization': this.createBasicAuthToken(username, password),
-                Accept: 'application/json',
-                'Content-Type': 'application/json;charset=UTF-8',
-                // "Access-Control-Allow-Headers":"Authorization,Content-Type, x-requested-with",
-                'Access-Control-Allow-Origin': 'http://localhost:3000',
-                //'X-Requested-With': 'XMLHttpRequest',
-            },
-            body: JSON.stringify({
-                "username": username,
-                "password": password
-            }),
-        };
-
-       return fetch('/auth/login', options)
-            .then(function (response) {
-                console.log(response.status);
-                if (response.status >= 400 && response.status < 600) {
-
-                    const error = new Error(response.statusText);
-                    error.response = response;
-                    throw error;
-                }
-
-                return response.json();
-            })
-            .catch(function (error) {
-                console.log("The error is : " + error);
-            });
-
-    }
 
 
     createBasicAuthToken(username, password) {
@@ -60,9 +20,21 @@ class AuthenticationService {
         this.setupAxiosInterceptors(this.createBasicAuthToken(username, password))
     }
 
+    setAuthorities(username, authorities){
+        authorities.map(oneAuthority=>{
+            localStorage.setItem(username, oneAuthority)
+        });
+    }
+
+    getAuthorities(){
+        return localStorage.getItem(localStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME))
+    }
+
 
     logout() {
-        localStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
+        localStorage.clear();
+        // localStorage.removeItem(localStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME));
+        // localStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
     }
 
     isUserLoggedIn() {

@@ -26,6 +26,7 @@ class LoginComponent extends Component {
             //showSuccessMessage: false,
             serverMessage: '',
             loggedIn: false,
+            grantedAuthorities: []
 
         }
         this.handleChange = this.handleChange.bind(this)
@@ -68,9 +69,7 @@ class LoginComponent extends Component {
 
         fetch('/auth/login', options)
             .then((response) => {
-                //console.log(response.status);
                 if (response.status >= 400 && response.status < 600) {
-                    //this.setState({showSuccessMessage: false})
                     this.setState({hasLoginFailed: true})
                 }
                 else if(response.status === 200){
@@ -82,6 +81,8 @@ class LoginComponent extends Component {
             .then(data => {
             console.log(data);
             this.setState({ serverMessage: data});
+            this.setState({grantedAuthorities: data.grantedAuthorities});
+            AuthenticationService.setAuthorities(this.state.username, data.grantedAuthorities);
         })
             .catch(err => {
                 console.log(err)
@@ -98,11 +99,6 @@ class LoginComponent extends Component {
 
     render() {
 
-        // if (this.state.error!=null) {
-        //     return <h1>Caught an error.</h1>
-        //     this.state.error = null;
-        //
-        // }
         if (this.state.loggedIn === true){
             window.location.href = '/api/projects';
         }
@@ -113,8 +109,6 @@ class LoginComponent extends Component {
 
             <div>
 
-                {/*{this.state.hasLoginFailed && <div>Login failed</div>}*/}
-                {/*{this.state.showSuccessMessage && <div>Login Successful</div>}*/}
                 {this.state.serverMessage.error}
                 <Form onSubmit={(e) => this.loginClicked(e)}>
                     <MuiThemeProvider>

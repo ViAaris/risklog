@@ -23,7 +23,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.validation.BindingResult;
@@ -35,6 +37,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -62,12 +67,12 @@ public class AuthController {
 
     @PostMapping("/reg")
     @JsonView({Details.class})
-    public ResponseEntity<User> performRegistration(@Valid @RequestBody UserDTO userDTO) throws InvalidDataException,
+    public ResponseEntity<UserDTO> performRegistration(@Valid @RequestBody UserDTO userDTO) throws InvalidDataException,
             MethodArgumentNotValidException {
 
         User user = convertToUser(userDTO);
 
-        User registeredUser = registrationService.register(user);//зарегали
+        UserDTO registeredUser = convertToUserDto(registrationService.register(user));//зарегали
         return new ResponseEntity<>(registeredUser, HttpStatus.OK);
 
     }
@@ -75,20 +80,31 @@ public class AuthController {
 
     @PostMapping("/login")
     @JsonView({Details.class})
-    public ResponseEntity<String> authenticateUser(@RequestBody AuthenticationDTO authenticationDTO) throws BadCredentialsException {
+    public ResponseEntity<AuthenticationDTO> authenticateUser(@RequestBody AuthenticationDTO authenticationDTO) throws BadCredentialsException {
 
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    authenticationDTO.getUsername(), authenticationDTO.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                authenticationDTO.getUsername(), authenticationDTO.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        List<String> authorities =new ArrayList<>();
 
-            return new ResponseEntity<>("user is logged in", HttpStatus.OK);
+        for(GrantedAuthority authority : userDetails.getAuthorities()){
+            authorities.add(authority.getAuthority());
+        }
+        authenticationDTO.setGrantedAuthorities( authorities.toArray(new String[0]));
+        System.out.println("authorities: " + Arrays.toString(authenticationDTO.getGrantedAuthorities()));
+        return new ResponseEntity<>(authenticationDTO, HttpStatus.OK);
 
     }
 
     public User convertToUser(UserDTO userDTO) {
         return this.modelMapper.map(userDTO, User.class);
+    }
+    public UserDTO convertToUserDto(User user){
+        return this.modelMapper.map(user, UserDTO.class);
     }
 }

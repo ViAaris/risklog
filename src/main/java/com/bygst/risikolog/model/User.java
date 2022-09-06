@@ -40,5 +40,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name="users_id"))
     private List<Project> projects;
 
-
+    public List<Project> getProjects() {
+        return projects;
+    }
 }

@@ -34,6 +34,5 @@ public class UserDTO {
     @Size(min = 8, message = "password should have at least 8 characters")
     private String password;
 
-
     private List<Project> projects;
 }

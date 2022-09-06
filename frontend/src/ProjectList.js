@@ -41,7 +41,13 @@ class ProjectList extends Component {
             //     }
             //
             // }
-            .then(response => response.json())
+            .then((response) =>{
+                if(response.status == 405){
+                    AuthenticationService.logout();
+                    this.props.history.push('/auth/login');
+                }
+                return response.json();
+            })
                 .then(data => this.setState({projects: data}));
 
     }
@@ -92,9 +98,15 @@ class ProjectList extends Component {
 
 
                 <Container fluid>
-                    <div className="float-right">
-                        <Button color="success" tag={Link} to="/api/admin/new_project">Add Project</Button>
-                    </div>
+
+                    {
+                        localStorage.getItem(localStorage.getItem("username")) == "ROLE_ADMIN" ?
+                            <div className="float-right">
+                                <Button color="success" tag={Link} to="/api/admin/new_project">Add Project</Button>
+                            </div>  : ''
+                    }
+
+
                     <h3>Projects</h3>
                     <Table className="mt-4">
                         <thead>

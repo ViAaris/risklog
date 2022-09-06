@@ -2,6 +2,7 @@ import React, {Component, useRef, useState} from 'react';
 //import './components/css/todo.css';
 import {Button, Container, Form, FormGroup, Input, Label} from 'reactstrap';
 import { Link, withRouter } from 'react-router-dom';
+import AuthenticationService from "./AuthenticationService";
 
 
 
@@ -13,10 +14,18 @@ class AddProject extends Component {
         address: "",
         budget: "",
         startingDate: "",
-        finishingDate: ""
+        finishingDate: "",
+
+        allowed:false
         // contractors: "",
         // advisers: "",
     };
+
+    componentDidMount() {
+        if(AuthenticationService.getAuthorities() == "ROLE_ADMIN"){
+            this.setState({allowed: true})
+        }
+    }
 
     constructor(props) {
         super(props);
@@ -57,6 +66,9 @@ class AddProject extends Component {
 
     render() {
         const {item} = this.state;
+        if(!this.state.allowed){
+            return <p>You don't have access for this page</p>
+        }
         return <div>
 
             <Container>

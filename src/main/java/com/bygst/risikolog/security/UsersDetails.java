@@ -1,5 +1,6 @@
 package com.bygst.risikolog.security;
 
+import com.bygst.risikolog.model.Project;
 import com.bygst.risikolog.model.Role;
 import com.bygst.risikolog.model.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,9 +18,12 @@ public class UsersDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>(); // use list if you wish
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>(); // use list if you wish
         for (Role role : user.getRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole()));
+        }
+        for(Project project : user.getProjects()){
+            grantedAuthorities.add(new SimpleGrantedAuthority(project.getTitle()));
         }
         return grantedAuthorities;
     }
