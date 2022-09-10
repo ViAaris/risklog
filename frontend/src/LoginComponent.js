@@ -83,6 +83,7 @@ class LoginComponent extends Component {
             this.setState({ serverMessage: data});
             this.setState({grantedAuthorities: data.grantedAuthorities});
             AuthenticationService.setAuthorities(this.state.username, data.grantedAuthorities);
+            AuthenticationService.setId(this.state.username, data.id);
         })
             .catch(err => {
                 console.log(err)

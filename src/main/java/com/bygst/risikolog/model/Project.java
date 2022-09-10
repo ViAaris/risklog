@@ -1,5 +1,8 @@
 package com.bygst.risikolog.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
@@ -7,10 +10,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import static javax.persistence.CascadeType.*;
+import static javax.persistence.CascadeType.DETACH;
+
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
 @Table(name = "Project")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 public class Project {
 
     @Id
@@ -43,13 +53,13 @@ public class Project {
     @Column(name = "advisers")
     private List<String> advisers;
 
-    @ManyToMany
+    @ManyToMany(cascade = {MERGE, PERSIST})
     @JoinTable(name="team",
             joinColumns = @JoinColumn(name="users_id"),
             inverseJoinColumns = @JoinColumn(name="project_id"))
     private List<User> team;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Risk> risks;
 
     @Override
@@ -57,11 +67,21 @@ public class Project {
         if (this == o) return true;
         if (!(o instanceof Project)) return false;
         Project project = (Project) o;
-        return id == project.id && budget == project.budget && Objects.equals(title, project.title) && Objects.equals(address, project.address) && Objects.equals(finishingDate, project.finishingDate) && Objects.equals(startingDate, project.startingDate) && Objects.equals(contractors, project.contractors) && Objects.equals(advisers, project.advisers) && Objects.equals(team, project.team) && Objects.equals(risks, project.risks);
+        return id == project.id &&
+                budget == project.budget && Objects.equals(title, project.title)
+                && Objects.equals(address, project.address)
+                && Objects.equals(finishingDate, project.finishingDate)
+                && Objects.equals(startingDate, project.startingDate);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, title, address, budget, finishingDate, startingDate, contractors, advisers, team, risks);
+    }
+
+    public Project(String title, String address, long budget) {
+        this.title = title;
+        this.address = address;
+        this.budget = budget;
     }
 }

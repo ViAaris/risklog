@@ -6,12 +6,7 @@ import {getCSRFToken} from "./getCSRFToken";
 
 export function Logout(event) {
 
-
     event.preventDefault();
-
-
-
-
     fetch('/perform_logout', {
         method: 'POST',
         withCredentials: true,
@@ -24,7 +19,7 @@ export function Logout(event) {
     AuthenticationService.logout();
     window.location.reload();
 
-    window.location.href="/auth/login";
+    window.location.href = "/auth/login";
 
 
 }

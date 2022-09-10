@@ -1,11 +1,13 @@
 package com.bygst.risikolog.controllers;
 
+import com.bygst.risikolog.dto.Details;
 import com.bygst.risikolog.dto.ProjectDTO;
 import com.bygst.risikolog.exceptions.InvalidDataException;
 import com.bygst.risikolog.model.Project;
 import com.bygst.risikolog.model.Risk;
 import com.bygst.risikolog.service.ProjectService;
 import com.bygst.risikolog.util.ProjectValidator;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,12 +38,13 @@ public class ProjectsController {
     }
 
     @GetMapping("/projects")
-    public List<Project> showAllProjects(){
-        return projectService.getAllProjects();
+    @JsonView({Details.class})
+    public List<ProjectDTO> showAllProjects(){
+       return projectService.getAllProjects();
     }
 
     @PostMapping("/admin/new_project")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity addNewProject(@RequestBody @Valid ProjectDTO projectDTO, BindingResult bindingResult){
         Project project = convertToProject(projectDTO);
         projectValidator.validate(project, bindingResult);
@@ -62,5 +65,7 @@ public class ProjectsController {
     public Project convertToProject(ProjectDTO projectDTO){
         return this.modelMapper.map(projectDTO, Project.class);
     }
+
+
 
 }

@@ -4,11 +4,15 @@ package com.bygst.risikolog.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +47,13 @@ public class UserGlobalExceptionHandler  {
 
         fieldErrorResponse.setFieldErrors(fieldErrors);
         return new ResponseEntity<>(fieldErrorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = {AccessDeniedException.class})
+    public ResponseEntity<UserIncorrectData> handleException(AccessDeniedException accessDeniedException) {
+        UserIncorrectData data = new UserIncorrectData();
+        data.setError(accessDeniedException.getMessage());
+        return new ResponseEntity<>(data, HttpStatus.FORBIDDEN);
     }
 
 

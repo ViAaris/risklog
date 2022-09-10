@@ -5,23 +5,45 @@ import {Link, withRouter} from 'react-router-dom';
 
 import OneRisk from "./OneRisk";
 import AddNewRisk from "./AddNewRisk";
+import * as state from "react-dom/test-utils";
 
 
 class Risks extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {risks: []};
+        this.state = {
+            risks: [],
+            serverStatus: '',
+            error:''
+        };
 
     }
 
     componentDidMount() {
         fetch(`/api/projects/${this.props.match.params.id}`)
-            .then(response => response.json())
-            .then(data => this.setState({risks: data}));
+            .then(response =>{
+                if(response.status != 200){
+                    this.setState({serverStatus: response.status})
+                }
+                return response.json()
+            } )
+            .then(data => {
+                if(!this.state.serverStatus){
+                    this.setState({risks: data});
+                }else{
+                    this.setState({error: data.error})
+                }
+            });
     }
 
     render(){
+
+        if(this.state.serverStatus){
+        return (
+            <p>{this.state.error}</p>
+        )
+    }
         const {risks} = this.state;
 
 
@@ -35,6 +57,9 @@ class Risks extends Component {
 
         return (
             <div>
+
+
+            <div>
                 <Container fluid>
                     <h3>Add new risk</h3>
                     <AddNewRisk/>
@@ -44,6 +69,7 @@ class Risks extends Component {
                         </tbody>
                     </Table>
                 </Container>
+            </div>
             </div>
         );
     }

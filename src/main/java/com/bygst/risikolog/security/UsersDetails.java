@@ -23,7 +23,7 @@ public class UsersDetails implements UserDetails {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole()));
         }
         for(Project project : user.getProjects()){
-            grantedAuthorities.add(new SimpleGrantedAuthority(project.getTitle()));
+            grantedAuthorities.add(new SimpleGrantedAuthority(String.valueOf(project.getId())));
         }
         return grantedAuthorities;
     }

@@ -21,15 +21,21 @@ class AuthenticationService {
     }
 
     setAuthorities(username, authorities){
-        authorities.map(oneAuthority=>{
-            localStorage.setItem(username, oneAuthority)
-        });
+            localStorage.setItem(username + 'Authorities', JSON.stringify(authorities));
     }
+
 
     getAuthorities(){
-        return localStorage.getItem(localStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME))
+        return JSON.parse(localStorage.getItem(this.getLoggedInUserName()+ 'Authorities'));
     }
 
+    setId(username, id){
+        localStorage.setItem(username + 'Id', id);
+    }
+
+    getId(){
+        return localStorage.getItem(this.getLoggedInUserName() + 'Id');
+    }
 
     logout() {
         localStorage.clear();

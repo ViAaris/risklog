@@ -12,6 +12,8 @@ import java.util.Collection;
 @Getter
 @Setter
 public class AuthenticationDTO {
+    @JsonView({Details.class})
+    private int id;
 
     @JsonView({Details.class})
     private String username;

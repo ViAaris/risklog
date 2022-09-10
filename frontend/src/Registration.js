@@ -3,6 +3,8 @@ import React, {Component, useState} from 'react';
 import {Button, Container, Form, FormGroup, Input, Label} from 'reactstrap';
 import {Link, withRouter} from 'react-router-dom';
 import * as PropTypes from "prop-types";
+import AuthenticationService from "./AuthenticationService";
+import ProjectList from "./ProjectList";
 
 function HelpBlock(props) {
     return null;
@@ -34,12 +36,35 @@ class Registration extends Component {
             departmentError: "",
             errors: [],
             success: false,
-            failed: false
+            failed: false,
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        //this.onDropdownSelected = this.onDropdownSelected.bind(this);
     }
+
+    componentDidMount() {
+
+        const options = {
+            method: "GET",
+            withCredentials: true,
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json;charset=UTF-8",
+                "Access-Control-Allow-Origin": "http://localhost:8081",
+            }
+        };
+
+        fetch('/api/projects', options)
+            .then((response) =>{
+                return response.json();
+            })
+            .then(data => this.setState({allProjects: data}));
+
+    }
+
+
 
     handleChange(event) {
         const target = event.target;
@@ -102,19 +127,7 @@ class Registration extends Component {
     }
 
     render() {
-        // if (this.state.loading) {
-        //     return (<p>Loading...</p>);
-        // }
 
-        // const {message} = this.state;
-
-        // ответ получен, но нет статуса ответа (смотри консоль)
-
-        // if (this.state.loading && !this.state.statusCode) {
-        //     return (<p>Something went wrong. See console logging.</p>);
-        // }
-        //
-        // // ответ получен, статус 200
         if (this.state.success) {
             return (<p>User registered successfully!
                 <br/>
@@ -122,19 +135,15 @@ class Registration extends Component {
                 <Button size="sm" color="primary" tag={Link} to={"/auth/login"}>Log in</Button>
             </p>);
         }
-        //
-        // // ответ получен, статус 400
-        // if (this.state.loading && this.state.statusCode == 400) {
-        //     return (<p>{this.state.message.info}</p>);
-        // }
-        //
+
 
         const {item} = this.state;
 
 
         return <div>
             {this.state.errors.map((error) => <p style={{color: 'red', fontSize: '12px'}}
-                                                 key={error.field}>{error.field + " " + error.message}</p>)}
+                                                 key={error.field}>{error.field + " " + error.message}</p>)
+            }
 
             <Container>
                 <Form onSubmit={this.handleSubmit}>
@@ -195,20 +204,6 @@ class Registration extends Component {
                     </FormGroup>
                 </Form>
             </Container>
-
-            {/*<form onSubmit={this.handleSubmit}>*/}
-            {/*    <h1>User Registration</h1>*/}
-            {/*    <label>FirstName :</label> <input type="text" value={item.firstName} onChange={this.handleChange} placeholder="FirstName..." /><br />*/}
-            {/*    <label>Surname :</label> <input type="text" value={item.surname} onChange={this.handleChange} placeholder="Surname..." /><br />*/}
-            {/*    <label>Password :</label> <input type="password" value={item.password} onChange={this.handleChange} placeholder="Password..." /><br />*/}
-            {/*    <label>Department :</label><select onChange={this.handleChange} defaultValue="Select Department">*/}
-            {/*    <option defaultValue>Select Department</option>*/}
-            {/*    <option value="Risks and planning">Risks and planning</option>*/}
-            {/*    <option value="Project management">Project management</option>*/}
-            {/*</select>*/}
-            {/*    <br />*/}
-            {/*    <input type="submit" value="Submit" />*/}
-            {/*</form>*/}
 
         </div>
 

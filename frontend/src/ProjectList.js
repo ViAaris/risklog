@@ -5,6 +5,7 @@ import {Link, withRouter} from 'react-router-dom';
 
 import AuthenticationService from "./AuthenticationService";
 import {Logout} from "./Logout";
+import {SendRequest} from "./SendRequest";
 
 
 
@@ -14,7 +15,11 @@ class ProjectList extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {projects: []};
+        this.state = {
+            projects: [],
+            showMessage: false
+        };
+       this.requestIsSent = this.requestIsSent.bind(this)
     }
 
     componentDidMount() {
@@ -23,24 +28,13 @@ class ProjectList extends Component {
             method: "GET",
             withCredentials: true,
             headers: {
-                // "X-XSRF-TOKEN": this.csrfToken,
-                // "Authorization": AuthenticationService.createBasicAuthToken(this.state.username, this.state.password),
                 Accept: "application/json",
                 "Content-Type": "application/json;charset=UTF-8",
-                // "Access-Control-Allow-Headers":"Authorization, Content-Type, X-XSRF-TOKEN",
                 "Access-Control-Allow-Origin": "http://localhost:8081",
-                // "X-Requested-With": "XMLHttpRequest",
             }
         };
 
         fetch('/api/projects', options)
-            // .then(function (response) {
-            //     console.log(response.status);
-            //     if (response.status !== 200) {
-            //         this.props.history.push('/auth/login');
-            //     }
-            //
-            // }
             .then((response) =>{
                 if(response.status == 405){
                     AuthenticationService.logout();
@@ -48,9 +42,17 @@ class ProjectList extends Component {
                 }
                 return response.json();
             })
-                .then(data => this.setState({projects: data}));
+                .then(data => {
+                    console.log(data);
+                    this.setState({projects: data})
+                });
 
     }
+
+    requestIsSent = (e, id) => {
+        this.setState({showMessage: true});
+        SendRequest(e, id);
+    };
 
 
 
@@ -58,25 +60,9 @@ class ProjectList extends Component {
     render() {
         const {projects} = this.state;
 
-        const useHasRoles =(roleNames)=>{
-            const roles = useUser();
-            if (typeof roleNames === "string") {
-                //check whether current user has specific role or not
-                return true/false
-                } else if (Array.isArray(roleNames)) {
-            // check if current user has all roles specified in roleNames
-                // return true/false
-                } else {  return false;  }
-        }
-
-        const useUser = ()=>{
-            //get current user details and roles.
-            return {roles:[]}
-        }
-
-
 
         const projectList = projects.map(project => {
+
             return <tr key={project.id}>
                 <td style={{whiteSpace: 'nowrap'}}>{project.title} </td>
                 <td>{project.address}</td>
@@ -84,12 +70,22 @@ class ProjectList extends Component {
                 <td>{project.startingDate}</td>
                 <td>{project.finishingDate}</td>
                 <td>{project.team}</td>
-
                 <td>
 
-                        <Button size="sm" color="primary" tag={Link} to={"/api/projects/" + project.id}>Risks</Button>
+                    <Button size="sm" color="primary" tag={Link} to={"/api/projects/" + project.id}>Risks</Button>
 
                 </td>
+
+                {
+                    !this.state.showMessage &&
+                    <td>
+                        <Button onClick={e => this.requestIsSent(e, project.id)} color="primary" type="submit">Send
+                            request</Button>{' '}
+
+                    </td>
+                }
+                {this.state.showMessage && <p>Your request was sent to the administrator</p>}
+
             </tr>
         });
 
@@ -100,7 +96,7 @@ class ProjectList extends Component {
                 <Container fluid>
 
                     {
-                        localStorage.getItem(localStorage.getItem("username")) == "ROLE_ADMIN" ?
+                        AuthenticationService.getAuthorities()[0] === "ROLE_ADMIN" ?
                             <div className="float-right">
                                 <Button color="success" tag={Link} to="/api/admin/new_project">Add Project</Button>
                             </div>  : ''
@@ -121,21 +117,16 @@ class ProjectList extends Component {
                         </thead>
                         <tbody>
                         {projectList}
+
                         </tbody>
                     </Table>
 
                     <div className="float-right">
-                        {/*<Form onSubmit={Logout}>*/}
-
-
                         <Form onSubmit={(e) => Logout(e)}>
                             <FormGroup>
                                 <Button color="primary" type="submit">logout</Button>{' '}
                             </FormGroup>
                         </Form>
-                        {/*<Button color="success" tag={Link} to="/perform_logout">logout</Button>*/}
-
-
                     </div>
                 </Container>
             </div>
