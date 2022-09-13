@@ -5,8 +5,13 @@ import com.bygst.risikolog.dto.AuthenticationDTO;
 import com.bygst.risikolog.dto.Details;
 import com.bygst.risikolog.dto.UserDTO;
 import com.bygst.risikolog.exceptions.InvalidDataException;
+import com.bygst.risikolog.model.Project;
 import com.bygst.risikolog.model.User;
+import com.bygst.risikolog.repositories.ProjectRepository;
+import com.bygst.risikolog.repositories.RoleRepository;
+import com.bygst.risikolog.repositories.UsersRepository;
 import com.bygst.risikolog.service.AuthService;
+import com.bygst.risikolog.service.ProjectService;
 import com.bygst.risikolog.service.UsersService;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.modelmapper.ModelMapper;
@@ -20,6 +25,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
@@ -33,6 +39,14 @@ public class AuthController {
 
     private final AuthService authService;
     private final ModelMapper modelMapper;
+
+
+
+    @Autowired
+    ProjectService projectService;
+
+    @Autowired
+    UsersService usersService;
 
 
 
@@ -59,8 +73,19 @@ public class AuthController {
     @JsonView({Details.class})
     public ResponseEntity<AuthenticationDTO> authenticateUser(@RequestBody AuthenticationDTO authenticationDTO) throws BadCredentialsException {
 
-       AuthenticationDTO dtoToReturn = authService.authenticate(authenticationDTO);
 
+        User user = usersService.getUser(20);
+//        List<Project> projects = user.getProjects();
+        Project project = projectService.getProject(3);
+//        projects.add(project);
+//        user.setProjects(projects);
+        project.getTeam().add(user);
+        //user.getProjects().add(project);
+        //project.setTeam(users);
+        //usersService.save(user);
+        projectService.add(project);
+
+        AuthenticationDTO dtoToReturn = authService.authenticate(authenticationDTO);
         return new ResponseEntity<>(dtoToReturn, HttpStatus.OK);
 
     }

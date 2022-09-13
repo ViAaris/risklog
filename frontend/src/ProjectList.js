@@ -69,7 +69,11 @@ class ProjectList extends Component {
                 <td>{project.budget}</td>
                 <td>{project.startingDate}</td>
                 <td>{project.finishingDate}</td>
-                <td>{project.team}</td>
+                <td>{project.team.map(user => {
+                    return <tr key={user.id}>
+                    <div>{user.firstName}</div>
+                    </tr>
+                })}</td>
                 <td>
 
                     <Button size="sm" color="primary" tag={Link} to={"/api/projects/" + project.id}>Risks</Button>

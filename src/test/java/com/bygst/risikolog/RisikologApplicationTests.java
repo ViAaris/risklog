@@ -26,6 +26,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -41,7 +42,8 @@ class RisikologApplicationTests {
 
 	private RequestSpecification givenAuth(String username, String password) {
 		FormAuthConfig formAuthConfig =
-				new FormAuthConfig("http://localhost:8081/auth/login", "username", "password");
+				new FormAuthConfig("http://localhost:8081/auth/login",
+						"username", "password");
 
 		return RestAssured.given().auth().form(username, password, formAuthConfig);
 	}
@@ -61,28 +63,29 @@ class RisikologApplicationTests {
 	@Autowired
 	AuthService authService;
 	@Autowired
+	UsersService usersService;
+
+	@Autowired
 	PasswordEncoder passwordEncoder;
 
 	@Test
 	public void testProjects(){
 		List<Project> projects = new ArrayList<>();
-		projects.add(projectRepository.findById(2).get());
-		User user = new User("user4", "pass",
+		Project project = projectRepository.findById(2).get();
+		projects.add(project);
+		User user = new User("user11", "pass",
 				"name", "surname", "department", projects);
-		authService.register(user);
-		Assert.assertNotNull(projectRepository.findById(2).get().getTeam());
+		User registered = authService.register(user);
+//		List<User> team = project.getTeam();
+//				team.add(registered);
+//				project.setTeam(team);
+//		projectRepository.save(project);
+//		Assert.assertNotNull(projectRepository.findById(2).get().getTeam());
 	}
 
 	@Test
-	public void testTeam(){
-		/*for(Project p : projectService.findAllWithRisksAndTeams()){
-			System.out.println(p.getTeam());
-		}*/
-//		for(User user : projectService.getProject(2).getTeam()){
-//			System.out.println(user);
-//		}
-		System.out.println(projectService.getProject(2));
-		//Assert.assertEquals(1, projectService.findAllWithRisksAndTeams());
+	public void testProjectById(){
+		System.out.println(projectService.getProject(1));
 	}
 
 	@Test
@@ -98,8 +101,44 @@ class RisikologApplicationTests {
 
 	@Test
 	public void givenUserWithReadPrivilegeAndHasPermission_whenGetFooById_thenOK() {
-		Response response = givenAuth("user2", "pass").get("http://localhost:8081/api/projects");
+		Response response = givenAuth("user2", "pass")
+				.get("http://localhost:8081/api/projects");
 		assertEquals(403, response.getStatusCode());
+	}
+
+	@Test
+	public void testFindAllByProjectsId(){
+		List<User> users = usersRepository.findAllByProjectsId(2);
+		System.out.println(users.size());
+	}
+
+	@Test
+
+	public void setName(){
+		User user = usersRepository.findById(18).get();
+		user.setFirstName("new name");
+		System.out.println(user.getFirstName());//new name
+		System.out.println(usersRepository.findById(18).get().getFirstName());//name
+		System.out.println(user.getId());//18
+		usersRepository.save(user);//update
+		//usersRepository.save(usersRepository.findById(18).get());
+	}
+
+	@Test
+	@Transactional
+	public void testAddingProjectToUser(){
+		User user = usersRepository.findById(13).get();
+		List<Project> projects = user.getProjects();
+		System.out.println(projects.get(0).getTitle());
+		Project project = projectRepository.findById(2).get();
+		projects.add(project);
+		user.setProjects(projects);
+		List<User> users = project.getTeam();
+		users.add(user);
+		project.setTeam(users);
+		usersService.save(user);
+		projectService.add(project);
+
 	}
 
 }

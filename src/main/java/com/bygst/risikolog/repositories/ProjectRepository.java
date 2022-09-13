@@ -37,7 +37,12 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
     );
 
-    @Query("SELECT p FROM Project p LEFT JOIN FETCH p.team WHERE p.id = :id")
+    @Query("""
+        select distinct p
+        from Project p
+        left join fetch p.team
+        WHERE p.id = :id
+        """)
     Project findByIdAndFetchTeamEagerly(@Param("id") Integer id);
 
 

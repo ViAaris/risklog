@@ -1,13 +1,9 @@
-import React, {Component, useRef, useState} from 'react';
-//import './components/css/todo.css';
-import {Button, Container, Form, FormGroup, Input, Label} from 'reactstrap';
-import { Link, withRouter } from 'react-router-dom';
+import React, {Component} from "react";
 import AuthenticationService from "./AuthenticationService";
+import {Button, Container, Form, FormGroup, Input, Label} from "reactstrap";
+import {withRouter} from "react-router-dom";
 
-
-
-
-class AddProject extends Component {
+class EditProject extends Component {
 
     emptyItem = {
         title: "",
@@ -16,15 +12,19 @@ class AddProject extends Component {
         startingDate: "",
         finishingDate: "",
 
-        allowed:false
+        allowed: false,
+        updated: false
         // contractors: "",
         // advisers: "",
     };
 
-    componentDidMount() {
-        if((AuthenticationService.getAuthorities())[0] == "ROLE_ADMIN"){
+
+    async componentDidMount() {
+        if (AuthenticationService.getAuthorities() == "ROLE_ADMIN") {
             this.setState({allowed: true})
         }
+        const project = await (await fetch(`/api/projects/${this.props.match.params.id}`)).json();
+        this.setState({emptyItem: project});
     }
 
     constructor(props) {
@@ -51,24 +51,29 @@ class AddProject extends Component {
         event.preventDefault();
         const {item} = this.state;
 
-        await fetch('/api/admin/new_project', {
-            method: 'POST',
+        await fetch('/api/projects/' + item.id, {
+            method: 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(item),
-        });
-        this.props.history.push('/api/admin/new_project');
-    }
+        }).then(response => {
+            if(response.status == 200){
+                this.setState({updated: true});
+            }
+           return response.json();
+        })
 
+    }
 
 
     render() {
         const {item} = this.state;
-        if(!this.state.allowed){
+        if (!this.state.allowed) {
             return <p>You don't have access for this page</p>
         }
+        {this.state.updated && <div>Project updated successfully</div>}
         return <div>
 
             <Container>
@@ -92,12 +97,12 @@ class AddProject extends Component {
                     <FormGroup>
                         <Label for="startingDate">Starting date</Label>
                         <Input type="date" name="startingDate" id="startingDate" value={item.startingDate || ''}
-                               onChange={this.handleChange} />
+                               onChange={this.handleChange}/>
                     </FormGroup>
                     <FormGroup>
                         <Label for="finishingDate">Finishing date</Label>
                         <Input type="date" name="finishingDate" id="finishingDate" value={item.finishingDate || ''}
-                               onChange={this.handleChange} />
+                               onChange={this.handleChange}/>
                     </FormGroup>
 
                     {/*<FormGroup>*/}
@@ -123,4 +128,4 @@ class AddProject extends Component {
     }
 }
 
-export default withRouter(AddProject);
+export default withRouter(EditProject);

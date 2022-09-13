@@ -31,7 +31,8 @@ public class RisksController {
     }
 
     @PutMapping("/api/risks/{riskId}")
-    public ResponseEntity updateRisk(@RequestBody Risk risk, @PathVariable("riskId") int riskId){
+    public ResponseEntity updateRisk(@RequestBody Risk risk,
+                                     @PathVariable("riskId") int riskId){
         risk.setId(riskId);
         riskService.save(risk);
         return ResponseEntity.ok(riskService.getRisk(riskId).get());
@@ -39,7 +40,6 @@ public class RisksController {
 
     @GetMapping("/api/risks/{id}")
     public Risk getRisk(@PathVariable("id") int riskId){
-
         return riskService.getRisk(riskId).get();
     }
 

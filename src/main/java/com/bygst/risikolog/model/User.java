@@ -4,26 +4,25 @@ package com.bygst.risikolog.model;
 import com.bygst.risikolog.util.Unique;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.*;
 
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 public class User {
 
     @Id
@@ -43,12 +42,11 @@ public class User {
     @Column(name = "department")
     private String department;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Role> roles;
 
-    @ManyToMany(cascade = {MERGE, PERSIST})
-    @JoinTable(name="team",
-            joinColumns = @JoinColumn(name="users_id"),
-            inverseJoinColumns = @JoinColumn(name="project_id"))
+    @ManyToMany(mappedBy = "team", cascade = PERSIST)
+    @ToString.Exclude
     private List<Project> projects;
 
     public User(String username, String password, String firstName, String surname, String department, List<Project> projects) {
@@ -73,4 +71,16 @@ public class User {
         return projects;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(firstName, user.firstName) && Objects.equals(surname, user.surname) && Objects.equals(department, user.department) && Objects.equals(roles, user.roles) && Objects.equals(projects, user.projects);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, firstName, surname, department, roles, projects);
+    }
 }

@@ -19,7 +19,8 @@ public class UniqueValidator implements ConstraintValidator<Unique, String> {
     }
 
     @Override
-    public boolean isValid(String enteredValue, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(String enteredValue,
+                           ConstraintValidatorContext constraintValidatorContext) {
         return usersService.loadUserByUsername(enteredValue).isEmpty();
     }
 }

@@ -3,6 +3,7 @@ package com.bygst.risikolog.service;
 import com.bygst.risikolog.dto.ProjectDTO;
 import com.bygst.risikolog.model.Project;
 import com.bygst.risikolog.model.Risk;
+import com.bygst.risikolog.model.User;
 import com.bygst.risikolog.repositories.ProjectRepository;
 import com.bygst.risikolog.repositories.RiskRepository;
 import com.bygst.risikolog.repositories.UsersRepository;
@@ -42,7 +43,8 @@ public class ProjectService {
     }
 
     public Project getProject(int id){
-        return projectRepository.findByIdAndFetchTeamEagerly(id);
+        //return projectRepository.findByIdAndFetchTeamEagerly(id);
+        return findById(id);
     }
 
     @Transactional(readOnly = true)
@@ -54,9 +56,11 @@ public class ProjectService {
     }
 
 
+    @Transactional
     public Project findById(Integer id) {
         Project project = projectRepository.findById(id).get();
         // To load lazy association roles.
+        //project.setTeam(getTeam(id));
         project.getTeam().size();
         project.getAdvisers().size();
         project.getContractors().size();
@@ -64,8 +68,12 @@ public class ProjectService {
         return project;
     }
 
-    public void add(Project project){
-       projectRepository.save(project);
+    public Project add(Project project){
+      return projectRepository.save(project);
+    }
+
+    public List<User> getTeam(int projectId){
+      return   usersRepository.findAllByProjectsId(projectId);
     }
 
     public Optional<Project> loadProjectByTitle(String title){
