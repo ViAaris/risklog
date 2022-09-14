@@ -39,8 +39,8 @@ class AuthenticationService {
 
     logout() {
         localStorage.clear();
-        // localStorage.removeItem(localStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME));
-        // localStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
+        localStorage.removeItem(localStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME));
+        localStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
     }
 
     isUserLoggedIn() {

@@ -57,7 +57,7 @@ class AddNewRisk extends Component {
         const {item} = this.state;
         return <div>
 
-            <Table>
+            <Table className="mt-4">
                 <thead>
                 <tr>
                     <th>Title</th>
@@ -69,10 +69,10 @@ class AddNewRisk extends Component {
                 </tr>
                 </thead>
 
-
+                <tbody>
                 <Container>
                     <Form onSubmit={this.handleSubmit}>
-                        <tr>
+
                             <td>
                                 <Input type="text" name="title" id="title" value={item.title || ''}
                                        onChange={this.handleChange} />
@@ -91,11 +91,11 @@ class AddNewRisk extends Component {
 
                             <td>
                                 <Button color="primary" type="submit">Save</Button>{' '}
-                            </td></tr>
+                            </td>
 
                     </Form>
                 </Container>
-
+                </tbody>
 
             </Table>
 

@@ -10,6 +10,7 @@ import java.util.Date;
 public class RiskDTO {
 
     private int projectId;
+    private int id;
     private String title;
     private String description;
     private String reason;

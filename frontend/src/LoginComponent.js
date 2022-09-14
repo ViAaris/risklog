@@ -13,7 +13,7 @@ import {useHistory} from "react-router-dom"
 
 class LoginComponent extends Component {
 
-    csrfToken = getCSRFToken('XSRF-TOKEN');
+
 
 
     constructor(props) {
@@ -105,8 +105,6 @@ class LoginComponent extends Component {
         }
 
         return (
-
-
 
             <div>
 

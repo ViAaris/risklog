@@ -52,7 +52,7 @@ function App() {
                 <AuthenticatedRoute path='/api/projects' exact={true} component={ProjectList}/>
                 <AuthenticatedRoute path='/api/projects/:id/risks' component={Risks}/>
                 <AuthenticatedRoute path='/api/projects/:id/risks' component={AddNewRisk}/>
-                <AuthenticatedRoute path='/api/projects/:id/risks/:riskId' component={OneRisk}/>
+                <AuthenticatedRoute path='/api/projects/:projectId/risks/:riskId' component={OneRisk}/>
                 <AuthenticatedRoute path='/api/admin/projects' component={AddProject}/>
 
 

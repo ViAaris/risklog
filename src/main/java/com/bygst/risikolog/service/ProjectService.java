@@ -15,8 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -37,10 +39,16 @@ public class ProjectService {
 
     public List<ProjectDTO> getAllProjects() {
         List<ProjectDTO> dtoList = new ArrayList<>();
-         for(Project p : projectRepository.findAll()){
-             List<User> team = getTeam(p.getId());
+         for(Project p : projectRepository.findAllWithTeam()){
+             List<User> team = p.getTeam();
+             List<UserDTO> userdtoList = new ArrayList<>();
+             if(team.size()!=0){
+                 userdtoList =  team.stream()
+                         .map(user -> convertToUserDto(user)).collect(Collectors.toList());
+             }
              ProjectDTO dto = convertToProjectDTO(p);
-             dto.setTeam(team);
+             if(team.size()!=0)dto.setTeam(userdtoList);
+             dto.setContractors(p.getContractors().stream().map(contractor->new StringBuilder().append(contractor)).collect(Collectors.joining()));
              dtoList.add(dto);
          }
          return dtoList;
@@ -72,7 +80,13 @@ public class ProjectService {
         return project;
     }
 
-    public Project add(Project project){
+    public Project add(ProjectDTO projectDTO){
+        Project project = convertToProject(projectDTO);
+        if(projectDTO.getContractors()!=null) {
+            List<String> contractors = Arrays.asList(projectDTO.getContractors().trim()
+                    .split(","));
+            project.setContractors(contractors);
+        }
       return projectRepository.save(project);
     }
 
@@ -93,7 +107,9 @@ public class ProjectService {
     public ProjectDTO convertToProjectDTO(Project project){
         return this.modelMapper.map(project, ProjectDTO.class);
     }
-
+    public Project convertToProject(ProjectDTO projectDTO) {
+        return this.modelMapper.map(projectDTO, Project.class);
+    }
     public User convertToUser(UserDTO userDTO) {
         return this.modelMapper.map(userDTO, User.class);
     }

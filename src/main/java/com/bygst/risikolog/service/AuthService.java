@@ -18,7 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -58,17 +61,17 @@ public class AuthService {
     public AuthenticationDTO authenticate(AuthenticationDTO authenticationDTO) {
 
 
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
                 authenticationDTO.getUsername(), authenticationDTO.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        List<String> authorities = new ArrayList<>();
-
-        for(GrantedAuthority authority : userDetails.getAuthorities()){
-            authorities.add(authority.getAuthority());
-        }
+        List<String> authorities = userDetails.getAuthorities().stream()
+                .map(grantedAuthority -> grantedAuthority.getAuthority())
+                .collect(Collectors.toList());
         authenticationDTO.setGrantedAuthorities( authorities.toArray(new String[0]));
 
         authenticationDTO.setId(usersService.loadUserByUsername(authenticationDTO.getUsername()).get().getId());

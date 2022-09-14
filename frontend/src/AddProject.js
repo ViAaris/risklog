@@ -15,10 +15,10 @@ class AddProject extends Component {
         budget: "",
         startingDate: "",
         finishingDate: "",
-
+        contractors: "",
+        advisers: "",
         allowed:false
-        // contractors: "",
-        // advisers: "",
+
     };
 
     componentDidMount() {
@@ -30,7 +30,9 @@ class AddProject extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            item: this.emptyItem
+            item: this.emptyItem,
+            errors: [],
+            success: false
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -58,6 +60,17 @@ class AddProject extends Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(item),
+        }).then(response=>{
+            this.setState({errors:[]});
+
+            if (response.status == 200) {
+                this.setState({success: true});
+            }
+            return response.json();
+        }).then(data=>{
+            if (data.fieldErrors) {
+                this.setState({errors: data.fieldErrors})
+            }
         });
         this.props.history.push('/api/admin/projects');
     }
@@ -65,12 +78,22 @@ class AddProject extends Component {
 
 
     render() {
-        const {item} = this.state;
-        if(!this.state.allowed){
-            return <p>You don't have access for this page</p>
+        if (this.state.success) {
+            return (<p>Project added successfully!
+                <br/>
+                <br/>
+                <Button size="sm" color="primary" tag={Link} to={"/api/projects"}>Back to all projects</Button>
+            </p>);
         }
+        const {item} = this.state;
+        // if(!this.state.allowed){
+        //     return <p>You don't have access for this page</p>
+        // }
         return <div>
 
+            {this.state.errors.map((error) => <p style={{color: 'red', fontSize: '12px'}}
+                                                 key={error.field}>{error.field + " " + error.message}</p>)
+            }
             <Container>
                 <Form onSubmit={this.handleSubmit}>
                     <h1>Add new project</h1>
@@ -100,16 +123,16 @@ class AddProject extends Component {
                                onChange={this.handleChange} />
                     </FormGroup>
 
-                    {/*<FormGroup>*/}
-                    {/*    <Label for="contractors">Contractors</Label>*/}
-                    {/*    <Input type="text" name="contractors" id="contractors" value={item.contractors || ''}*/}
-                    {/*           onChange={this.handleChange} />*/}
-                    {/*</FormGroup>*/}
-                    {/*<FormGroup>*/}
-                    {/*    <Label for="advisers">Advisers</Label>*/}
-                    {/*    <Input type="text" name="advisers" id="advisers" value={item.advisers || ''}*/}
-                    {/*           onChange={this.handleChange} />*/}
-                    {/*</FormGroup>*/}
+                    <FormGroup>
+                        <Label for="contractors">Contractors</Label>
+                        <Input type="text" name="contractors" id="contractors" value={item.contractors || ''}
+                               onChange={this.handleChange} />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="advisers">Advisers</Label>
+                        <Input type="text" name="advisers" id="advisers" value={item.advisers || ''}
+                               onChange={this.handleChange} />
+                    </FormGroup>
 
                     <FormGroup>
                         <Button color="primary" type="submit">Save</Button>{' '}

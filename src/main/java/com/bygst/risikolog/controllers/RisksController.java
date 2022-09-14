@@ -41,8 +41,8 @@ public class RisksController {
         return ResponseEntity.ok(dtoForResponse);
     }
 
-    @GetMapping("/api/projects/{projectId}/risks/{id}")
-    public RiskDTO getRisk(@PathVariable("id") int riskId){
+    @GetMapping("/api/projects/{projectId}/risks/{riskId}")
+    public RiskDTO getRisk(@PathVariable("riskId") int riskId){
         return convertToRiskDTO(riskService.getRisk(riskId).get());
     }
 

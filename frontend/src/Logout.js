@@ -11,7 +11,6 @@ export function Logout(event) {
         method: 'POST',
         withCredentials: true,
         headers: {
-            'X-XSRF-TOKEN': getCSRFToken('XSRF-TOKEN'),
             "Access-Control-Allow-Origin": "http://localhost:3000"
         },
     }).then(response => response.json())

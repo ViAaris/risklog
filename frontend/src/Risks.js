@@ -58,8 +58,9 @@ class Risks extends Component {
 
 
         const risksList = risks.map(risk => {
+            let id = risk.id;
             return  (<tr key={risk.id}>
-               <OneRisk riskId = {risk.id} projectId = {this.props.match.params.id}/>
+               <OneRisk projectId = {this.props.match.params.id} riskId = {id}/>
             </tr>)
         });
 
@@ -73,6 +74,9 @@ class Risks extends Component {
                 <Container fluid>
                     <h3>Add new risk</h3>
                     <AddNewRisk/>
+                    <br/>
+                    <br/>
+                    <hr/>
                     <Table className="mt-4">
                         <tbody>
                         {risksList}

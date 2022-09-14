@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +25,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -45,8 +48,10 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final UsersDetailsService userDetailsService;
+    @Autowired
+    private AccessDecisionManager accessDecisionManager;
 
- @Autowired
+    @Autowired
     public SecurityConfig(UsersDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
@@ -56,14 +61,15 @@ public class SecurityConfig {
 
 
         http.csrf().disable()
-                .cors()
-                .configurationSource(corsConfigurationSource())
-                .and()
+
                 .authorizeRequests()
-                .antMatchers("/auth/reg").not().fullyAuthenticated()
-                .antMatchers("/api/admin/**").hasRole("ADMIN")
-                .antMatchers("/auth/login", "/error").permitAll()
+                //.antMatchers("/auth/reg").not().fullyAuthenticated()
+                //.antMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
+
+                .antMatchers("/api/admin/projects").access("hasAuthority('ROLE_ADMIN')")
+                .antMatchers("/auth/login").permitAll()
                 .anyRequest().authenticated()
+                //.accessDecisionManager(this.accessDecisionManager)
                 .and()
                 .formLogin()
                 .loginPage("/auth/login")
@@ -76,7 +82,11 @@ public class SecurityConfig {
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
                 .logoutUrl("/perform_logout")
-                .logoutSuccessUrl("/api/projects");
+                .logoutSuccessUrl("/api/projects")
+                .and()
+                .cors()
+                .configurationSource(corsConfigurationSource());
+
 
         return http.build();
     }
@@ -121,12 +131,19 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public RoleHierarchy roleHierarchy() {
-        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
-        hierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
-        return hierarchy;
-    }
+//    @Bean
+//    public RoleHierarchy roleHierarchy() {
+//        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
+//        hierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
+//        return hierarchy;
+//    }
+//
+//    @Bean
+//    public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
+//        DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
+//        expressionHandler.setRoleHierarchy(roleHierarchy());
+//        return expressionHandler;
+//    }
 
 
 }

@@ -44,25 +44,6 @@ class Registration extends Component {
         //this.onDropdownSelected = this.onDropdownSelected.bind(this);
     }
 
-    componentDidMount() {
-
-        const options = {
-            method: "GET",
-            withCredentials: true,
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json;charset=UTF-8",
-                "Access-Control-Allow-Origin": "http://localhost:8081",
-            }
-        };
-
-        fetch('/api/projects', options)
-            .then((response) =>{
-                return response.json();
-            })
-            .then(data => this.setState({allProjects: data}));
-
-    }
 
 
 

@@ -16,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,23 +42,26 @@ public class ProjectsController {
         return projectService.getAllProjects();
     }
 
+
+
     @PostMapping("/admin/projects")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ProjectDTO> addNewProject(@RequestBody @Valid ProjectDTO projectDTO) {
-        Project project = projectService.add(convertToProject(projectDTO));
-        ProjectDTO dtoForResponse = convertToDto(project);
+
+
+        ProjectDTO dtoForResponse = convertToDto(projectService.add(projectDTO));
         return new ResponseEntity<>(dtoForResponse, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PutMapping("/admin/projects/{id}")
-    public ResponseEntity<Project> updateProject(@RequestBody @Valid ProjectDTO projectDTO) {
-        Project project = convertToProject(projectDTO);
-
-        return new ResponseEntity<>(projectService.add(project), HttpStatus.OK);
+    public ResponseEntity<ProjectDTO> updateProject(@RequestBody @Valid ProjectDTO projectDTO) {
+        ProjectDTO dtoForResponse = convertToDto(projectService.add(projectDTO));
+        return new ResponseEntity<>(dtoForResponse, HttpStatus.OK);
     }
 
     @GetMapping("/projects/{id}/risks")
+    @PreAuthorize("hasAuthority(#id)")
     public List<RiskDTO> getProjectRisks(@PathVariable("id") int id) {
        return projectService.getAllRisks(id).stream()
                .map(risk -> convertToRiskDTO(risk))

@@ -6,6 +6,7 @@ import {Link, withRouter} from 'react-router-dom';
 import AuthenticationService from "./AuthenticationService";
 import {Logout} from "./Logout";
 import {SendRequest} from "./SendRequest";
+import {bgBG} from "@mui/material/locale";
 
 
 
@@ -21,6 +22,8 @@ class ProjectList extends Component {
         };
        this.requestIsSent = this.requestIsSent.bind(this)
     }
+
+
 
     componentDidMount() {
 
@@ -65,21 +68,25 @@ class ProjectList extends Component {
 
             let team = project.team;
             return <tr key={project.id}>
-                <td style={{whiteSpace: 'nowrap'}}>{project.title} </td>
+                <td>{project.title} </td>
                 <td>{project.address}</td>
                 <td>{project.budget}</td>
                 <td>{project.startingDate}</td>
                 <td>{project.finishingDate}</td>
+
                 <td>{project.team.map(user => {
-                    return <tr key={user.id}>
-                    <div>{user.firstName}</div>
-                    </tr>
+                    return <td key={user.id}>
+                    <div>{user.username} |</div>
+                    </td>
                 })}</td>
+                <td>{project.contractors}</td>
+                <td>{project.advisers}</td>
+
+
                 <td>
-
-                    <Button size="sm" color="primary" tag={Link} to={"/api/projects/" + project.id + "/risks"}>Risks</Button>
-
+                    <Button color="primary"  tag={Link} to={"/api/projects/" + project.id + "/risks"}>Risks</Button>
                 </td>
+
 
                 {
                     !this.state.showMessage &&
@@ -89,7 +96,7 @@ class ProjectList extends Component {
 
                     </td>
                 }
-                {this.state.showMessage && <p>Your request was sent to the administrator</p>}
+                <td>{this.state.showMessage && <p>Your request was sent to the administrator</p>}</td>
 
             </tr>
         });
@@ -109,27 +116,34 @@ class ProjectList extends Component {
 
 
                     <h3>Projects</h3>
+                    <hr></hr>
+                    <br/>
                     <Table className="mt-4">
                         <thead>
+
                         <tr>
                             <th>Title</th>
                             <th>Address</th>
                             <th>Budget</th>
                             <th>Starting date</th>
                             <th>Finishing date</th>
-                            <th>Team</th>
+                            <th width={500}>Team</th>
+                            <th>Contractors</th>
+                            <th>Advisers</th>
+                            <th>Risks</th>
+                            <th>Request access</th>
                         </tr>
                         </thead>
                         <tbody>
                         {projectList}
-
                         </tbody>
                     </Table>
-
+                    <br/>
+                    <br/>
                     <div className="float-right">
                         <Form onSubmit={(e) => Logout(e)}>
                             <FormGroup>
-                                <Button color="primary" type="submit">logout</Button>{' '}
+                                <Button type="submit">Logout</Button>{' '}
                             </FormGroup>
                         </Form>
                     </div>

@@ -20,7 +20,6 @@ public class Role {
     @Column(name="role")
     private String role;
 
-    @Transient
     @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
     private Set<User> users;
 
