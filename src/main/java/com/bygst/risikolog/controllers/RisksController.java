@@ -24,27 +24,35 @@ public class RisksController {
     }
 
     @PostMapping("/api/projects/{id}/risks")
-    public ResponseEntity addRisk(@RequestBody RiskDTO riskDTO, @PathVariable("id") int projectId) throws URISyntaxException {
-        Risk risk = convertToRisk(riskDTO);
-        Risk savedRisk = riskService.save(risk, projectId);
-        return ResponseEntity.created(new URI("/api/risks/" + savedRisk.getId())).body(savedRisk);
+    public ResponseEntity<RiskDTO> addRisk(@RequestBody RiskDTO riskDTO,
+                                  @PathVariable("id") int projectId) throws URISyntaxException {
+        Risk risk = riskService.save(convertToRisk(riskDTO), projectId);
+        RiskDTO dtoForResponse = convertToRiskDTO(risk);
+        return ResponseEntity.ok(dtoForResponse);
+        //return ResponseEntity.created(new URI("/api/risks/" + savedRisk.getId())).body(savedRisk);
     }
 
-    @PutMapping("/api/risks/{riskId}")
-    public ResponseEntity updateRisk(@RequestBody Risk risk,
+    @PutMapping("/api/projects/{projectId}/risks/{riskId}")
+    public ResponseEntity<RiskDTO> updateRisk(@RequestBody RiskDTO riskDTO,
                                      @PathVariable("riskId") int riskId){
+        Risk risk = convertToRisk(riskDTO);
         risk.setId(riskId);
-        riskService.save(risk);
-        return ResponseEntity.ok(riskService.getRisk(riskId).get());
+        RiskDTO dtoForResponse = convertToRiskDTO(riskService.save(risk));
+        return ResponseEntity.ok(dtoForResponse);
     }
 
-    @GetMapping("/api/risks/{id}")
-    public Risk getRisk(@PathVariable("id") int riskId){
-        return riskService.getRisk(riskId).get();
+    @GetMapping("/api/projects/{projectId}/risks/{id}")
+    public RiskDTO getRisk(@PathVariable("id") int riskId){
+        return convertToRiskDTO(riskService.getRisk(riskId).get());
     }
+
 
     public Risk convertToRisk(RiskDTO riskDTO){
         return this.modelMapper.map(riskDTO, Risk.class);
+    }
+
+    public RiskDTO convertToRiskDTO(Risk risk){
+        return this.modelMapper.map(risk, RiskDTO.class);
     }
 
 }

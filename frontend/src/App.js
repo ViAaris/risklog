@@ -50,10 +50,10 @@ function App() {
                     }
                 />
                 <AuthenticatedRoute path='/api/projects' exact={true} component={ProjectList}/>
-                <AuthenticatedRoute path='/api/projects/:id' component={Risks}/>
+                <AuthenticatedRoute path='/api/projects/:id/risks' component={Risks}/>
                 <AuthenticatedRoute path='/api/projects/:id/risks' component={AddNewRisk}/>
                 <AuthenticatedRoute path='/api/projects/:id/risks/:riskId' component={OneRisk}/>
-                <AuthenticatedRoute path='/api/admin/new_project' component={AddProject}/>
+                <AuthenticatedRoute path='/api/admin/projects' component={AddProject}/>
 
 
             </Switch>

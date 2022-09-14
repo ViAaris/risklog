@@ -1,6 +1,7 @@
 package com.bygst.risikolog.service;
 
 import com.bygst.risikolog.dto.ProjectDTO;
+import com.bygst.risikolog.dto.UserDTO;
 import com.bygst.risikolog.model.Project;
 import com.bygst.risikolog.model.Risk;
 import com.bygst.risikolog.model.User;
@@ -36,8 +37,11 @@ public class ProjectService {
 
     public List<ProjectDTO> getAllProjects() {
         List<ProjectDTO> dtoList = new ArrayList<>();
-         for(Project p : findAllWithRisksAndTeams()){
-             dtoList.add(convertToProjectDTO(p));
+         for(Project p : projectRepository.findAll()){
+             List<User> team = getTeam(p.getId());
+             ProjectDTO dto = convertToProjectDTO(p);
+             dto.setTeam(team);
+             dtoList.add(dto);
          }
          return dtoList;
     }
@@ -47,13 +51,13 @@ public class ProjectService {
         return findById(id);
     }
 
-    @Transactional(readOnly = true)
-    public List<Project> findAllWithRisksAndTeams() {
-        final List<Project> projects = projectRepository.findAllWithRisks();
-        return !projects.isEmpty() ?
-                projectRepository.findAllWithTeam() :
-                projects;
-    }
+//    @Transactional
+//    public List<Project> findAllWithRisksAndTeams() {
+//        final List<Project> projects = projectRepository.findAllWithRisks();
+//        return !projects.isEmpty() ?
+//                projectRepository.findAllWithTeam() :
+//                projects;
+//    }
 
 
     @Transactional
@@ -88,5 +92,12 @@ public class ProjectService {
 
     public ProjectDTO convertToProjectDTO(Project project){
         return this.modelMapper.map(project, ProjectDTO.class);
+    }
+
+    public User convertToUser(UserDTO userDTO) {
+        return this.modelMapper.map(userDTO, User.class);
+    }
+    public UserDTO convertToUserDto(User user){
+        return this.modelMapper.map(user, UserDTO.class);
     }
 }

@@ -63,6 +63,7 @@ class ProjectList extends Component {
 
         const projectList = projects.map(project => {
 
+            let team = project.team;
             return <tr key={project.id}>
                 <td style={{whiteSpace: 'nowrap'}}>{project.title} </td>
                 <td>{project.address}</td>
@@ -76,7 +77,7 @@ class ProjectList extends Component {
                 })}</td>
                 <td>
 
-                    <Button size="sm" color="primary" tag={Link} to={"/api/projects/" + project.id}>Risks</Button>
+                    <Button size="sm" color="primary" tag={Link} to={"/api/projects/" + project.id + "/risks"}>Risks</Button>
 
                 </td>
 
@@ -102,7 +103,7 @@ class ProjectList extends Component {
                     {
                         AuthenticationService.getAuthorities()[0] === "ROLE_ADMIN" ?
                             <div className="float-right">
-                                <Button color="success" tag={Link} to="/api/admin/new_project">Add Project</Button>
+                                <Button color="success" tag={Link} to="/api/admin/projects">Add Project</Button>
                             </div>  : ''
                     }
 

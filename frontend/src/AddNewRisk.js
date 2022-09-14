@@ -4,7 +4,6 @@ import {Button, Container, Form, FormGroup, Input, Label, Table} from 'reactstra
 import { Link, withRouter } from 'react-router-dom';
 
 class AddNewRisk extends Component {
-    csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
 
     emptyItem = {
         title: '',

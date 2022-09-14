@@ -7,7 +7,6 @@ import ProjectList from "./ProjectList";
 
 class OneRisk extends Component {
 
-    csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
 
     emptyItem = {
         title: '',
@@ -15,6 +14,7 @@ class OneRisk extends Component {
         reason: ''
     };
     riskId;
+    projectId;
 
     constructor(props) {
         super(props);
@@ -22,13 +22,22 @@ class OneRisk extends Component {
             item: this.emptyItem
         };
         this.riskId = this.props.riskId;
+        this.projectId = this.props.projectId;
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     /*Let's add the componentDidMount function to check whether we're dealing with the create or edit feature;
     in the case of editing, it'll fetch our client from the API:*/
     async componentDidMount() {
-            const risk = await (await fetch(`/api/risks/${(this.riskId)}`)).json();
+            const risk = await (await fetch(`/api/projects/${this.projectId}/risks/${this.riskId}`,
+                {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json;charset=UTF-8",
+                        "Access-Control-Allow-Origin": "http://localhost:8081",
+                    }
+                })).json();
             this.setState({item: risk});
     }
     /*Then in the handleChange function, we'll update our component
@@ -47,10 +56,9 @@ class OneRisk extends Component {
         event.preventDefault();
         const {item} = this.state;
 
-        await fetch('/api/risks/' + item.id, {
+        await fetch('/api/projects/' + this.projectId + '/risks/' + this.riskId, {
             method: 'PUT',
             headers: {
-                "X-XSRF-TOKEN": this.csrfToken,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },

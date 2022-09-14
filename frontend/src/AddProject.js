@@ -51,7 +51,7 @@ class AddProject extends Component {
         event.preventDefault();
         const {item} = this.state;
 
-        await fetch('/api/admin/new_project', {
+        await fetch('/api/admin/projects', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -59,7 +59,7 @@ class AddProject extends Component {
             },
             body: JSON.stringify(item),
         });
-        this.props.history.push('/api/admin/new_project');
+        this.props.history.push('/api/admin/projects');
     }
 
 

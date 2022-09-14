@@ -18,15 +18,15 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
     Optional<Project> findByTitle(String title);
 
-
-    @Query("""
-        select distinct p
-        from Project p
-        left join fetch p.risks
-        """)
-    List<Project> findAllWithRisks(
-
-    );
+//
+//    @Query("""
+//        select distinct p
+//        from Project p
+//        left join fetch p.risks
+//        """)
+//    List<Project> findAllWithRisks(
+//
+//    );
 
     @Query("""
         select distinct p

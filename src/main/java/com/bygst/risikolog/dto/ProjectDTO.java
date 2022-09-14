@@ -3,6 +3,7 @@ package com.bygst.risikolog.dto;
 
 import com.bygst.risikolog.model.User;
 import com.bygst.risikolog.util.Unique;
+import com.bygst.risikolog.util.UniqueProject;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,7 +20,7 @@ public class ProjectDTO {
     private int id;
     @JsonView({Details.class})
     @NotBlank(message = "cannot be empty")
-    @Unique(message = "username already exists")
+    @UniqueProject(message = "project already exists")
     private String title;
     @JsonView({Details.class})
     @NotBlank(message = "cannot be empty")
@@ -31,9 +32,9 @@ public class ProjectDTO {
     private Date finishingDate;
     @JsonView({Details.class})
     private Date startingDate;
-
+    @JsonView({Details.class})
     private List<String> contractors;
-
+    @JsonView({Details.class})
     private List<String> advisers;
 
     @JsonView({Details.class})

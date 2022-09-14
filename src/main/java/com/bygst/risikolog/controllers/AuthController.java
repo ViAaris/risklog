@@ -72,19 +72,7 @@ public class AuthController {
     @PostMapping("/login")
     @JsonView({Details.class})
     public ResponseEntity<AuthenticationDTO> authenticateUser(@RequestBody AuthenticationDTO authenticationDTO) throws BadCredentialsException {
-
-
-        User user = usersService.getUser(20);
-//        List<Project> projects = user.getProjects();
-        Project project = projectService.getProject(3);
-//        projects.add(project);
-//        user.setProjects(projects);
-        project.getTeam().add(user);
-        //user.getProjects().add(project);
-        //project.setTeam(users);
-        //usersService.save(user);
-        projectService.add(project);
-
+        
         AuthenticationDTO dtoToReturn = authService.authenticate(authenticationDTO);
         return new ResponseEntity<>(dtoToReturn, HttpStatus.OK);
 

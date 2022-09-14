@@ -21,7 +21,17 @@ class Risks extends Component {
     }
 
     componentDidMount() {
-        fetch(`/api/projects/${this.props.match.params.id}`)
+        fetch(`/api/projects/${this.props.match.params.id}/risks`,
+            {
+                method: "GET",
+                withCredentials: true,
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json;charset=UTF-8",
+                    "Access-Control-Allow-Origin": "http://localhost:8081",
+                }
+            }
+                )
             .then(response =>{
                 if(response.status != 200){
                     this.setState({serverStatus: response.status})
@@ -49,7 +59,7 @@ class Risks extends Component {
 
         const risksList = risks.map(risk => {
             return  (<tr key={risk.id}>
-               <OneRisk riskId = {risk.id}/>
+               <OneRisk riskId = {risk.id} projectId = {this.props.match.params.id}/>
             </tr>)
         });
 
