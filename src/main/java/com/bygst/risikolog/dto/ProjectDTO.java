@@ -2,6 +2,7 @@ package com.bygst.risikolog.dto;
 
 
 import com.bygst.risikolog.model.User;
+import com.bygst.risikolog.util.OnUpdate;
 import com.bygst.risikolog.util.Unique;
 import com.bygst.risikolog.util.UniqueProject;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -17,7 +18,6 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class ProjectDTO {
 
@@ -30,7 +30,7 @@ public class ProjectDTO {
     private String title;
 
     @JsonView({Details.class})
-    @NotBlank(message = "cannot be empty")
+    @NotBlank(groups = OnUpdate.class, message = "cannot be empty")
     private String address;
 
     @JsonView({Details.class})

@@ -7,12 +7,14 @@ import com.bygst.risikolog.model.Project;
 import com.bygst.risikolog.model.Risk;
 import com.bygst.risikolog.service.ProjectService;
 
+import com.bygst.risikolog.util.OnUpdate;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
+@Validated
 public class ProjectsController {
 
     private final ProjectService projectService;
@@ -53,8 +56,10 @@ public class ProjectsController {
         return new ResponseEntity<>(dtoForResponse, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+
     @PutMapping("/admin/projects/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @Validated(OnUpdate.class)
     public ResponseEntity<ProjectDTO> updateProject(@RequestBody @Valid ProjectDTO projectDTO) {
         ProjectDTO dtoForResponse = convertToDto(projectService.add(projectDTO));
         return new ResponseEntity<>(dtoForResponse, HttpStatus.OK);
@@ -69,7 +74,8 @@ public class ProjectsController {
     }
 
     @GetMapping("/projects/{id}")
-    public Project getOneProject(@PathVariable("id") int id) {
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ProjectDTO getOneProject(@PathVariable("id") int id) {
         return projectService.getProject(id);
     }
 

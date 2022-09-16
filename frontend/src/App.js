@@ -14,6 +14,7 @@ import {useState} from "react";
 import Home from "./Home";
 import AddNewRisk from "./AddNewRisk";
 import {Logout} from "./Logout";
+import EditProject from "./EditProject";
 
 
 
@@ -49,11 +50,14 @@ function App() {
                         )
                     }
                 />
+                <AuthenticatedRoute path='/api/admin/projects/:id' component={EditProject}/>
+                <AuthenticatedRoute path='/api/admin/projects' component={AddProject}/>
                 <AuthenticatedRoute path='/api/projects' exact={true} component={ProjectList}/>
                 <AuthenticatedRoute path='/api/projects/:id/risks' component={Risks}/>
                 <AuthenticatedRoute path='/api/projects/:id/risks' component={AddNewRisk}/>
                 <AuthenticatedRoute path='/api/projects/:projectId/risks/:riskId' component={OneRisk}/>
-                <AuthenticatedRoute path='/api/admin/projects' component={AddProject}/>
+
+
 
 
             </Switch>

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import App from "./App";
 
 const API_URL = 'http://localhost:8081'
 
@@ -21,6 +22,7 @@ class AuthenticationService {
     }
 
     setAuthorities(username, authorities){
+
             localStorage.setItem(username + 'Authorities', JSON.stringify(authorities));
     }
 
@@ -39,8 +41,6 @@ class AuthenticationService {
 
     logout() {
         localStorage.clear();
-        localStorage.removeItem(localStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME));
-        localStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
     }
 
     isUserLoggedIn() {

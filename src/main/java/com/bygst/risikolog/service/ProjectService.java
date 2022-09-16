@@ -8,6 +8,7 @@ import com.bygst.risikolog.model.User;
 import com.bygst.risikolog.repositories.ProjectRepository;
 import com.bygst.risikolog.repositories.RiskRepository;
 import com.bygst.risikolog.repositories.UsersRepository;
+import com.bygst.risikolog.util.MapperUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,27 +39,35 @@ public class ProjectService {
     }
 
     public List<ProjectDTO> getAllProjects() {
+
+        //return MapperUtil.convertList(projectRepository.findAllWithTeam(), this::convertToProjectDTO);
         List<ProjectDTO> dtoList = new ArrayList<>();
          for(Project p : projectRepository.findAllWithTeam()){
-             List<User> team = p.getTeam();
-             List<UserDTO> userdtoList = new ArrayList<>();
-             if(team.size()!=0){
-                 userdtoList =  team.stream()
-                         .map(user -> convertToUserDto(user)).collect(Collectors.toList());
-             }
-             ProjectDTO dto = convertToProjectDTO(p);
-             if(team.size()!=0)dto.setTeam(userdtoList);
-             dto.setContractors(p.getContractors().stream().map(contractor->new StringBuilder().append(contractor)).collect(Collectors.joining()));
-             dtoList.add(dto);
+             dtoList.add(mapProject(p));
          }
          return dtoList;
     }
 
-    public Project getProject(int id){
-        //return projectRepository.findByIdAndFetchTeamEagerly(id);
-        return findById(id);
-    }
+    public ProjectDTO getProject(int id){
+        Project p =  projectRepository.findByIdAndFetchTeamEagerly(id);
 
+        return mapProject(p);
+
+
+    }
+    public ProjectDTO mapProject(Project p){
+        List<User> team = p.getTeam();
+        List<UserDTO> userDtoList;
+        ProjectDTO dto = convertToProjectDTO(p);
+        if(team.size()!=0){
+            userDtoList =  team.stream()
+                    .map(user -> convertToUserDto(user)).collect(Collectors.toList());
+            dto.setTeam(userDtoList);
+        }
+        dto.setContractors(p.getContractors().stream().map(contractor->new StringBuilder().append(contractor)).collect(Collectors.joining()));
+        dto.setAdvisers(p.getAdvisers().stream().map(adviser -> new StringBuilder().append(adviser)).collect(Collectors.joining()));
+        return dto;
+    }
 //    @Transactional
 //    public List<Project> findAllWithRisksAndTeams() {
 //        final List<Project> projects = projectRepository.findAllWithRisks();
@@ -68,17 +77,6 @@ public class ProjectService {
 //    }
 
 
-    @Transactional
-    public Project findById(Integer id) {
-        Project project = projectRepository.findById(id).get();
-        // To load lazy association roles.
-        //project.setTeam(getTeam(id));
-        project.getTeam().size();
-        project.getAdvisers().size();
-        project.getContractors().size();
-        project.getRisks().size();
-        return project;
-    }
 
     public Project add(ProjectDTO projectDTO){
         Project project = convertToProject(projectDTO);
@@ -86,6 +84,11 @@ public class ProjectService {
             List<String> contractors = Arrays.asList(projectDTO.getContractors().trim()
                     .split(","));
             project.setContractors(contractors);
+        }
+        if(projectDTO.getAdvisers()!=null) {
+            List<String> advisers = Arrays.asList(projectDTO.getAdvisers().trim()
+                    .split(","));
+            project.setAdvisers(advisers);
         }
       return projectRepository.save(project);
     }

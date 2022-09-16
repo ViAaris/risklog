@@ -11,24 +11,22 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
-public class UserGlobalExceptionHandler  {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidDataException.class)
-    public ResponseEntity<UserIncorrectData> handleException(InvalidDataException e){
-        UserIncorrectData data = new UserIncorrectData();
+    public ResponseEntity<IncorrectData> handleException(InvalidDataException e){
+        IncorrectData data = new IncorrectData();
         data.setError(e.getMessage());
         return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<UserIncorrectData> handleException(BadCredentialsException e){
-        UserIncorrectData data = new UserIncorrectData();
+    public ResponseEntity<IncorrectData> handleException(BadCredentialsException e){
+        IncorrectData data = new IncorrectData();
         data.setError(e.getMessage());
         return new ResponseEntity<>(data, HttpStatus.UNAUTHORIZED);
     }
@@ -50,8 +48,8 @@ public class UserGlobalExceptionHandler  {
     }
 
     @ExceptionHandler(value = {AccessDeniedException.class})
-    public ResponseEntity<UserIncorrectData> handleException(AccessDeniedException accessDeniedException) {
-        UserIncorrectData data = new UserIncorrectData();
+    public ResponseEntity<IncorrectData> handleException(AccessDeniedException accessDeniedException) {
+        IncorrectData data = new IncorrectData();
         data.setError(accessDeniedException.getMessage());
         return new ResponseEntity<>(data, HttpStatus.FORBIDDEN);
     }

@@ -1,11 +1,14 @@
 package com.bygst.risikolog.util;
 
 import com.bygst.risikolog.service.ProjectService;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapperImpl;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 public class UniqueProjectValidator implements ConstraintValidator<UniqueProject, String> {
+
 
     private final ProjectService projectService;
 
@@ -20,8 +23,9 @@ public class UniqueProjectValidator implements ConstraintValidator<UniqueProject
     }
 
     @Override
-    public boolean isValid(String enteredValue,
+    public boolean isValid(String  enteredValue,
                            ConstraintValidatorContext constraintValidatorContext) {
-        return projectService.loadProjectByTitle(enteredValue).isEmpty();
+
+    return projectService.loadProjectByTitle(enteredValue).isEmpty();
     }
 }

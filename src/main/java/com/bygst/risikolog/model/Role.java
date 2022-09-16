@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -20,8 +21,8 @@ public class Role {
     @Column(name="role")
     private String role;
 
-    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
-    private Set<User> users;
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
 
     public Role(String role) {
         this.role = role;

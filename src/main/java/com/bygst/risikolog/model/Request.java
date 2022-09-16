@@ -9,7 +9,6 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -26,4 +25,6 @@ public class Request {
     int userId;
     @Column(name = "username")
     String username;
+    @Column(name = "approved")
+    boolean isApproved;
 }

@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserIncorrectData {
+public class IncorrectData {
 
     private String error;
 }

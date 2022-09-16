@@ -13,7 +13,6 @@ import static javax.persistence.CascadeType.*;
 import static javax.persistence.CascadeType.DETACH;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Entity

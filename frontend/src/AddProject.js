@@ -16,15 +16,31 @@ class AddProject extends Component {
         startingDate: "",
         finishingDate: "",
         contractors: "",
-        advisers: "",
-        allowed:false
+        advisers: ""
 
     };
 
     componentDidMount() {
-        if((AuthenticationService.getAuthorities())[0] == "ROLE_ADMIN"){
-            this.setState({allowed: true})
-        }
+
+       fetch('/api/admin/projects', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(""),
+        }).then(response=>{
+            if (response.status == 403) {
+                this.setState({allowed: false});
+            }
+            return response.json();
+        }).then(data=>{
+                this.setState({serverError: data.message})
+        });
+
+        // if((AuthenticationService.getAuthorities())[0] == "ROLE_ADMIN"){
+        //     this.setState({allowed: true})
+        // }
     }
 
     constructor(props) {
@@ -32,7 +48,9 @@ class AddProject extends Component {
         this.state = {
             item: this.emptyItem,
             errors: [],
-            success: false
+            success: false,
+            allowed:true,
+            serverMessage: ""
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -86,9 +104,9 @@ class AddProject extends Component {
             </p>);
         }
         const {item} = this.state;
-        // if(!this.state.allowed){
-        //     return <p>You don't have access for this page</p>
-        // }
+        if(!this.state.allowed){
+            return <p>You don't have access for this page</p>
+        }
         return <div>
 
             {this.state.errors.map((error) => <p style={{color: 'red', fontSize: '12px'}}

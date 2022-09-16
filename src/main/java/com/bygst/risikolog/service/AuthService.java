@@ -44,12 +44,6 @@ public class AuthService {
     }
 
     public User register(User user) throws InvalidDataException {
-//        userValidator.validate(user, bindingResult);
-//
-//        if(bindingResult.getFieldError("username")!=null) {
-//            throw new InvalidDataException(Objects.requireNonNull(bindingResult.getFieldError("username")).getDefaultMessage());
-//        }
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         ArrayList<Role> roles = new ArrayList<>();
         roles.add(roleRepository.findByRole("ROLE_USER").get());
@@ -70,8 +64,7 @@ public class AuthService {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         List<String> authorities = userDetails.getAuthorities().stream()
-                .map(grantedAuthority -> grantedAuthority.getAuthority())
-                .collect(Collectors.toList());
+                .map(grantedAuthority -> grantedAuthority.getAuthority()).toList();
         authenticationDTO.setGrantedAuthorities( authorities.toArray(new String[0]));
 
         authenticationDTO.setId(usersService.loadUserByUsername(authenticationDTO.getUsername()).get().getId());

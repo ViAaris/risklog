@@ -66,7 +66,7 @@ public class SecurityConfig {
                 //.antMatchers("/auth/reg").not().fullyAuthenticated()
                 //.antMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
 
-                .antMatchers("/api/admin/projects").access("hasAuthority('ROLE_ADMIN')")
+                .antMatchers("/api/admin/**").access("hasAuthority('ROLE_ADMIN')")
                 .antMatchers("/auth/login").permitAll()
                 .anyRequest().authenticated()
                 //.accessDecisionManager(this.accessDecisionManager)

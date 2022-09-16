@@ -73,7 +73,6 @@ class OneRisk extends Component {
         }).then(data => {
             console.log(data);
         }).then(window.location.reload())
-
             .catch((error) => {
                 console.error(error);
                 this.setState({loading: true});

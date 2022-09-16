@@ -98,6 +98,13 @@ class ProjectList extends Component {
                 }
                 <td>{this.state.showMessage && <p>Your request was sent to the administrator</p>}</td>
 
+                <td>{
+                    AuthenticationService.getAuthorities()[0] === "ROLE_ADMIN" ?
+                        <div className="float-right">
+                            <Button color="success" tag={Link} to={'/api/admin/projects/'+ project.id}>Edit Project</Button>
+                        </div>  : ''
+                }</td>
+
             </tr>
         });
 
