@@ -1,20 +1,20 @@
 
 import './App.css';
 
-import Registration from './Registration'
+import Registration from './auth/Registration'
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import ProjectList from "./ProjectList";
-import AddProject from "./AddProject";
-import Risks from "./Risks";
-import OneRisk from "./OneRisk";
-import AuthenticatedRoute from "./AuthenticatedRoute";
-import LoginComponent from "./LoginComponent";
-import AuthenticationService from "./AuthenticationService";
+import ProjectList from "./projects/ProjectList";
+import AddProject from "./projects/AddProject";
+import Risks from "./risks/Risks";
+import OneRisk from "./risks/OneRisk";
+import AuthenticatedRoute from "./auth/AuthenticatedRoute";
+import LoginComponent from "./auth/LoginComponent";
+import AuthenticationService from "./auth/AuthenticationService";
 import {useState} from "react";
 import Home from "./Home";
-import AddNewRisk from "./AddNewRisk";
-import {Logout} from "./Logout";
-import EditProject from "./EditProject";
+import AddNewRisk from "./risks/AddNewRisk";
+import {Logout} from "./auth/Logout";
+import EditProject from "./projects/EditProject";
 
 
 

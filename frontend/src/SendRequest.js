@@ -1,5 +1,4 @@
-import {getCSRFToken} from "./getCSRFToken";
-import AuthenticationService from "./AuthenticationService";
+import AuthenticationService from "./auth/AuthenticationService";
 
 export function SendRequest(event, id) {
     event.preventDefault();
