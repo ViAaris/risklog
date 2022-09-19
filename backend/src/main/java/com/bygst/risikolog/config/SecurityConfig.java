@@ -1,11 +1,6 @@
 package com.bygst.risikolog.config;
 
-
-import com.bygst.risikolog.service.UsersDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -32,17 +27,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-
         http.csrf().disable()
 
                 .authorizeRequests()
-                //.antMatchers("/auth/reg").not().fullyAuthenticated()
-                //.antMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
-
                 .antMatchers("/api/admin/*").access("hasAuthority('ROLE_ADMIN')")
                 .antMatchers("/auth/login").permitAll()
                 .anyRequest().authenticated()
-                //.accessDecisionManager(this.accessDecisionManager)
                 .and()
                 .formLogin()
                 .loginPage("/auth/login")
@@ -103,20 +93,6 @@ public class SecurityConfig {
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-//    @Bean
-//    public RoleHierarchy roleHierarchy() {
-//        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
-//        hierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
-//        return hierarchy;
-//    }
-//
-//    @Bean
-//    public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
-//        DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
-//        expressionHandler.setRoleHierarchy(roleHierarchy());
-//        return expressionHandler;
-//    }
 
 
 }
