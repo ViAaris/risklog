@@ -1,5 +1,6 @@
 package com.bygst.risikolog.dto;
 
+import com.bygst.risikolog.util.RequestStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,9 +11,10 @@ import lombok.Setter;
 @Setter
 public class RequestDTO {
 
+
     private int id;
-    int projectId;
-    int userId;
-    String username;
-    boolean isApproved;
+    private int projectId;
+    private int userId;
+    private String username;
+    private String status;
 }

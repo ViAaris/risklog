@@ -1,6 +1,7 @@
 package com.bygst.risikolog.model;
 
 
+import com.bygst.risikolog.util.RequestStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,11 +21,12 @@ public class Request {
     @Column(name = "id")
     private int id;
     @Column(name = "projectId")
-    int projectId;
+    private int projectId;
     @Column(name = "userId")
-    int userId;
+    private int userId;
     @Column(name = "username")
-    String username;
-    @Column(name = "approved")
-    boolean isApproved;
+    private String username;
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private RequestStatus status;
 }

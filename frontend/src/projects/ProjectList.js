@@ -4,7 +4,7 @@ import {Link, withRouter} from 'react-router-dom';
 
 import AuthenticationService from "../auth/AuthenticationService";
 import {Logout} from "../auth/Logout";
-import {SendRequest} from "../SendRequest";
+import {SendRequest} from "../requests/SendRequest";
 
 
 
@@ -139,6 +139,8 @@ class ProjectList extends Component {
                         AuthenticationService.getAuthorities()[0] === "ROLE_ADMIN" ?
                             <div className="float-right">
                                 <Button color="success" tag={Link} to="/api/admin/projects">Add Project</Button>
+                                <br/>
+                                <Button color="success" tag={Link} to="/api/admin/requests">Requests</Button>
                             </div>  : ''
                     }
 

@@ -15,6 +15,7 @@ import Home from "./Home";
 import AddNewRisk from "./risks/AddNewRisk";
 import {Logout} from "./auth/Logout";
 import EditProject from "./projects/EditProject";
+import AllRequests from "./requests/AllRequests";
 
 
 
@@ -52,6 +53,7 @@ function App() {
                 />
                 <AuthenticatedRoute path='/api/admin/projects/:id' component={EditProject}/>
                 <AuthenticatedRoute path='/api/admin/projects' component={AddProject}/>
+                <AuthenticatedRoute path='/api/admin/requests' component={AllRequests}/>
                 <AuthenticatedRoute path='/api/projects' exact={true} component={ProjectList}/>
                 <AuthenticatedRoute path='/api/projects/:id/risks' component={Risks}/>
                 <AuthenticatedRoute path='/api/projects/:id/risks' component={AddNewRisk}/>
