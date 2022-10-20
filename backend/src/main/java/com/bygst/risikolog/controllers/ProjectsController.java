@@ -61,7 +61,7 @@ public class ProjectsController {
 
     @GetMapping("/projects/{id}/risks")
     @PreAuthorize("hasAnyAuthority(#id, 'ROLE_ADMIN')")
-    public List<RiskDTO> getProjectRisks(@PathVariable("id") int id) {
+    public List<RiskDTO> getProjectRisks(@PathVariable("id") long id) {
        return projectService.getAllRisks(id).stream()
                .map(risk -> convertToRiskDTO(risk))
                .collect(Collectors.toList());
@@ -69,13 +69,13 @@ public class ProjectsController {
 
     @GetMapping("/projects/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ProjectDTO getOneProject(@PathVariable("id") int id) {
+    public ProjectDTO getOneProject(@PathVariable("id") long id) {
         return projectService.getProject(id);
     }
 
     @DeleteMapping("/admin/projects/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity deleteProject(@PathVariable("id") int id){
+    public ResponseEntity deleteProject(@PathVariable("id") long id){
         projectService.removeProject(id);
         return ResponseEntity.ok("project was deleted");
     }

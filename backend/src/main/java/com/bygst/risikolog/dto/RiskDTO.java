@@ -9,8 +9,8 @@ import java.util.Date;
 @Data
 public class RiskDTO {
 
-    private int projectId;
-    private int id;
+    private Long projectId;
+    private Long id;
     private String title;
     private String description;
     private String reason;

@@ -24,7 +24,7 @@ public class RisksController {
 
     @PostMapping("/api/projects/{id}/risks")
     public ResponseEntity<RiskDTO> addRisk(@RequestBody RiskDTO riskDTO,
-                                  @PathVariable("id") int projectId) throws URISyntaxException {
+                                  @PathVariable("id") long projectId) throws URISyntaxException {
         Risk risk = riskService.save(convertToRisk(riskDTO), projectId);
         RiskDTO dtoForResponse = convertToRiskDTO(risk);
         return ResponseEntity.ok(dtoForResponse);
@@ -33,7 +33,7 @@ public class RisksController {
 
     @PutMapping("/api/projects/{projectId}/risks/{riskId}")
     public ResponseEntity<RiskDTO> updateRisk(@RequestBody RiskDTO riskDTO,
-                                     @PathVariable("riskId") int riskId){
+                                     @PathVariable("riskId") long riskId){
         Risk risk = convertToRisk(riskDTO);
         risk.setId(riskId);
         RiskDTO dtoForResponse = convertToRiskDTO(riskService.save(risk));
@@ -41,7 +41,7 @@ public class RisksController {
     }
 
     @GetMapping("/api/projects/{projectId}/risks/{riskId}")
-    public RiskDTO getRisk(@PathVariable("riskId") int riskId){
+    public RiskDTO getRisk(@PathVariable("riskId") long riskId){
         return convertToRiskDTO(riskService.getRisk(riskId).get());
     }
 

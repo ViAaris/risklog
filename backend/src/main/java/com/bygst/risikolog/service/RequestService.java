@@ -1,5 +1,6 @@
 package com.bygst.risikolog.service;
 import com.bygst.risikolog.dto.RequestDTO;
+import com.bygst.risikolog.model.Project;
 import com.bygst.risikolog.model.Request;
 import com.bygst.risikolog.repositories.ProjectRepository;
 import com.bygst.risikolog.repositories.RequestRepository;
@@ -31,7 +32,7 @@ public class RequestService {
         this.modelMapper = modelMapper;
     }
 
-    public Request getRequest(int id){
+    public Request getRequest(long id){
         return requestRepository.findById(id).get();
     }
 
@@ -45,6 +46,7 @@ public class RequestService {
 
     public Request addRequest(RequestDTO requestDTO){
         Request request = convertToRequest(requestDTO);
+
         switch (requestDTO.getStatus()) {
             case "pending":
                 request.setStatus(RequestStatus.PENDING);
@@ -52,25 +54,25 @@ public class RequestService {
             case "approved":
                 request.setStatus(RequestStatus.APPROVED);
                 projectRepository.findById(requestDTO.getProjectId()).get()
-                        .getTeam()
-                        .add(usersRepository.findById(requestDTO.getUserId()).get());
+                        .addTeamMember(usersRepository.findById(requestDTO.getUserId()).get());
                 break;
             case "declined":
                 request.setStatus(RequestStatus.DECLINED);
-                break;
+                if(request.getId() != null) {
+                    Project project = projectRepository.findById(requestDTO.getProjectId()).get();
+                    project.removeTeamMember(usersRepository.findById(requestDTO.getUserId()).get());
+                    projectRepository.save(project);
+                }
+                    break;
 
             //default:request.setStatus(RequestStatus.PENDING);
+        }
+        if(request.getId() == null)  { usersRepository.findById(request.getUserId()).get()
+                .getRequests().add(request);
         }
         return requestRepository.save(request);
     }
 
-//    public Request updateRequest(Request request){
-//        if(request.isApproved()){
-//           projectRepository.findByIdAndFetchTeamEagerly(request.getProjectId())
-//                    .getTeam().add(usersRepository.findById(request.getUserId()).get());
-//        }
-//        return requestRepository.save(request);
-//    }
 
     public Request convertToRequest(RequestDTO requestDTO) {
         return this.modelMapper.map(requestDTO, Request.class);

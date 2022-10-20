@@ -3,9 +3,7 @@ package com.bygst.risikolog.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static javax.persistence.CascadeType.*;
 
@@ -20,10 +18,9 @@ public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    private Long id;
 
-    @Column(name = "title", unique = true)
+    @Column(name = "title", unique = true, nullable = false)
     private String title;
 
     @Column(name = "address")
@@ -40,41 +37,55 @@ public class Project {
     @Temporal(TemporalType.DATE)
     private Date startingDate;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @Column(name = "contractors")
+    @ElementCollection
+    @CollectionTable(name="project_contractors", joinColumns=@JoinColumn(name="project_id"))
+    @OrderColumn
     private List<String> contractors;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @Column(name = "advisers")
+    @ElementCollection
+    @CollectionTable(name="project_advisers", joinColumns=@JoinColumn(name="project_id"))
+    @OrderColumn
     private List<String> advisers;
 
-    @ManyToMany(cascade = {PERSIST, REMOVE})
+    @OneToMany(mappedBy = "project", cascade = ALL, orphanRemoval = true)
     @ToString.Exclude
-    @JoinTable(name="team",
-            joinColumns = @JoinColumn(name="project_id"),
-            inverseJoinColumns = @JoinColumn(name="users_id"))
-    private List<User> team;
+    private Set<UserProject> team;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = ALL, orphanRemoval = true)
+//    @JoinTable(name="project_risks",
+//            joinColumns = @JoinColumn(name="project_id"),
+//            inverseJoinColumns = @JoinColumn(name="risks_id"))
+    @OrderColumn(name = "index")
     private List<Risk> risks;
 
+    public void addRiskToProject(Risk risk){
+        if(risks ==  null)risks = new ArrayList<>();
+        risks.add(risk);
+    }
 
-    public Project(String title, String address, long budget) {
-        this.title = title;
-        this.address = address;
-        this.budget = budget;
+    public void addTeamMember(User user){
+        if(team ==  null)team = new HashSet<>();
+        UserProject userProject = new UserProject(this, user);
+        team.add(userProject);
+        user.getProjects().add( userProject);
+    }
+
+    public void removeTeamMember(User user) {
+        UserProject userProject = new UserProject( this, user);
+        user.getProjects().remove(userProject);
+        team.remove(userProject);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Project)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Project project = (Project) o;
-        return id == project.id && budget == project.budget && Objects.equals(title, project.title) && Objects.equals(address, project.address) && Objects.equals(finishingDate, project.finishingDate) && Objects.equals(startingDate, project.startingDate) && Objects.equals(contractors, project.contractors) && Objects.equals(advisers, project.advisers) && Objects.equals(team, project.team) && Objects.equals(risks, project.risks);
+        return budget == project.budget && title.equals(project.title) && Objects.equals(address, project.address) && Objects.equals(finishingDate, project.finishingDate) && Objects.equals(startingDate, project.startingDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, address, budget, finishingDate, startingDate, contractors, advisers, team, risks);
+        return Objects.hash(title, address, budget, finishingDate, startingDate);
     }
 }

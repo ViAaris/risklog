@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 public class TeamMemberDTO {
 
     @JsonView({Details.class})
-    private int id;
+    private Long id;
     @JsonView({Details.class})
     private String fullName;
 }

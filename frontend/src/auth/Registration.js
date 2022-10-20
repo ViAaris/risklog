@@ -1,13 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Container, Form, FormGroup, Input, Label} from 'reactstrap';
 import {Link, withRouter} from 'react-router-dom';
-import * as PropTypes from "prop-types";
 
-function HelpBlock(props) {
-    return null;
-}
-
-HelpBlock.propTypes = {children: PropTypes.node};
 
 class Registration extends Component {
 
@@ -62,12 +56,13 @@ class Registration extends Component {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "Access-Control-Allow-Origin": "http://localhost:3000",
             },
             body: JSON.stringify(item),
         }).then((response) => {
             this.setState({
-                usernameError: '',
+                usernameError: "",
                 firstnameError: "",
                 surnameError: "",
                 passwordError: "",

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Getter
@@ -19,14 +20,27 @@ public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
     @Column(name = "projectId")
-    private int projectId;
+    private Long projectId;
     @Column(name = "userId")
-    private int userId;
+    private Long userId;
     @Column(name = "username")
     private String username;
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private RequestStatus status;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Request request = (Request) o;
+        return projectId == request.projectId && userId == request.userId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(projectId, userId);
+    }
 }

@@ -15,7 +15,7 @@ import java.util.List;
 public class ProjectDTO {
 
     @JsonView({Details.class})
-    private int id;
+    private Long id;
 
     @JsonView({Details.class})
     @NotBlank(message = "cannot be empty")
@@ -27,7 +27,7 @@ public class ProjectDTO {
     private String address;
 
     @JsonView({Details.class})
-    private long budget;
+    private Long budget;
 
     @JsonView({Details.class})
     private Date finishingDate;

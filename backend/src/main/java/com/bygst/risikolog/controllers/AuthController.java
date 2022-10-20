@@ -48,8 +48,7 @@ public class AuthController {
     public ResponseEntity<UserDTO> performRegistration(@Valid @RequestBody UserDTO userDTO) throws InvalidDataException{
 
         User user = convertToUser(userDTO);
-
-        UserDTO registeredUser = convertToUserDto(authService.register(user));//зарегали
+        UserDTO registeredUser = convertToUserDto(authService.register(user));
         return new ResponseEntity<>(registeredUser, HttpStatus.OK);
 
     }

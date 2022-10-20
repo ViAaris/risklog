@@ -12,9 +12,9 @@ import lombok.Setter;
 public class RequestDTO {
 
 
-    private int id;
-    private int projectId;
-    private int userId;
+    private Long id;
+    private Long projectId;
+    private Long userId;
     private String username;
     private String status;
 }

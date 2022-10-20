@@ -13,20 +13,13 @@ import java.util.Optional;
 public class UsersService {
 
     private final UsersRepository usersRepository;
-
-    public User save(User user) throws InvalidDataException {
-        return usersRepository.save(user);
-    }
-
-    public User getUser(int id) throws InvalidDataException {
-
-        return usersRepository.findById(id).get();
-    }
-
-
-
     public UsersService(UsersRepository usersRepository) {
         this.usersRepository = usersRepository;
+    }
+
+
+    public User getUser(long id) throws InvalidDataException {
+        return usersRepository.findById(id).get();
     }
 
     public Optional<User> loadUserByUsername(String username) {

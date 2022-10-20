@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ProjectRepository extends JpaRepository<Project, Integer> {
+public interface ProjectRepository extends JpaRepository<Project, Long> {
 
 
     Optional<Project> findByTitle(String title);
@@ -40,7 +40,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
         left join fetch p.team
         WHERE p.id = :id
         """)
-    Project findByIdAndFetchTeamEagerly(@Param("id") Integer id);
+    Project findByIdAndFetchTeamEagerly(@Param("id") Long id);
 
     @Query("""
         select distinct p
@@ -48,6 +48,6 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
         left join fetch p.risks
         WHERE p.id = :id
         """)
-    Project findByIdAndFetchRisks(@Param("id") Integer id);
+    Project findByIdAndFetchRisks(@Param("id") Long id);
 
 }

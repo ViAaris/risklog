@@ -31,7 +31,7 @@ public class SecurityConfig {
 
                 .authorizeRequests()
                 .antMatchers("/api/admin/*").access("hasAuthority('ROLE_ADMIN')")
-                .antMatchers("/auth/login").permitAll()
+                .antMatchers("/auth/login", "/auth/reg").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

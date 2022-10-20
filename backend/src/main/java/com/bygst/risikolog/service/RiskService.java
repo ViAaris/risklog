@@ -1,7 +1,9 @@
 package com.bygst.risikolog.service;
 
 
+import com.bygst.risikolog.model.Project;
 import com.bygst.risikolog.model.Risk;
+import com.bygst.risikolog.repositories.ProjectRepository;
 import com.bygst.risikolog.repositories.RiskRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -14,34 +16,28 @@ import java.util.Optional;
 public class RiskService {
 
     private final RiskRepository riskRepository;
-    private final JdbcTemplate jdbcTemplate;
+    private final ProjectRepository projectRepository;
 
-    public RiskService(RiskRepository riskRepository, JdbcTemplate jdbcTemplate) {
+    public RiskService(RiskRepository riskRepository,
+                       ProjectRepository projectRepository) {
         this.riskRepository = riskRepository;
-
-
-        this.jdbcTemplate = jdbcTemplate;
+        this.projectRepository = projectRepository;
     }
 
-    public Risk save(Risk risk, int projectId){
+    public Risk save(Risk risk, long projectId){
         //System.out.println(risk.getId());
-        if(risk.getId() == 0) {
-            Risk savedRisk = riskRepository.save(risk);
-            //projectRepository.findById(projectId).get().getRisks().add(risk);
-            jdbcTemplate.update("INSERT INTO PROJECT_RISKS VALUES (?, ?)", projectId, savedRisk.getId());
+        if(risk.getId() == null) {
+            Project project = projectRepository.findById(projectId).get();
+            project.addRiskToProject(risk);
         }
         return riskRepository.save(risk);
     }
 
     public Risk save(Risk risk){
-
-        if(risk.getId() != 0) {
-            Risk savedRisk = riskRepository.save(risk);
-        }
         return riskRepository.save(risk);
     }
 
-    public Optional<Risk> getRisk(int id){
+    public Optional<Risk> getRisk(long id){
         return riskRepository.findById(id);
     }
 }

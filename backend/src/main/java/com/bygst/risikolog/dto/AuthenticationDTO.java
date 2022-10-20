@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class AuthenticationDTO {
     @JsonView({Details.class})
-    private int id;
+    private Long id;
 
     @JsonView({Details.class})
     private String username;

@@ -161,7 +161,8 @@ class ProjectList extends Component {
                             <th>Contractors</th>
                             <th>Advisers</th>
                             <th>Risks</th>
-                            {AuthenticationService.getAuthorities()[0] !== "ROLE_ADMIN" ? <th>Request access</th> : <th> Edit/delete </th>}
+                            {AuthenticationService.getAuthorities()[0] !== "ROLE_ADMIN" ? <th>Request access</th>
+                                : <th> Edit/delete </th>}
                         </tr>
                         </thead>
                         <tbody>
