@@ -49,6 +49,7 @@ public class Project {
 
     @OneToMany(mappedBy = "project", cascade = ALL, orphanRemoval = true)
     @ToString.Exclude
+    @OrderColumn(name = "index")
     private Set<UserProject> team;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = ALL, orphanRemoval = true)
@@ -74,6 +75,8 @@ public class Project {
         UserProject userProject = new UserProject( this, user);
         user.getProjects().remove(userProject);
         team.remove(userProject);
+        userProject.setProject(null);
+        userProject.setUser(null);
     }
 
     @Override

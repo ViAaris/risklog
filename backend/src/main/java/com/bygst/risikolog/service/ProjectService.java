@@ -79,13 +79,8 @@ public class ProjectService {
                     .split(","));
             project.setAdvisers(advisers);
         }
-        if (projectDTO.getId() != null && (!projectDTO.getTeam().isEmpty())) {
-            for (TeamMemberDTO teamMemberDTO : projectDTO.getTeam()) {
-                User user = usersRepository.findById(teamMemberDTO.getId()).get();
-                 project.addTeamMember(user);
-            }
-        }
         if (projectDTO.getId() != null) {
+            project.setTeam(projectRepository.findById(project.getId()).get().getTeam());
             project.setRisks(projectRepository
                     .findByIdAndFetchRisks(project.getId()).getRisks());
         }

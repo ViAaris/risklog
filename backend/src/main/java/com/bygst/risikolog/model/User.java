@@ -40,6 +40,7 @@ public class User {
     private List<Role> roles;
 
     @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
+    @OrderColumn(name = "index")
     private Set<UserProject> projects = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = ALL, orphanRemoval = true)

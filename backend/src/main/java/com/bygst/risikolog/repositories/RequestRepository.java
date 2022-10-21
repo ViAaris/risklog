@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface RequestRepository extends JpaRepository<Request, Long> {
 
     void deleteByProjectId(Long projectId);
+
 }

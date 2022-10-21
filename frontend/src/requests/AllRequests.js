@@ -16,7 +16,7 @@ class AllRequests extends Component {
         this.state = {
             requests: [],
             showMessage: false,
-            requestId: ""
+            requestId: "",
         };
 
     }
@@ -70,16 +70,38 @@ class AllRequests extends Component {
                 <td>{request.status}</td>
 
                 <td>
-                    <Button onClick={e => this.approveRequest(e, request)} color="primary"
-                            type="submit">Approve</Button>{' '}
+
+
+                    {
+                        request.status === "PENDING" ? <td>
+                                <Button onClick={e => this.declineRequest(e, request)} color="primary"
+                                        type="submit">Decline</Button>{' '}
+                                <Button onClick={e => this.approveRequest(e, request)} color="primary"
+                                        type="submit">Approve</Button>{' '}
+
+                            </td>
+                            :
+                            <td>
+                                {
+                                    request.status === "APPROVED" ? <td>
+                                            <Button onClick={e => this.declineRequest(e, request)} color="primary"
+                                                    type="submit">Cancel access</Button>{' '}
+
+                                        </td>
+                                        :
+                                        <td><Button onClick={e => this.approveRequest(e, request)} color="primary"
+                                                    type="submit">Grand access</Button>{' '}
+
+                                        </td>
+                                }
+                            </td>
+                    }
+
+
 
                 </td>
 
-                <td>
-                    <Button onClick={e => this.declineRequest(e, request)} color="primary"
-                            type="submit">Decline</Button>{' '}
 
-                </td>
 
             </tr>
         });
