@@ -56,7 +56,7 @@ public class ProjectService {
         if (!team.isEmpty()) {
             //team.stream().forEach(System.out::println);
             teamMemberDTOS = team.stream()
-                    .map(user -> mapUserToTeamMember(user.getUser())).collect(Collectors.toList());
+                    .map(userProject -> mapUserToTeamMember(userProject.getUser())).collect(Collectors.toList());
             //teamMemberDTOS.stream().forEach(System.out::println);
             dto.setTeam(teamMemberDTOS);
         }
@@ -114,6 +114,8 @@ public class ProjectService {
     }
 
     public void removeProject(long id) {
+        Project p =  projectRepository.findById(id).get();
+        p.getTeam().forEach(member -> member.getUser().getProjects().remove(member));
         requestRepository.deleteByProjectId(id);
         projectRepository.deleteById(id);
     }

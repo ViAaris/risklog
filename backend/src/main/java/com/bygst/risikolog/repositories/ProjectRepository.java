@@ -50,4 +50,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
         """)
     Project findByIdAndFetchRisks(@Param("id") Long id);
 
+
+
 }

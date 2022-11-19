@@ -56,7 +56,8 @@ public class AuthController {
 
     @PostMapping("/login")
     @JsonView({Details.class})
-    public ResponseEntity<AuthenticationDTO> authenticateUser(@RequestBody AuthenticationDTO authenticationDTO) throws BadCredentialsException {
+    public ResponseEntity<AuthenticationDTO> authenticateUser(@RequestBody AuthenticationDTO authenticationDTO)
+            throws BadCredentialsException {
         
         AuthenticationDTO dtoToReturn = authService.authenticate(authenticationDTO);
         return new ResponseEntity<>(dtoToReturn, HttpStatus.OK);

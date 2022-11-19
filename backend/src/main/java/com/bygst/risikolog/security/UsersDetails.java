@@ -7,8 +7,10 @@ import com.bygst.risikolog.model.UserProject;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+
 
 public class UsersDetails implements UserDetails {
     private final User user;

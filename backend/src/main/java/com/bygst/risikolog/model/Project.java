@@ -47,7 +47,7 @@ public class Project {
     @OrderColumn
     private List<String> advisers;
 
-    @OneToMany(mappedBy = "project", cascade = ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "project", cascade = ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @ToString.Exclude
     @OrderColumn(name = "index")
     private Set<UserProject> team;

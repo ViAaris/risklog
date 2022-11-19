@@ -47,13 +47,11 @@ class LoginComponent extends Component {
             method: "POST",
             withCredentials: true,
             headers: {
-               // "X-XSRF-TOKEN": this.csrfToken,
                 "Authorization": AuthenticationService.createBasicAuthToken(this.state.username, this.state.password),
                 Accept: "application/json",
                 "Content-Type": "application/json;charset=UTF-8",
                  "Access-Control-Allow-Headers":"Authorization, Content-Type, X-XSRF-TOKEN",
                 "Access-Control-Allow-Origin": "http://localhost:3000",
-                // "X-Requested-With": "XMLHttpRequest",
             },
             body: JSON.stringify({
                 "username": this.state.username,

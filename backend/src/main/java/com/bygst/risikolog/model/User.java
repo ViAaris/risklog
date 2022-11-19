@@ -33,21 +33,19 @@ public class User {
     private String surname;
     @Column(name = "department")
     private String department;
-    @ManyToMany(cascade = PERSIST)
+
+    @ManyToMany(cascade = {PERSIST, MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles;
+    private List<Role> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @OrderColumn(name = "index")
     private Set<UserProject> projects = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = ALL, orphanRemoval = true)
-    @JoinTable(name="user_requests",
-            joinColumns = @JoinColumn(name="user_id"),
-            inverseJoinColumns = @JoinColumn(name="request_id"))
-    private Set<Request> requests;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = ALL, orphanRemoval = true)
+    private Set<Request> requests = new HashSet<>();
 
 
     @Override
@@ -74,4 +72,6 @@ public class User {
                 ", department='" + department + '\'' +
                 '}';
     }
+
+
 }

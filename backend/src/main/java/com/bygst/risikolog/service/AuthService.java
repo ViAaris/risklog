@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -41,16 +43,13 @@ public class AuthService {
 
     public User register(User user) throws InvalidDataException {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        ArrayList<Role> roles = new ArrayList<>();
-        roles.add(roleRepository.findByRole("ROLE_USER").get());
-        user.setRoles(roles);
+
+        user.getRoles().add(roleRepository.findByRole("ROLE_USER").get());
 
         return usersRepository.save(user);
     }
 
     public AuthenticationDTO authenticate(AuthenticationDTO authenticationDTO) {
-
-
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -60,7 +59,7 @@ public class AuthService {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         List<String> authorities = userDetails.getAuthorities().stream()
-                .map(grantedAuthority -> grantedAuthority.getAuthority()).toList();
+                .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
         authenticationDTO.setGrantedAuthorities( authorities.toArray(new String[0]));
 
         authenticationDTO.setId(usersService.loadUserByUsername(authenticationDTO.getUsername()).get().getId());

@@ -10,11 +10,16 @@
 	</parent>
 	<groupId>com.bygst</groupId>
 	<artifactId>risikolog</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>risikolog</name>
 	<description>Spring project for risk log</description>
 	<properties>
-		<java.version>17</java.version>
+		<start-class>com.bygst.risikolog.RisikologApplication</start-class>
+		<java.version>15</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.compiler.source>15</maven.compiler.source>
+		<maven.compiler.target>15</maven.compiler.target>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -76,11 +81,6 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -89,6 +89,13 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<mainClass>com.bygst.risikolog.RisikologApplication</mainClass>
+					<additionalProperties>
+						<encoding.source>${project.build.sourceEncoding}</encoding.source>
+						<encoding.reporting>${project.reporting.outputEncoding}</encoding.reporting>
+						<java.source>${maven.compiler.source}</java.source>
+						<java.target>${maven.compiler.target}</java.target>
+					</additionalProperties>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
@@ -99,10 +106,19 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -126,56 +142,6 @@
 				</executions>
 			</plugin>
 
-			<plugin>
-				<groupId>com.github.eirslett</groupId>
-				<artifactId>frontend-maven-plugin</artifactId>
-				<version>1.6</version>
-				<configuration>
-					<workingDirectory>frontend</workingDirectory>
-				</configuration>
-				<executions>
-					<execution>
-						<id>install node</id>
-						<goals>
-							<goal>install-node-and-yarn</goal>
-						</goals>
-						<configuration>
-							<nodeVersion>16.15.0</nodeVersion>
-							<yarnVersion>1.0.1</yarnVersion>
-						</configuration>
-					</execution>
-					<execution>
-						<id>yarn install</id>
-						<goals>
-							<goal>yarn</goal>
-						</goals>
-						<phase>generate-resources</phase>
-					</execution>
-					<execution>
-						<id>yarn test</id>
-						<goals>
-							<goal>yarn</goal>
-						</goals>
-						<phase>test</phase>
-						<configuration>
-							<arguments>test</arguments>
-							<environmentVariables>
-								<CI>true</CI>
-							</environmentVariables>
-						</configuration>
-					</execution>
-					<execution>
-						<id>yarn build</id>
-						<goals>
-							<goal>yarn</goal>
-						</goals>
-						<phase>compile</phase>
-						<configuration>
-							<arguments>build</arguments>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 

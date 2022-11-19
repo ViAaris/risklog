@@ -23,24 +23,22 @@ public class Request {
     private Long id;
     @Column(name = "projectId")
     private Long projectId;
-    @Column(name = "userId")
-    private Long userId;
-    @Column(name = "username")
-    private String username;
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private RequestStatus status;
+    @ManyToOne
+    private User user;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Request request = (Request) o;
-        return projectId == request.projectId && userId == request.userId;
+        return id.equals(request.id) && projectId.equals(request.projectId) && status == request.status && user.equals(request.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(projectId, userId);
+        return Objects.hash(id, projectId, status, user);
     }
 }

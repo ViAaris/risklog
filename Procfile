@@ -1,0 +1,1 @@
+web: java -jar target/risikolog-1.0.jar -Dserver.port=$PORT

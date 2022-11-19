@@ -67,19 +67,22 @@ public class RequestService {
 
             //default:request.setStatus(RequestStatus.PENDING);
         }
-        if(request.getId() == null)  { usersRepository.findById(request.getUserId()).get()
-                .getRequests().add(request);
-        }
+
         return requestRepository.save(request);
     }
 
 
     public Request convertToRequest(RequestDTO requestDTO) {
-        return this.modelMapper.map(requestDTO, Request.class);
+       Request request =  this.modelMapper.map(requestDTO, Request.class);
+       request.setUser(usersRepository.findById(requestDTO.getUserId()).get());
+       return request;
     }
 
     public RequestDTO convertToDto(Request request){
-        return this.modelMapper.map(request, RequestDTO.class);
+        RequestDTO dto = this.modelMapper.map(request, RequestDTO.class);
+        dto.setUsername(request.getUser().getUsername());
+        dto.setUserId(request.getUser().getId());
+        return dto;
     }
 
 }

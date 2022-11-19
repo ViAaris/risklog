@@ -35,7 +35,7 @@ public class RequestController {
     }
 
     @GetMapping("/admin/requests")
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public List<RequestDTO> showAllRequests() {
         return requestService.getAllRequests();
     }
