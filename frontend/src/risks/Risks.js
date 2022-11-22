@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Container, Table} from 'reactstrap';
+import {Button, Container, Table} from 'reactstrap';
 
-import {withRouter} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 
 import OneRisk from "./OneRisk";
 import AddNewRisk from "./AddNewRisk";
@@ -67,21 +67,46 @@ class Risks extends Component {
 
 
         return (
-            <div>
+            <div >
 
 
             <div>
                 <Container fluid>
+                    <Table className="mt-4" border={1} >
+                        <thead>
                     <h3>Add new risk</h3>
+                        </thead>
                     <AddNewRisk/>
-                    <br/>
-                    <br/>
-                    <hr/>
-                    <Table className="mt-4">
+
+                        <tr>
+                    <h3>Risk log</h3>
+                            <tr>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Reason</th>
+                                <th>Category</th>
+                                <th>Consequences</th>
+                                <th>Probability</th>
+                                <th>Min cost</th>
+                                <th>Mid cost</th>
+                                <th>Max cost </th>
+                                <th>Value</th>
+                                <th>Owner</th>
+                                <th>Actions</th>
+                                <th>Active</th>
+                                <br/>
+                            </tr>
+                    </tr>
+
+
                         <tbody>
                         {risksList}
                         </tbody>
                     </Table>
+                    <br/>
+                    <br/>
+
+                    <Button color="primary"  tag={Link} to={"/projects/"}>Go to projects list</Button>
                 </Container>
             </div>
             </div>

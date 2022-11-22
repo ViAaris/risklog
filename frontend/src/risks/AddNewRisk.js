@@ -8,6 +8,16 @@ class AddNewRisk extends Component {
         title: '',
         description: '',
         reason: '',
+        category: '',
+        consequences: '',
+        probability: '',
+        minCost: '',
+        midCost: '',
+        maxCost: '',
+        value: '',
+        owner: '',
+        actions: '',
+        isActive: '',
     };
 
     constructor(props) {
@@ -41,8 +51,8 @@ class AddNewRisk extends Component {
             },
             body: JSON.stringify(item),
         }).then((response) => response.json())
-            .then(this.props.history.push('/api/projects/' + this.props.match.params.id + "/risks"))
-            .then(window.location.reload())
+            .then(this.props.history.push('/projects/' + this.props.match.params.id + "/risks"))
+            //.then(window.location.reload())
             .then((data) => {
 
                 console.log(data);
@@ -55,45 +65,77 @@ class AddNewRisk extends Component {
         const {item} = this.state;
         return <div>
 
-            <Table className="mt-4">
+            <Table className="mt-4" >
                 <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Reason</th>
-                    {/*<th>Starting date</th>*/}
-                    {/*<th>Finishing date</th>*/}
-                    {/*<th>Team</th>*/}
-                </tr>
+
                 </thead>
+                <Container >
 
-                <tbody>
-                <Container>
-                    <Form onSubmit={this.handleSubmit}>
+                    <Form onSubmit={this.handleSubmit} >
 
-                            <td>
+                            <th>
                                 <Input type="text" name="title" id="title" value={item.title || ''}
                                        onChange={this.handleChange} />
-                            </td>
+                            </th>
 
 
-                            <td>
+                            <th>
                                 <Input type="text" name="description" id="description" value={item.description || ''}
                                        onChange={this.handleChange} />
-                            </td>
+                            </th>
 
-                            <td>
+                            <th>
                                 <Input type="text" name="reason" id="reason" value={item.reason || ''}
                                        onChange={this.handleChange} />
-                            </td>
-
-                            <td>
+                            </th>
+                        <th>
+                            <Input type="text" name="category" id="category" value={item.category || ''}
+                                   onChange={this.handleChange} />
+                        </th>
+                        <th>
+                            <Input type="text" name="consequences" id="consequences" value={item.consequences || ''}
+                                   onChange={this.handleChange} />
+                        </th>
+                        <th>
+                            <Input type="text" name="probability" id="probability" value={item.probability || ''}
+                                   onChange={this.handleChange} />
+                        </th>
+                        <th>
+                            <Input type="text" name="minCost" id="minCost" value={item.minCost || ''}
+                                   onChange={this.handleChange} />
+                        </th>
+                        <th>
+                            <Input type="text" name="midCost" id="midCost" value={item.midCost || ''}
+                                   onChange={this.handleChange} />
+                        </th>
+                        <th>
+                            <Input type="text" name="maxCost" id="maxCost" value={item.maxCost || ''}
+                                   onChange={this.handleChange} />
+                        </th>
+                        <th>
+                            <Input type="text" name="value" id="value" value={item.value || ''}
+                                   onChange={this.handleChange} />
+                        </th>
+                        <th>
+                            <Input type="text" name="owner" id="owner" value={item.owner || ''}
+                                   onChange={this.handleChange} />
+                        </th>
+                        <th>
+                            <Input type="text" name="actions" id="actions" value={item.actions || ''}
+                                   onChange={this.handleChange} />
+                        </th>
+                        <th>
+                            <Input type="text" name="isActive" id="isActive" value={item.isActive || ''}
+                                   onChange={this.handleChange} />
+                        </th>
+                            <th>
                                 <Button color="primary" type="submit">Save</Button>{' '}
-                            </td>
+                            </th>
 
                     </Form>
                 </Container>
-                </tbody>
+
+
 
             </Table>
 

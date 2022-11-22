@@ -10,7 +10,17 @@ class OneRisk extends Component {
     emptyItem = {
         title: '',
         description: '',
-        reason: ''
+        reason: '',
+        category: '',
+        consequences: '',
+        probability: '',
+        minCost: '',
+        midCost: '',
+        maxCost: '',
+        value: '',
+        owner: '',
+        actions: '',
+        isActive: ''
     };
 
     projectId;
@@ -78,7 +88,6 @@ class OneRisk extends Component {
             });
     }
 
-//our render function will be handling our form:
     render() {
         const {item} = this.state;
 
@@ -111,7 +120,46 @@ class OneRisk extends Component {
                                    onChange={this.handleChange}/>
                         </FormGroup>
                     </td>
-
+                    <td>
+                        <Input type="text" name="category" id="category" value={item.category || ''}
+                               onChange={this.handleChange} />
+                    </td>
+                    <td>
+                        <Input type="text" name="consequences" id="consequences" value={item.consequences || ''}
+                               onChange={this.handleChange} />
+                    </td>
+                    <th>
+                        <Input type="text" name="probability" id="probability" value={item.probability || ''}
+                               onChange={this.handleChange} />
+                    </th>
+                    <th>
+                        <Input type="text" name="minCost" id="minCost" value={item.minCost || ''}
+                               onChange={this.handleChange} />
+                    </th>
+                    <th>
+                        <Input type="text" name="midCost" id="midCost" value={item.midCost || ''}
+                               onChange={this.handleChange} />
+                    </th>
+                    <th>
+                        <Input type="text" name="maxCost" id="maxCost" value={item.maxCost || ''}
+                               onChange={this.handleChange} />
+                    </th>
+                    <th>
+                        <Input type="text" name="value" id="value" value={item.value || ''}
+                               onChange={this.handleChange} />
+                    </th>
+                    <th>
+                        <Input type="text" name="owner" id="owner" value={item.owner || ''}
+                               onChange={this.handleChange} />
+                    </th>
+                    <th>
+                        <Input type="text" name="actions" id="actions" value={item.actions || ''}
+                               onChange={this.handleChange} />
+                    </th>
+                    <th>
+                        <Input type="text" name="isActive" id="isActive" value={item.isActive || ''}
+                               onChange={this.handleChange} />
+                    </th>
                     <td>
                         <FormGroup>
                             <Button color="primary" type="submit">Save</Button>{' '}
@@ -119,6 +167,8 @@ class OneRisk extends Component {
                     </td>
                 </Form>
             </Container>
+
+
         </div>
     }
 }
