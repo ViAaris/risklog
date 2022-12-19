@@ -1,12 +1,14 @@
 HELP.md
 mvnw
+.env
 mvnw.cmd
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-backend/src/test
+/src/test
 node_modules
+node
 .gitignore
 ### STS ###
 .apt_generated
