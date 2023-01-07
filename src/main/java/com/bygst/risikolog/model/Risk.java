@@ -29,10 +29,10 @@ public class Risk {
     @Temporal(TemporalType.DATE)
     private Date changingDate;
     private Integer probability;
-    private Integer minCost;
-    private Integer midCost;
-    private Integer maxCost;
-    private Integer value;
+    private Long minCost;
+    private Long midCost;
+    private Long maxCost;
+    private Long value;
     private String owner;
     private String actions;
     private Boolean isActive;
@@ -49,7 +49,7 @@ public class Risk {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Risk risk = (Risk) o;
-        return id == risk.id && Objects.equals(title, risk.title) && Objects.equals(description, risk.description) && Objects.equals(reason, risk.reason) && Objects.equals(category, risk.category) && Objects.equals(consequences, risk.consequences) && Objects.equals(changingDate, risk.changingDate) && Objects.equals(probability, risk.probability) && Objects.equals(minCost, risk.minCost) && Objects.equals(midCost, risk.midCost) && Objects.equals(maxCost, risk.maxCost) && Objects.equals(value, risk.value) && Objects.equals(owner, risk.owner) && Objects.equals(actions, risk.actions) && Objects.equals(isActive, risk.isActive);
+        return Objects.equals(id, risk.id) && Objects.equals(title, risk.title) && Objects.equals(description, risk.description) && Objects.equals(reason, risk.reason) && Objects.equals(category, risk.category) && Objects.equals(consequences, risk.consequences) && Objects.equals(changingDate, risk.changingDate) && Objects.equals(probability, risk.probability) && Objects.equals(minCost, risk.minCost) && Objects.equals(midCost, risk.midCost) && Objects.equals(maxCost, risk.maxCost) && Objects.equals(value, risk.value) && Objects.equals(owner, risk.owner) && Objects.equals(actions, risk.actions) && Objects.equals(isActive, risk.isActive);
     }
 
     @Override

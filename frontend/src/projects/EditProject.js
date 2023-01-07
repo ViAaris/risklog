@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import {Button, Container, Form, FormGroup, Input, Label} from "reactstrap";
 import {Link, withRouter} from "react-router-dom";
-
+import AppNavbar from "../AppNavbar";
+import '../App.css';
 class EditProject extends Component {
 
     emptyItem = {
@@ -120,7 +121,7 @@ class EditProject extends Component {
             return <p>You don't have access for this page</p>
         }
         return <div>
-
+            <AppNavbar/>
             {this.state.errors.map((error) => <p style={{color: 'red', fontSize: '12px'}}
                                                  key={error.field}>{error.field + " " + error.message}</p>)
             }

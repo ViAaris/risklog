@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import {Button, Container, Form, FormGroup, Table} from 'reactstrap';
 import {Link, withRouter} from 'react-router-dom';
-
+import '../App.css';
 import AuthenticationService from "../auth/AuthenticationService";
 import {Logout} from "../auth/Logout";
 import {SendRequest} from "../requests/SendRequest";
+import AppNavbar from "../AppNavbar";
 
 
 
@@ -89,7 +90,7 @@ class ProjectList extends Component {
 
                 <td>{project.team.map(user => {
                     return <td key={user.id}>
-                    <div>{user.fullName} |</div>
+                    <div>{user.fullName}</div>
                     </td>
                 })}</td>
                 <td>{project.contractors}</td>
@@ -114,24 +115,23 @@ class ProjectList extends Component {
                                         request</Button>{' '}
 
                                 </td>
-                         : ''
+                         : <div className="float-right">
+                            <Button color="success" tag={Link} to={'/api/admin/projects/'+ project.id}>Edit Project</Button>
+                            <Button size="sm" color="danger" onClick={() => this.remove(project.id)}>Delete</Button>
+                        </div>
                     }
                 </td>
 
-                <td>{
-                    AuthenticationService.getAuthorities()[0] === "ROLE_ADMIN" ?
-                        <div className="float-right">
-                            <Button color="success" tag={Link} to={'/api/admin/projects/'+ project.id}>Edit Project</Button>
-                            <Button size="sm" color="danger" onClick={() => this.remove(project.id)}>Delete</Button>
-                        </div>  : ''
-                }</td>
+
 
             </tr>
         });
 
         return (
-            <div>
 
+
+            <div className={"body"}>
+                <AppNavbar/>
 
                 <Container fluid>
 
@@ -148,7 +148,7 @@ class ProjectList extends Component {
                     <h3>Projects</h3>
                     <hr></hr>
                     <br/>
-                    <Table className="mt-4">
+                    <table class="table">
                         <thead>
 
                         <tr>
@@ -168,7 +168,8 @@ class ProjectList extends Component {
                         <tbody>
                         {projectList}
                         </tbody>
-                    </Table>
+                    </table>
+
                     <br/>
                     <br/>
                     <div className="float-right">
@@ -179,7 +180,9 @@ class ProjectList extends Component {
                         </Form>
                     </div>
                 </Container>
+
             </div>
+
         );
     }
 }

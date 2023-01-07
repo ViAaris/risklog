@@ -51,7 +51,7 @@ class AddNewRisk extends Component {
             },
             body: JSON.stringify(item),
         }).then((response) => response.json())
-            .then(this.props.history.push('/projects/' + this.props.match.params.id + "/risks"))
+            .then(this.props.history.push('/api/projects/' + this.props.match.params.id + "/risks"))
             //.then(window.location.reload())
             .then((data) => {
 

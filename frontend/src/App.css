@@ -44,3 +44,229 @@
 .button {
   color: #61dafb;
 }
+
+.body {
+  border: 20px solid white;
+  font-family: "Geogrotesque",Arial,sans-serif;
+}
+
+
+.table {
+  width: 100%;
+  border: none;
+  margin-bottom: 20px;
+}
+.table thead th {
+  font-weight: bold;
+  text-align: left;
+  border: none;
+  padding: 10px 15px;
+  background: #d8d8d8;
+  font-size: 14px;
+}
+.table thead tr th:first-child {
+  border-radius: 8px 0 0 8px;
+}
+.table thead tr th:last-child {
+  border-radius: 0 8px 8px 0;
+}
+.table tbody td {
+  text-align: left;
+  border: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  vertical-align: top;
+}
+.table tbody tr:nth-child(even){
+  background: #f3f3f3;
+}
+.table tbody tr td:first-child {
+  border-radius: 8px 0 0 8px;
+}
+.table tbody tr td:last-child {
+  border-radius: 0 8px 8px 0;
+}
+
+.projects {
+  border: 20px solid white;
+}
+
+.tableRequests {
+  width: 50%;
+  margin-bottom: 20px;
+  border: 5px solid #fff;
+  border-bottom-width: 3px;
+  border-collapse: collapse;
+  outline: 3px solid #007D85;
+  font-size: 15px;
+  background: #fff!important;
+}
+.tableRequests th {
+  font-weight: bold;
+  padding: 7px;
+  background: #007D85;
+  border: none;
+  text-align: left;
+  font-size: 15px;
+  border-top: 3px solid #fff;
+  border-bottom: 3px solid #007D85;
+}
+.tableRequests td {
+  padding: 7px;
+  border: none;
+  border-top: 3px solid #fff;
+  border-bottom: 3px solid #fff;
+  font-size: 15px;
+}
+.tableRequests tbody tr:nth-child(even){
+  background: #f8f8f8!important;
+}
+
+.navbar {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 20px;
+
+  background-color: #f2f2f2;
+
+  color: #fff;
+
+}
+
+.nav-links a {
+
+  color: #fff;
+
+}
+
+/* LOGO */
+
+.logo {
+
+  font-size: 32px;
+
+}
+
+/* NAVBAR MENU */
+
+.menu {
+
+  display: flex;
+
+  gap: 1em;
+
+  font-size: 18px;
+
+}
+
+.menu li:hover {
+
+  background-color: #4c9e9e;
+
+  border-radius: 5px;
+
+  transition: 0.3s ease;
+
+}
+
+.menu li {
+
+  padding: 5px 14px;
+
+}
+
+/* DROPDOWN MENU */
+
+.services {
+
+  position: relative;
+
+}
+
+.dropdown {
+
+  background-color: rgb(1, 139, 139);
+
+  padding: 1em 0;
+
+  position: absolute; /*WITH RESPECT TO PARENT*/
+
+  display: none;
+
+  border-radius: 8px;
+
+  top: 35px;
+
+}
+
+.dropdown li + li {
+
+  margin-top: 10px;
+
+}
+
+.dropdown li {
+
+  padding: 0.5em 1em;
+
+  width: 8em;
+
+  text-align: center;
+
+}
+
+.dropdown li:hover {
+
+  background-color: #4c9e9e;
+
+}
+
+.services:hover .dropdown {
+
+  display: block;
+
+}
+
+
+
+.logo {
+  max-width: 280px;
+  width: 100%;
+}
+
+.logo {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.tableRisk{
+  border: 1px solid #eee;
+  table-layout: fixed;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.tableRisk th {
+  font-weight: bold;
+  padding: 5px;
+  background: #efefef;
+  border: 1px solid #dddddd;
+}
+.tableRisk td{
+  padding: 5px 10px;
+  border: 1px solid #eee;
+  text-align: left;
+}
+.tableRisk tbody tr:nth-child(odd){
+  background: #fff;
+}
+.tableRisk tbody tr:nth-child(even){
+  background: #F7F7F7;
+}
+

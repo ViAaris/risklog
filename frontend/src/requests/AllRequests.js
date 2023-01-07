@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import {Button, Container, Form, FormGroup, Table} from 'reactstrap';
+import {Button, Container, Table} from 'reactstrap';
 import {Link, withRouter} from 'react-router-dom';
-
+import '../App.css';
 import AuthenticationService from "../auth/AuthenticationService";
-import {Logout} from "../auth/Logout";
-import {SendRequest} from "./SendRequest";
+
 import {ApproveRequest} from "./ApproveRequest";
 import {DeclineRequest} from "./DeclineRequest";
+import AppNavbar from "../AppNavbar";
 
 
 class AllRequests extends Component {
@@ -64,7 +64,8 @@ class AllRequests extends Component {
 
         const requestList = requests.map(request => {
 
-            return <tr key={request.id}>
+            return  <tr key={request.id}>
+
                 <td>{request.username} </td>
                 <td>{request.projectId}</td>
                 <td>{request.status}</td>
@@ -96,42 +97,31 @@ class AllRequests extends Component {
                                 }
                             </td>
                     }
-
-
-
                 </td>
-
-
-
             </tr>
         });
 
         return (
-            <div>
-
-
-                <Container fluid>
-
-
-                    <h3>Requests</h3>
-                    <hr></hr>
-                    <br/>
-                    <Table className="mt-4">
+            <div className={"body"}>
+                <AppNavbar/>
+                <h3>Requests</h3>
+                    <table className="tableRequests">
                         <thead>
 
-                        <tr>
+                        <tr >
                             <th>Username</th>
                             <th>Project id</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody >
                         {requestList}
                         </tbody>
-                    </Table>
+                    </table>
                     <br/>
                     <br/>
-                </Container>
+
             </div>
         );
     }

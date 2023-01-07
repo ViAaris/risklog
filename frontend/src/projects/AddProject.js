@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 //import './components/css/todo.css';
 import {Button, Container, Form, FormGroup, Input, Label} from 'reactstrap';
 import { Link, withRouter } from 'react-router-dom';
+import AppNavbar from "../AppNavbar";
+import '../App.css';
 
 
 
@@ -108,6 +110,7 @@ class AddProject extends Component {
         }
         return <div>
 
+            <AppNavbar/>
             {this.state.errors.map((error) => <p style={{color: 'red', fontSize: '12px'}}
                                                  key={error.field}>{error.field + " " + error.message}</p>)
             }

@@ -4,6 +4,7 @@ import com.bygst.risikolog.util.Unique;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -31,6 +32,7 @@ public class UserDTO {
 
     @NotBlank(message = "cannot be empty")
     @Size(min = 8, message = "password should have at least 8 characters")
+    @Digits(integer = 0, fraction = 0)
     private String password;
 
 }

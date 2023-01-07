@@ -19,10 +19,10 @@ public class RiskDTO {
     @Temporal(TemporalType.DATE)
     private Date changingDate;
     private Integer probability;
-    private Integer minCost;
-    private Integer midCost;
-    private Integer maxCost;
-    private Integer value;
+    private Long minCost;
+    private Long midCost;
+    private Long maxCost;
+    private Long value;
     private String owner;
     private String actions;
     private Boolean isActive;
