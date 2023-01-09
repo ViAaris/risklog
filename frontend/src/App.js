@@ -16,7 +16,7 @@ import AddNewRisk from "./risks/AddNewRisk";
 import {Logout} from "./auth/Logout";
 import EditProject from "./projects/EditProject";
 import AllRequests from "./requests/AllRequests";
-import Risk from "./risks/Risk";
+
 
 
 

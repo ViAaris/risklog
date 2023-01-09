@@ -81,6 +81,8 @@ class Risks extends Component {
             )
         }
 
+
+
         const {risks} = this.state;
         // const risksList = risks.map(r => {
         //     let id = r.id;
@@ -95,19 +97,24 @@ class Risks extends Component {
         const columns = [
 
             { dataField: 'title',
+                width: '100px',
+                sort: true,
                 text: 'Title' },
             { dataField: 'description',
                 text: 'Description',
+                width: '100px',
                 editor: {
                     type: Type.TEXTAREA
                 } },
             { dataField: 'reason',
                 text: 'Reason',
+                width: '100px',
                 editor: {
                     type: Type.TEXTAREA
                 } },
             {dataField:'category',
                 text:'Risk category',
+                width: "col col-lg-2",
                 sort: true,
                 editor:{
                     type:Type.SELECT,
@@ -124,28 +131,75 @@ class Risks extends Component {
                 }},
             { dataField: 'consequences',
                 text: 'Consequences',
+                width: "col col-lg-2",
                 editor: {
                     type: Type.TEXTAREA
                 } },
-            { dataField: 'probability', text: 'Probability', formatter:(cell)=>{if(cell!=null)return `${cell}%`} },
+            { dataField: 'probability',
+                text: 'Probability',
+                width: "col col-lg-0.5",
+                validator: (newValue, row, column) => {
+                    if (isNaN(newValue)) {
+                        return {
+                            valid: false,
+                            message: 'Probability should be numeric, in %'
+                        };
+                    }
+
+                    if (newValue > 100) {
+                        return {
+                            valid: false,
+                            message: 'Enter value in %, 0-100'
+                        };
+                    }
+                },
+                formatter:
+                    (cell)=>{
+                        if(cell!=null)
+                            return `${cell}%`}} ,
             { dataField: 'minCost',
                 text: 'Min cost',
+                width: "col col-lg-0.5",
+                validator: (newValue, row, column) => {
+                    if (isNaN(newValue)) {
+                        return {
+                            valid: false,
+                            message: 'Minimal cost value should be numeric'
+                        };
+                    }},
                 type: 'number',
                 formatter:(cell)=>{if(cell!=null)return `${cell} kr.`}
             },
             { dataField: 'midCost',
                 text: 'Mid cost',
+                width: "col col-lg-0.5",
+                validator: (newValue, row, column) => {
+                    if (isNaN(newValue)) {
+                        return {
+                            valid: false,
+                            message: 'Mid cost value should be numeric'
+                        };
+                    }},
                 type: 'number',
                 formatter:(cell)=>{if(cell!=null)return `${cell} kr.`}
             },
             { dataField: 'maxCost',
                 text: 'Max cost',
+                width: "col col-lg-0.5",
+                validator: (newValue, row, column) => {
+                    if (isNaN(newValue)) {
+                        return {
+                            valid: false,
+                            message: 'Maximum cost value should be numeric'
+                        };
+                    }},
                 type: 'number',
                 formatter:(cell)=>{if(cell!=null)return `${cell} kr.`}
             },
             {//(J10+(K10*0,43)+L10)/2,43*I10
                 dataField: 'value',
                 text: 'Value',
+                width: "col col-lg-0.5",
                 type: 'number',
                 editable: false,
                 formatter: (cell, row) => {
@@ -154,14 +208,16 @@ class Risks extends Component {
                     return <div>{`${ (row.minCost + (row.midCost * 0.43) + row.maxCost) / 2.43 * row.probability/100  } kr.`}</div>;
                 },
             },
-            { dataField: 'owner', text: 'Owner' },
+            { dataField: 'owner', width: "col col-lg-1", text: 'Owner' },
             { dataField: 'actions',
                 text: 'Actions',
+                width: "col col-lg-1",
                 editor: {
                     type: Type.TEXTAREA
                 } },
             { dataField: 'isActive',
                 text: 'Is active',
+                width: "col col-lg-0.5",
                 editor: {
                     type: Type.CHECKBOX,
                     value: 'true:false'
@@ -182,8 +238,8 @@ class Risks extends Component {
                 <AppNavbar/>
 
 
-                    <AddNewRisk/>
-                    <BootstrapTable
+                    {/*<AddNewRisk/>*/}
+                    <BootstrapTable class={"table"}
                         keyField="id"
                         data={ risks}
                         columns={ columns }

@@ -55,6 +55,7 @@
   width: 100%;
   border: none;
   margin-bottom: 20px;
+  padding: 20px 0px;
 }
 .table thead th {
   font-weight: bold;
@@ -62,7 +63,7 @@
   border: none;
   padding: 10px 15px;
   background: #d8d8d8;
-  font-size: 14px;
+  font-size: 16px;
 }
 .table thead tr th:first-child {
   border-radius: 8px 0 0 8px;
@@ -74,7 +75,7 @@
   text-align: left;
   border: none;
   padding: 10px 15px;
-  font-size: 14px;
+  font-size: 13px;
   vertical-align: top;
 }
 .table tbody tr:nth-child(even){
@@ -91,6 +92,9 @@
   border: 20px solid white;
 }
 
+.h3{
+  text-align: right;
+}
 .tableRequests {
   width: 50%;
   margin-bottom: 20px;
@@ -126,11 +130,13 @@
 
   display: flex;
 
+  width: 100%;
+
   align-items: center;
 
   justify-content: space-between;
 
-  padding: 20px;
+  padding: 10px 20px;
 
   background-color: #f2f2f2;
 
@@ -149,6 +155,7 @@
 .logo {
 
   font-size: 32px;
+
 
 }
 
@@ -246,27 +253,4 @@
 }
 
 
-.tableRisk{
-  border: 1px solid #eee;
-  table-layout: fixed;
-  width: 100%;
-  margin-bottom: 20px;
-}
-.tableRisk th {
-  font-weight: bold;
-  padding: 5px;
-  background: #efefef;
-  border: 1px solid #dddddd;
-}
-.tableRisk td{
-  padding: 5px 10px;
-  border: 1px solid #eee;
-  text-align: left;
-}
-.tableRisk tbody tr:nth-child(odd){
-  background: #fff;
-}
-.tableRisk tbody tr:nth-child(even){
-  background: #F7F7F7;
-}
 
