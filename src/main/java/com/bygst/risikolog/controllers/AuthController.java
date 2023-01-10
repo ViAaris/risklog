@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @CrossOrigin
 public class AuthController {
 
@@ -29,18 +29,11 @@ public class AuthController {
 
 
     @Autowired
-    ProjectService projectService;
-
-    @Autowired
-    UsersService usersService;
-
-
-
-    @Autowired
     public AuthController(
             AuthService authService, ModelMapper modelMapper) {
         this.authService = authService;
         this.modelMapper = modelMapper;
+
     }
 
     @PostMapping("/reg")

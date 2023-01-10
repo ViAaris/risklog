@@ -51,7 +51,7 @@ class Registration extends Component {
         event.preventDefault();
         const {item} = this.state;
 
-        fetch('/auth/reg', {
+        fetch('/api/auth/reg', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

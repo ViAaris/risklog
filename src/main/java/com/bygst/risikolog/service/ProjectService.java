@@ -2,6 +2,7 @@ package com.bygst.risikolog.service;
 
 import com.bygst.risikolog.dto.ProjectDTO;
 import com.bygst.risikolog.dto.TeamMemberDTO;
+import com.bygst.risikolog.exceptions.NonUniqueProjectException;
 import com.bygst.risikolog.model.Project;
 import com.bygst.risikolog.model.Risk;
 import com.bygst.risikolog.model.User;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -67,7 +69,10 @@ public class ProjectService {
     }
 
 
-    public Project add(ProjectDTO projectDTO) {
+    public Project add(ProjectDTO projectDTO) throws NonUniqueProjectException {
+        if(projectDTO.getId()!= null && loadProjectByTitle(projectDTO.getTitle()).isPresent()){
+            throw new NonUniqueProjectException("title","project already exists");
+        }
         Project project = convertToProject(projectDTO);
         if (!projectDTO.getContractors().isBlank()) {
             List<String> contractors = Arrays.asList(projectDTO.getContractors().trim()

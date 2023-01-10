@@ -1,16 +1,9 @@
 package com.bygst.risikolog.controllers;
 
 
-import com.bygst.risikolog.dto.Details;
-import com.bygst.risikolog.dto.ProjectDTO;
 import com.bygst.risikolog.dto.RequestDTO;
-import com.bygst.risikolog.dto.RiskDTO;
-import com.bygst.risikolog.model.Project;
 import com.bygst.risikolog.model.Request;
 import com.bygst.risikolog.service.RequestService;
-import com.bygst.risikolog.util.RequestStatus;
-import com.fasterxml.jackson.annotation.JsonView;
-import org.apache.coyote.Response;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")

@@ -49,16 +49,16 @@ function App() {
                         !isAuthenticated ? (
                             <Home {...props} setAuth={setAuth} />
                         ) : (
-                            props.history.push('/api/projects')
+                            props.history.push('/projects')
                         )
                     }
                 />
-                <AuthenticatedRoute path='/api/admin/projects/:id' component={EditProject}/>
-                <AuthenticatedRoute path='/api/admin/projects' component={AddProject}/>
-                <AuthenticatedRoute path='/api/admin/requests' component={AllRequests}/>
-                <AuthenticatedRoute path='/api/admin/users' component={Users}/>
-                <AuthenticatedRoute path='/api/projects' exact={true} component={ProjectList}/>
-                <AuthenticatedRoute path='/api/projects/:id/risks' component={Risks}/>
+                <AuthenticatedRoute path='/admin/projects/:id' component={EditProject}/>
+                <AuthenticatedRoute path='/admin/projects' component={AddProject}/>
+                <AuthenticatedRoute path='/admin/requests' component={AllRequests}/>
+                <AuthenticatedRoute path='/admin/users' component={Users}/>
+                <AuthenticatedRoute path='/projects' exact={true} component={ProjectList}/>
+                <AuthenticatedRoute path='/projects/:id/risks' component={Risks}/>
 
             </Switch>
 

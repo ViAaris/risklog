@@ -9,10 +9,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.annotation.Resources;
 import java.util.Arrays;
 
 
@@ -21,31 +24,42 @@ import java.util.Arrays;
         prePostEnabled = true,
         securedEnabled = true,
         jsr250Enabled = true)
+
 public class SecurityConfig {
 
-    
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.csrf().disable()
 
                 .authorizeRequests()
-                .antMatchers("/api/admin/*").access("hasAuthority('ROLE_ADMIN')")
-                .antMatchers("/auth/login*", "/auth/reg", "/").permitAll()
+                .antMatchers("/*.html",
+                        "/**/favicon.ico",
+                        "/**/*.html",
+                        "/manifest.json",
+                        "/**/*.png",
+                        "/**/*.css",
+                        "/**/*.js").permitAll()
+
+
+                .antMatchers("/", "/api/auth/**", "/auth/**", "/process_login", "/api/perform_logout").permitAll()
+                .antMatchers("/api/admin*").access("hasAuthority('ROLE_ADMIN')")
                 .anyRequest().authenticated()
                 .and()
+                .addFilterAfter(new SpaWebFilter(), UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
                 .loginPage("/auth/login")
                 .loginProcessingUrl("/process_login")
-                .defaultSuccessUrl("/api/projects")
+                .defaultSuccessUrl("/projects")
                 //.failureUrl("/auth/login?error")
                 .and()
                 .logout()
                 .deleteCookies("JSESSIONID")
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
-                .logoutUrl("/perform_logout")
-                .logoutSuccessUrl("/api/projects")
+                .logoutUrl("/api/perform_logout")
+                .logoutSuccessUrl("/")
                 .and()
                 .cors()
                 .configurationSource(corsConfigurationSource());

@@ -19,25 +19,7 @@ class EditProject extends Component {
     };
 
     async componentDidMount() {
-        // fetch('/api/admin/projects/' + this.props.match.params.id, {
-        //     method: 'PUT',
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(""),
-        // }).then(response=>{
-        //     if (response.status == 403) {
-        //         this.setState({allowed: false});
-        //     }
-        //     return response.json();
-        // }).then(data=>{
-        //     this.setState({serverError: data.message})
-        // });
 
-        // if((AuthenticationService.getAuthorities())[0] == "ROLE_ADMIN"){
-        //     this.setState({allowed: true})
-        // }
 
         const project = await (await fetch(`/api/projects/${this.props.match.params.id}`,
             {

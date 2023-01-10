@@ -2,6 +2,7 @@ package com.bygst.risikolog;
 
 import org.apache.catalina.Context;
 import org.apache.tomcat.util.http.Rfc6265CookieProcessor;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
@@ -16,10 +17,10 @@ public class RisikologApplication {
 
 	}
 
-//	@Bean
-//	public ModelMapper modelMapper(){
-//		return new ModelMapper();
-//	}
+	@Bean
+	public ModelMapper modelMapper(){
+		return new ModelMapper();
+	}
 
 	@Bean
 	public ServletWebServerFactory servletContainer() {

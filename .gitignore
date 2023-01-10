@@ -4,8 +4,8 @@ mvnw
 mvnw.cmd
 target/
 !.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+!src/main/frontend/src/main/**/target/
+!src/main/frontend/src/test/**/target/
 /src/test
 node_modules
 node
@@ -33,8 +33,8 @@ node
 /nbdist/
 /.nb-gradle/
 build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+!src/main/frontend/src/main/**/build/
+!src/main/frontend/src/test/**/build/
 
 ### VS Code ###
 .vscode/

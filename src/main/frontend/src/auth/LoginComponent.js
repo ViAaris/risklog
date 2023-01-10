@@ -60,7 +60,7 @@ class LoginComponent extends Component {
         };
 
 
-        fetch('/auth/login', options)
+        fetch('/api/auth/login', options)
             .then((response) => {
                 if (response.status >= 400 && response.status < 600) {
                     this.setState({hasLoginFailed: true})
@@ -98,7 +98,7 @@ class LoginComponent extends Component {
     render() {
 
         if (this.state.loggedIn === true) {
-            window.location.href = '/api/projects';
+            window.location.href = '/projects';
         }
 
         return (

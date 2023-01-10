@@ -1,6 +1,5 @@
 package com.bygst.risikolog.dto;
 
-import com.bygst.risikolog.util.RequestStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
