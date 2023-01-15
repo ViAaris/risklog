@@ -1,4 +1,4 @@
-import AuthenticationService from "../auth/AuthenticationService";
+
 
 export function DeclineRequest(event, request) {
     event.preventDefault();
@@ -18,6 +18,7 @@ export function DeclineRequest(event, request) {
             "status": 'declined'
         })
     }).then(response => response.json())
+        .then(window.location.reload())
         .then(data => console.log(data));
 
 }

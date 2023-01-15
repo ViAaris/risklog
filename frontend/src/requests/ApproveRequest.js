@@ -1,4 +1,4 @@
-import AuthenticationService from "../auth/AuthenticationService";
+
 
 export function ApproveRequest(event, request) {
     event.preventDefault();
@@ -18,6 +18,7 @@ export function ApproveRequest(event, request) {
             "status": 'approved'
         })
     }).then(response => response.json())
+        .then(window.location.reload())
         .then(data => console.log(data));
 
 }

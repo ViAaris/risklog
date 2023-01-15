@@ -1,14 +1,11 @@
 import React, {Component} from 'react'
 import AuthenticationService from './AuthenticationService';
 import {withRouter} from "react-router-dom";
-import {MuiThemeProvider, TextField} from "material-ui";
-import {Button, Form, FormGroup} from "reactstrap";
-import AppBar from "material-ui/AppBar";
+
+import {Form} from "reactstrap";
 
 
 class LoginComponent extends Component {
-
-
 
 
     constructor(props) {
@@ -20,6 +17,7 @@ class LoginComponent extends Component {
             hasLoginFailed: false,
             //showSuccessMessage: false,
             serverMessage: '',
+            responseStatus: '',
             loggedIn: false,
             grantedAuthorities: []
 
@@ -50,7 +48,7 @@ class LoginComponent extends Component {
                 "Authorization": AuthenticationService.createBasicAuthToken(this.state.username, this.state.password),
                 Accept: "application/json",
                 "Content-Type": "application/json;charset=UTF-8",
-                 "Access-Control-Allow-Headers":"Authorization, Content-Type, X-XSRF-TOKEN",
+                "Access-Control-Allow-Headers": "Authorization, Content-Type, X-XSRF-TOKEN",
                 "Access-Control-Allow-Origin": "http://localhost:3000",
             },
             body: JSON.stringify({
@@ -64,26 +62,30 @@ class LoginComponent extends Component {
             .then((response) => {
                 if (response.status >= 400 && response.status < 600) {
                     this.setState({hasLoginFailed: true})
-                }
-                else if(response.status === 200){
+                } else if (response.status === 200) {
                     this.setState({loggedIn: true});
                     AuthenticationService.registerSuccessfulLogin(this.state.username, this.state.password);
                 }
+                this.setState({responseStatus: response.status})
                 return response.json();
             })
             .then(data => {
-            console.log(data);
-            this.setState({ serverMessage: data});
-            this.setState({grantedAuthorities: data.grantedAuthorities});
-            AuthenticationService.setAuthorities(this.state.username, data.grantedAuthorities);
-            AuthenticationService.setId(this.state.username, data.id);
-        })
+                console.log(data);
+                this.setState({serverMessage: data});
+                if (this.state.responseStatus === 200) {
+                    this.setState({grantedAuthorities: data.grantedAuthorities});
+                    AuthenticationService.setAuthorities(this.state.username, data.grantedAuthorities);
+                    AuthenticationService.setId(this.state.username, data.id);
+                }
+
+            })
             .catch(err => {
                 console.log(err)
             });
 
     }
-    handleChange = (event) =>{
+
+    handleChange = (event) => {
         this.setState(
             {
                 [event.target.name]: event.target.value
@@ -93,43 +95,28 @@ class LoginComponent extends Component {
 
     render() {
 
-        if (this.state.loggedIn === true){
+        if (this.state.loggedIn === true) {
             window.location.href = '/api/projects';
         }
 
         return (
 
-            <div>
+            <div className={"body"}>
 
                 {this.state.serverMessage.error}
+                <div className={"form-box"}>
                 <Form onSubmit={(e) => this.loginClicked(e)}>
-                    <MuiThemeProvider>
-                        <div>
-                            <AppBar
-                                title="Login"
-                            />
+                        <label> Login </label>
+                        <input placeholder="Username" name="username" value={this.state.username}
+                               onChange={this.handleChange}/>
+                        <input placeholder="Password" type={"password"} name="password" value={this.state.password}
+                               onChange={this.handleChange}/>
 
-                            <TextField
-                                hintText="Enter your Username"
-                                floatingLabelText="Username"
-                                name="username"
-                                value={this.state.username} onChange={this.handleChange}
-                            />
-                            <TextField
-                                type="password"
-                                hintText="Enter your password"
-                                floatingLabelText="Password"
-                                name="password"
-                                value={this.state.password} onChange={this.handleChange}
-                            />
+                    <button className="btn" type="submit" name="login" value="Login" >Login</button>
 
-                            <FormGroup>
-                                <Button color="primary" type="submit">Save</Button>{' '}
-                            </FormGroup>
 
-                        </div>
-                    </MuiThemeProvider>
-                </Form>
+
+                </Form></div>
             </div>
 
         )

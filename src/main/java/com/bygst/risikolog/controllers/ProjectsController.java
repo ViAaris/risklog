@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
-//@Validated
+
 public class ProjectsController {
 
     private final ProjectService projectService;

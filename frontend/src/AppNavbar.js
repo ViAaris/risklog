@@ -1,29 +1,61 @@
 import React, {Component} from 'react';
-import {Navbar, NavbarBrand} from 'reactstrap';
+import {NavbarBrand} from 'reactstrap';
 import './App.css';
 import MyLogo from './logo.png';
+import AuthenticationService from "./auth/AuthenticationService";
 
 
 export default class AppNavbar extends Component {
 
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {isOpen: false};
-    //     this.toggle = this.toggle.bind(this);
-    // }
-    //
-    // toggle() {
-    //     this.setState({
-    //         isOpen: !this.state.isOpen
-    //     });
-    // }
+    constructor(props) {
+        super(props);
+        this.state = {
+            isAdmin:false
+        };
 
+    }
+    componentDidMount() {
+        if(AuthenticationService.getAuthorities()!=null){
+            AuthenticationService.getAuthorities()[0] === "ROLE_ADMIN" ?
+                this.setState({isAdmin:true}) :
+                this.setState({isAdmin:false})
+        }
+
+        };
     render() {
-        return <Navbar className="navbar">
-            <NavbarBrand href={"/"}>
-                <img src={MyLogo} className={"logo"} alt={"Bygst logo"}/>
-            </NavbarBrand>
-            {/*<NavbarBrand tag={Link} to="/api/projects">Home</NavbarBrand>*/}
-        </Navbar>;
+
+
+        return <div className="nav">
+            <div className={"navbar"}>
+                <NavbarBrand href={"/"}>
+                    <img src={MyLogo} className={"logo"} alt={"Bygst logo"}/>
+
+                </NavbarBrand>
+
+
+                {/*<NavbarBrand tag={Link} to="/api/projects">Home</NavbarBrand>*/}
+                <div className="services">
+                    <nav className="service">
+
+                        {
+                            this.state.isAdmin ?
+                            <div>
+                                    <ul>
+                                        <li className="links"><a href={"/api/admin/users"}><span>Users</span></a></li>
+                                        <li className="links"><a href={"/api/admin/requests"}><span>Requests</span></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                : ''
+                        }
+
+
+                    </nav>
+
+                </div>
+            </div>
+        </div>
+
+
     }
 }

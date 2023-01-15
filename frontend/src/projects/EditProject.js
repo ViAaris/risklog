@@ -1,7 +1,6 @@
 import React, {Component} from "react";
-import {Button, Container, Form, FormGroup, Input, Label} from "reactstrap";
+import {Button, Form} from "reactstrap";
 import {Link, withRouter} from "react-router-dom";
-import AppNavbar from "../AppNavbar";
 import '../App.css';
 class EditProject extends Component {
 
@@ -120,64 +119,54 @@ class EditProject extends Component {
         if(!this.state.allowed){
             return <p>You don't have access for this page</p>
         }
-        return <div>
-            <AppNavbar/>
+        return <div className={"body"}>
+
             {this.state.errors.map((error) => <p style={{color: 'red', fontSize: '12px'}}
                                                  key={error.field}>{error.field + " " + error.message}</p>)
             }
 
             {/*{this.state.updated && <div>Project updated successfully</div>}*/}
-            <Container>
+            <div className={"form-box"}>
                 <Form onSubmit={this.handleSubmit}>
                     <h1>Edit project id# {this.props.match.params.id}</h1>
-                    <FormGroup>
-                        <Label for="id">ID</Label>
-                        <Input type="text" name="id" id="id" value={item.id || ''}
+
+                        <label for="id">ID</label>
+                        <input type="text" name="id" id="id" value={item.id || ''}
                                onChange={this.handleChange} />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="title">Title</Label>
-                        <Input type="text" name="title" id="title" value={item.title || ''}
+
+                        <label for="title">Title</label>
+                        <input type="text" name="title" id="title" value={item.title || ''}
                                onChange={this.handleChange} autoComplete="title"/>
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="address">Address</Label>
-                        <Input type="text" name="address" id="address" value={item.address || ''}
+
+                        <label for="address">Address</label>
+                        <input type="text" name="address" id="address" value={item.address || ''}
                                onChange={this.handleChange} autoComplete="address"/>
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="budget">Budget</Label>
-                        <Input type="text" name="budget" id="budget" value={item.budget || ''}
+
+                        <label for="budget">Budget</label>
+                        <input type="text" name="budget" id="budget" value={item.budget || ''}
                                onChange={this.handleChange} autoComplete="budget"/>
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="startingDate">Starting date</Label>
-                        <Input type="date" name="startingDate" id="startingDate" value={item.startingDate || ''}
-                               onChange={this.handleChange} />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="finishingDate">Finishing date</Label>
-                        <Input type="date" name="finishingDate" id="finishingDate" value={item.finishingDate || ''}
-                               onChange={this.handleChange} />
-                    </FormGroup>
 
-                    <FormGroup>
-                        <Label for="contractors">Contractors</Label>
-                        <Input type="text" name="contractors" id="contractors" value={item.contractors || ''}
+                        <label for="startingDate">Starting date</label>
+                        <input type="date" name="startingDate" id="startingDate" value={item.startingDate || ''}
                                onChange={this.handleChange} />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="advisers">Advisers</Label>
-                        <Input type="text" name="advisers" id="advisers" value={item.advisers || ''}
+
+                        <label for="finishingDate">Finishing date</label>
+                        <input type="date" name="finishingDate" id="finishingDate" value={item.finishingDate || ''}
                                onChange={this.handleChange} />
-                    </FormGroup>
 
-                    <FormGroup>
-                        <Button color="primary" type="submit">Save</Button>{' '}
+                        <label for="contractors">Contractors</label>
+                        <input type="text" name="contractors" id="contractors" value={item.contractors || ''}
+                               onChange={this.handleChange} />
 
-                    </FormGroup>
+                        <label for="advisers">Advisers</label>
+                        <input type="text" name="advisers" id="advisers" value={item.advisers || ''}
+                               onChange={this.handleChange} />
+
+                        <button className={"btn"} type="submit">Save</button>
+
+
                 </Form>
-            </Container>
+            </div>
 
         </div>
 

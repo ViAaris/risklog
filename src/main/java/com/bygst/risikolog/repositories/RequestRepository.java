@@ -10,4 +10,6 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     void deleteByProjectId(Long projectId);
 
+    void deleteByUserId(Long userId);
+
 }

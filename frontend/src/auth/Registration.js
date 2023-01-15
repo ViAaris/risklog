@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Container, Form, FormGroup, Input, Label} from 'reactstrap';
+import {Button, Form} from 'reactstrap';
 import {Link, withRouter} from 'react-router-dom';
 
 
@@ -113,53 +113,49 @@ class Registration extends Component {
         const {item} = this.state;
 
 
-        return <div>
+        return <div className={"body"}>
+            <div className={"form-box"}>
             {this.state.errors.map((error) => <p style={{color: 'red', fontSize: '12px'}}
                                                  key={error.field}>{error.field + " " + error.message}</p>)
             }
 
-            <Container>
+
                 <Form onSubmit={this.handleSubmit}>
                     <h1>User Registration</h1>
-                    <FormGroup>
-                        <Label for="username">Username</Label>
-                        <Input type="text" name="username" id="username" value={item.username || ''}
+
+                        <label for="username">Username</label>
+                        <input type="text" name="username" id="username" value={item.username || ''}
                                onChange={this.handleChange} autoComplete="username"/>
                         {
                             this.state.usernameError ?
                                 <span style={{color: 'red', fontSize: '12px'}}>{this.state.usernameError}</span> : ''
                         }
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="firstName">First name</Label>
-                        <Input type="text" name="firstName" id="firstName" value={item.firstName || ''}
+
+                        <label for="firstName">First name</label>
+                        <input type="text" name="firstName" id="firstName" value={item.firstName || ''}
                                onChange={this.handleChange} autoComplete="firstName"/>
                         {
                             this.state.firstnameError ?
                                 <span style={{color: 'red', fontSize: '12px'}}>{this.state.firstnameError}</span> : ''
                         }
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="surname">Surname</Label>
-                        <Input type="text" name="surname" id="surname" value={item.surname || ''}
+
+                        <label for="surname">Surname</label>
+                        <input type="text" name="surname" id="surname" value={item.surname || ''}
                                onChange={this.handleChange} autoComplete="surname"/>
                         {
                             this.state.surnameError ?
                                 <span style={{color: 'red', fontSize: '12px'}}>{this.state.surnameError}</span> : ''
                         }
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="password">Password</Label>
-                        <Input type="password" name="password" id="password" value={item.password || ''}
+
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password" value={item.password || ''}
                                onChange={this.handleChange} autoComplete="password"/>
                         {
                             this.state.passwordError ?
                                 <span style={{color: 'red', fontSize: '12px'}}>{this.state.passwordError}</span> : ''
                         }
-                    </FormGroup>
 
-                    <FormGroup>
-                        <Label for="department">Department :</Label>
+                        <label for="department">Department :</label>
                         <select value={item.department || ''} name="department" id="department"
                                 onChange={this.handleChange}>
                             <option></option>
@@ -170,13 +166,12 @@ class Registration extends Component {
                             this.state.departmentError ?
                                 <span style={{color: 'red', fontSize: '12px'}}>{this.state.departmentError}</span> : ''
                         }
-                    </FormGroup>
-                    <FormGroup>
-                        <Button color="primary" type="submit">Save</Button>{' '}
 
-                    </FormGroup>
+                        <button type="submit" className={"btn"}>Save</button>
+
+
                 </Form>
-            </Container>
+            </div>
 
         </div>
 

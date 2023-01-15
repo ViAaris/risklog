@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import {Button, Container, Table} from 'reactstrap';
-import {Link, withRouter} from 'react-router-dom';
+import {Button} from 'reactstrap';
+import {withRouter} from 'react-router-dom';
 import '../App.css';
 import AuthenticationService from "../auth/AuthenticationService";
 
 import {ApproveRequest} from "./ApproveRequest";
 import {DeclineRequest} from "./DeclineRequest";
-import AppNavbar from "../AppNavbar";
+
 
 
 class AllRequests extends Component {
@@ -103,7 +103,7 @@ class AllRequests extends Component {
 
         return (
             <div className={"body"}>
-                <AppNavbar/>
+
                 <h3>Requests</h3>
                     <table className="tableRequests">
                         <thead>

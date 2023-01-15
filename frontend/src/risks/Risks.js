@@ -1,16 +1,29 @@
 import React, {Component} from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
-
 import '../App.css';
 import {withRouter} from 'react-router-dom';
-import AddNewRisk from "./AddNewRisk";
-import AppNavbar from "../AppNavbar";
+
 import cellEditFactory, {Type} from "react-bootstrap-table2-editor";
 
 
-
-
 class Risks extends Component {
+    emptyItem = {
+        projectId: this.props.match.params.id,
+        id: null,
+        title: '',
+        description: '',
+        reason: '',
+        category: '',
+        consequences: '',
+        probability: '',
+        minCost: '',
+        midCost: '',
+        maxCost: '',
+        value: '',
+        owner: '',
+        actions: '',
+        isActive: ''
+    };
 
 
     constructor(props) {
@@ -45,6 +58,7 @@ class Risks extends Component {
             })
             .then(data => {
                 if (!this.state.serverStatus) {
+                    data.push(this.emptyItem);
                     this.setState({risks: data});
                     console.log(data);
                 } else {
@@ -53,23 +67,39 @@ class Risks extends Component {
             });
     }
 
-    handleChange=(oldValue, newValue, row, column) =>{
+    handleChange = (oldValue, newValue, row) => {
 
-        if (newValue!==oldValue) {
+        if (row.id === null) {
 
-        fetch('/api/projects/' + this.props.match.params.id + '/risks/' + row.id, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(row),
-        }).then((response) => {
-            return response.json();
+            fetch('/api/projects/' + this.props.match.params.id + '/risks', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(row),
+            }).then((response) => response.json())
+                .then(window.location.reload())
+                .then((data) => {
+                    console.log(data);
+                });
+        }
 
-        }).then(data => {
-            console.log(data);
-        });
+        if (row.id !== null && newValue !== oldValue) {
+
+            fetch('/api/projects/' + this.props.match.params.id + '/risks/' + row.id, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(row),
+            }).then((response) => {
+                return response.json();
+
+            }).then(data => {
+                console.log(data);
+            });
         }
     }
 
@@ -82,63 +112,69 @@ class Risks extends Component {
         }
 
 
-
         const {risks} = this.state;
-        // const risksList = risks.map(r => {
-        //     let id = r.id;
-        //     return (<tr key={id}>
-        //         <td>{r.title}</td>
-        //         <td>{r.description}</td>
-        //         <td>{r.reason}</td>
-        //         {/*<OneRisk projectId={this.props.match.params.id} riskId={id}/>*/}
-        //     </tr>)
-        // });
-
         const columns = [
-
-            { dataField: 'title',
+            {
+                dataField: 'projectId',
+                hidden: true
+            },
+            {
+                dataField: 'title',
                 width: '100px',
                 sort: true,
-                text: 'Title' },
-            { dataField: 'description',
+                text: 'Title'
+            },
+            {
+                dataField: 'description',
                 text: 'Description',
                 width: '100px',
                 editor: {
                     type: Type.TEXTAREA
-                } },
-            { dataField: 'reason',
+                }
+            },
+            {
+                dataField: 'reason',
                 text: 'Reason',
                 width: '100px',
                 editor: {
                     type: Type.TEXTAREA
-                } },
-            {dataField:'category',
-                text:'Risk category',
+                }
+            },
+            {
+                dataField: 'category',
+                text: 'Risk category',
                 width: "col col-lg-2",
                 sort: true,
-                editor:{
-                    type:Type.SELECT,
-                    options:[
-                        {label: "Organisation and cooperation",value:'Organisation and cooperation' },
-                        {label: "Environment and surroundings",value:'Environment and surroundings' },
-                        {label: "Functionality, test and hand over",value:'Functionality, test and hand over' },
-                        {label: "Building design and technical solutions",value:'Building design and technical solutions' },
+                editor: {
+                    type: Type.SELECT,
+                    options: [
+                        {label: "Organisation and cooperation", value: 'Organisation and cooperation'},
+                        {label: "Environment and surroundings", value: 'Environment and surroundings'},
+                        {label: "Functionality, test and hand over", value: 'Functionality, test and hand over'},
+                        {
+                            label: "Building design and technical solutions",
+                            value: 'Building design and technical solutions'
+                        },
                         {label: "Contract and market situation", value: "Contract and market situation"},
                         {label: "Budget and finance", value: "Budget and finance"},
                         {label: "Authorities and stakeholders", value: "Authorities and stakeholders"},
                         {label: "Client and users", value: "Client and users"}
                     ]
-                }},
-            { dataField: 'consequences',
+                }
+            },
+            {
+                dataField: 'consequences',
                 text: 'Consequences',
                 width: "col col-lg-2",
                 editor: {
                     type: Type.TEXTAREA
-                } },
-            { dataField: 'probability',
+                }
+            },
+            {
+                dataField: 'probability',
                 text: 'Probability',
                 width: "col col-lg-0.5",
-                validator: (newValue, row, column) => {
+                validator: (newValue) => {
                     if (isNaN(newValue)) {
                         return {
                             valid: false,
@@ -154,47 +190,61 @@ class Risks extends Component {
                     }
                 },
                 formatter:
-                    (cell)=>{
-                        if(cell!=null)
-                            return `${cell}%`}} ,
-            { dataField: 'minCost',
+                    (cell) => {
+                        if (cell != null)
+                            return `${cell}%`
+                    }
+            },
+            {
+                dataField: 'minCost',
                 text: 'Min cost',
                 width: "col col-lg-0.5",
-                validator: (newValue, row, column) => {
+                validator: (newValue) => {
                     if (isNaN(newValue)) {
                         return {
                             valid: false,
                             message: 'Minimal cost value should be numeric'
                         };
-                    }},
+                    }
+                },
                 type: 'number',
-                formatter:(cell)=>{if(cell!=null)return `${cell} kr.`}
+                formatter: (cell) => {
+                    if (cell != null) return `${cell} kr.`
+                }
             },
-            { dataField: 'midCost',
+            {
+                dataField: 'midCost',
                 text: 'Mid cost',
                 width: "col col-lg-0.5",
-                validator: (newValue, row, column) => {
+                validator: (newValue) => {
                     if (isNaN(newValue)) {
                         return {
                             valid: false,
                             message: 'Mid cost value should be numeric'
                         };
-                    }},
+                    }
+                },
                 type: 'number',
-                formatter:(cell)=>{if(cell!=null)return `${cell} kr.`}
+                formatter: (cell) => {
+                    if (cell != null) return `${cell} kr.`
+                }
             },
-            { dataField: 'maxCost',
+            {
+                dataField: 'maxCost',
                 text: 'Max cost',
                 width: "col col-lg-0.5",
-                validator: (newValue, row, column) => {
+                validator: (newValue) => {
                     if (isNaN(newValue)) {
                         return {
                             valid: false,
                             message: 'Maximum cost value should be numeric'
                         };
-                    }},
+                    }
+                },
                 type: 'number',
-                formatter:(cell)=>{if(cell!=null)return `${cell} kr.`}
+                formatter: (cell) => {
+                    if (cell != null) return `${cell} kr.`
+                }
             },
             {//(J10+(K10*0,43)+L10)/2,43*I10
                 dataField: 'value',
@@ -204,18 +254,21 @@ class Risks extends Component {
                 editable: false,
                 formatter: (cell, row) => {
                     console.log(row);
-                    if(row.minCost != null && row.midCost != null && row.maxCost != null && row.probability != null)
-                    return <div>{`${ (row.minCost + (row.midCost * 0.43) + row.maxCost) / 2.43 * row.probability/100  } kr.`}</div>;
+                    if (row.minCost != null && row.midCost != null && row.maxCost != null && row.probability != null)
+                        return <div>{`${(row.minCost + (row.midCost * 0.43) + row.maxCost) / 2.43 * row.probability / 100} kr.`}</div>;
                 },
             },
-            { dataField: 'owner', width: "col col-lg-1", text: 'Owner' },
-            { dataField: 'actions',
+            {dataField: 'owner', width: "col col-lg-1", text: 'Owner'},
+            {
+                dataField: 'actions',
                 text: 'Actions',
                 width: "col col-lg-1",
                 editor: {
                     type: Type.TEXTAREA
-                } },
-            { dataField: 'isActive',
+                }
+            },
+            {
+                dataField: 'isActive',
                 text: 'Is active',
                 width: "col col-lg-0.5",
                 editor: {
@@ -226,7 +279,7 @@ class Risks extends Component {
         ];
 
         const cellEditProp = cellEditFactory({
-            mode:'dbclick',
+            mode: 'dbclick',
             blurToSave: true,
             afterSaveCell: this.handleChange,
             //beforeSaveCell: this.handleSet,
@@ -235,47 +288,12 @@ class Risks extends Component {
 
         return (
             <div className={"body"}>
-                <AppNavbar/>
-
-
-                    {/*<AddNewRisk/>*/}
-                    <BootstrapTable class={"table"}
-                        keyField="id"
-                        data={ risks}
-                        columns={ columns }
-                        cellEdit={ cellEditProp }
-
-                    />
-                        {/*<table className="tableRisk" border={1}>*/}
-                        {/*    <thead>*/}
-                        {/*    <h2>Risk log</h2>*/}
-                        {/*    <h3>Add new risk</h3>*/}
-                        {/*    <tr>*/}
-                        {/*        <th>Title</th>*/}
-                        {/*        <th>Description</th>*/}
-                        {/*        <th>Reason</th>*/}
-                        {/*        <th>Category</th>*/}
-                        {/*        <th>Consequences</th>*/}
-                        {/*        <th>Probability</th>*/}
-                        {/*        <th>Min cost</th>*/}
-                        {/*        <th>Mid cost</th>*/}
-                        {/*        <th>Max cost</th>*/}
-                        {/*        <th>Value</th>*/}
-                        {/*        <th>Owner</th>*/}
-                        {/*        <th>Actions</th>*/}
-                        {/*        <th>Active</th>*/}
-                        {/*        <br/>*/}
-                        {/*    </tr>*/}
-                        {/*    <AddNewRisk/>*/}
-                        {/*    </thead>*/}
-
-                        {/*    <tbody>*/}
-                        {/*    {risksList}*/}
-                        {/*    </tbody>*/}
-                        {/*</table>*/}
-
-
-
+                <BootstrapTable class={"table"}
+                                keyField="id"
+                                data={risks}
+                                columns={columns}
+                                cellEdit={cellEditProp}
+                />
             </div>
         );
     }

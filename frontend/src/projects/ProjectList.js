@@ -1,14 +1,10 @@
-import React, { Component } from 'react';
-import {Button, Container, Form, FormGroup, Table} from 'reactstrap';
+import React, {Component} from 'react';
+import {Button, Container, Form, FormGroup} from 'reactstrap';
 import {Link, withRouter} from 'react-router-dom';
 import '../App.css';
 import AuthenticationService from "../auth/AuthenticationService";
 import {Logout} from "../auth/Logout";
 import {SendRequest} from "../requests/SendRequest";
-import AppNavbar from "../AppNavbar";
-
-
-
 
 
 
@@ -21,9 +17,8 @@ class ProjectList extends Component {
             showMessage: false,
             requestId: ""
         };
-       this.requestIsSent = this.requestIsSent.bind(this)
+        this.requestIsSent = this.requestIsSent.bind(this)
     }
-
 
 
     componentDidMount() {
@@ -39,40 +34,39 @@ class ProjectList extends Component {
         };
 
         fetch('/api/projects', options)
-            .then((response) =>{
-                if(response.status === 405){
+            .then((response) => {
+                if (response.status === 405) {
                     AuthenticationService.logout();
                     this.props.history.push('/auth/login');
                 }
                 return response.json();
             })
-                .then(data => {
-                    console.log(data);
-                    this.setState({projects: data})
-                });
+            .then(data => {
+                console.log(data);
+                this.setState({projects: data})
+            });
 
     }
 
     requestIsSent = (e, id) => {
-        this.setState({showMessage: true, requestId:id});
+        this.setState({showMessage: true, requestId: id});
         SendRequest(e, id);
     };
 
     async remove(id) {
-        await fetch(`/api/admin/projects/`+id, {
+        await fetch(`/api/admin/projects/` + id, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
         }).then(response => {
-            if (response.status === 200){
+            if (response.status === 200) {
                 let updatedProjects = [...this.state.projects].filter(i => i.id !== id);
                 this.setState({projects: updatedProjects});
             }
         });
     }
-
 
 
     render() {
@@ -90,7 +84,7 @@ class ProjectList extends Component {
 
                 <td>{project.team.map(user => {
                     return <td key={user.id}>
-                    <div>{user.fullName}</div>
+                        <div>{user.fullName}</div>
                     </td>
                 })}</td>
                 <td>{project.contractors}</td>
@@ -98,30 +92,31 @@ class ProjectList extends Component {
 
 
                 <td>
-                    <Button color="primary"  tag={Link} to={"/api/projects/" + project.id + "/risks"}>Risks</Button>
+                    <Button className={"btn"} tag={Link} to={"/api/projects/" + project.id + "/risks"}>Risks</Button>
                 </td>
 
 
                 <td>
-                    { AuthenticationService.getAuthorities()[0] !== "ROLE_ADMIN" ?
+                    {AuthenticationService.getAuthorities()[0] !== "ROLE_ADMIN" ?
 
-                            this.state.showMessage && this.state.requestId === project.id
-                                ?
-                                <p>Your request was sent to the administrator</p>
-                                :
-                                <td>
-                                    <Button onClick={e => this.requestIsSent(e, project.id)} color="primary"
-                                            type="submit">Send
-                                        request</Button>{' '}
+                        this.state.showMessage && this.state.requestId === project.id
+                            ?
+                            <p>Your request was sent to the administrator</p>
+                            :
+                            <td>
+                                <Button className={"btn"} onClick={e => this.requestIsSent(e, project.id)} type="submit">Send
+                                    request</Button>{' '}
 
-                                </td>
-                         : <div className="float-right">
-                            <Button color="success" tag={Link} to={'/api/admin/projects/'+ project.id}>Edit Project</Button>
-                            <Button size="sm" color="danger" onClick={() => this.remove(project.id)}>Delete</Button>
+                            </td>
+                        : <div>
+                            {/*<Button className={"btn"} tag={Link} to={'/api/admin/projects/' + project.id}>Edit*/}
+                            {/*    Project</Button>*/}
+                            <div className={"buttons"}>
+                            <a href={'/api/admin/projects/' + project.id} className={"btn"}>Edit</a>
+                            <a className={"btn"} onClick={() => this.remove(project.id)}>Delete</a></div>
                         </div>
                     }
                 </td>
-
 
 
             </tr>
@@ -131,30 +126,26 @@ class ProjectList extends Component {
 
 
             <div className={"body"}>
-                <AppNavbar/>
 
+                <div className={"main"}>
+                    <ul>
+                        <li>
+                            <a href={"/api/admin/projects"}><span>Add project</span></a>
+                        </li>
+                    </ul>
+                </div>
                 <Container fluid>
-
-                    {
-                        AuthenticationService.getAuthorities()[0] === "ROLE_ADMIN" ?
-                            <div className="float-right">
-                                <Button color="success" tag={Link} to="/api/admin/projects">Add Project</Button>
-                                <br/>
-                                <Button color="success" tag={Link} to="/api/admin/requests">Requests</Button>
-                            </div>  : ''
-                    }
-
 
                     <h3>Projects</h3>
                     <hr></hr>
                     <br/>
-                    <table class="table">
+                    <table className="table">
                         <thead>
 
                         <tr>
                             <th>Title</th>
                             <th>Address</th>
-                            <th>Budget</th>
+                            <th>Budget, kr.</th>
                             <th>Starting date</th>
                             <th>Finishing date</th>
                             <th width={500}>Team</th>
@@ -172,13 +163,14 @@ class ProjectList extends Component {
 
                     <br/>
                     <br/>
-                    <div className="float-right">
+                    <div>
                         <Form onSubmit={(e) => Logout(e)}>
                             <FormGroup>
                                 <Button type="submit">Logout</Button>{' '}
                             </FormGroup>
                         </Form>
                     </div>
+
                 </Container>
 
             </div>
@@ -186,4 +178,5 @@ class ProjectList extends Component {
         );
     }
 }
+
 export default withRouter(ProjectList);
