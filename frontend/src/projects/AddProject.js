@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Form} from 'reactstrap';
-import { Link, withRouter } from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import '../App.css';
-
-
 
 
 class AddProject extends Component {
@@ -21,20 +19,20 @@ class AddProject extends Component {
 
     componentDidMount() {
 
-       fetch('/api/admin/projects', {
+        fetch('/api/admin/projects', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(""),
-        }).then(response=>{
+        }).then(response => {
             if (response.status === 403) {
                 this.setState({allowed: false});
             }
             return response.json();
-        }).then(data=>{
-                this.setState({serverError: data.message})
+        }).then(data => {
+            this.setState({serverError: data.message})
         });
 
         // if((AuthenticationService.getAuthorities())[0] == "ROLE_ADMIN"){
@@ -48,7 +46,7 @@ class AddProject extends Component {
             item: this.emptyItem,
             errors: [],
             success: false,
-            allowed:true,
+            allowed: true,
             serverMessage: ""
         };
         this.handleChange = this.handleChange.bind(this);
@@ -77,14 +75,14 @@ class AddProject extends Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(item),
-        }).then(response=>{
-            this.setState({errors:[]});
+        }).then(response => {
+            this.setState({errors: []});
 
             if (response.status === 200) {
                 this.setState({success: true});
             }
             return response.json();
-        }).then(data=>{
+        }).then(data => {
             if (data.fieldErrors) {
                 this.setState({errors: data.fieldErrors})
             }
@@ -93,66 +91,123 @@ class AddProject extends Component {
     }
 
 
-
     render() {
-        if (this.state.success) {
-            return (<p>Project added successfully!
-                <br/>
-                <br/>
-                <Button size="sm" color="primary" tag={Link} to={"/api/projects"}>Back to all projects</Button>
-            </p>);
-        }
         const {item} = this.state;
-        if(!this.state.allowed){
-            return <p>You don't have access for this page</p>
-        }
         return <div className={"body"}>
 
+            {!this.state.allowed ? <h3>You don't have access for this page</h3>
+                :
+                <div> {this.state.success ? <div className="input-container ic3">
+                        <h3>Project added successfully</h3>
+                        <button className="btn"><Link to="/api/projects">Back to all projects</Link></button>
+                    </div>
+                    :
+                    <div className="card">
 
-            {this.state.errors.map((error) => <p style={{color: 'red', fontSize: '12px'}}
-                                                 key={error.field}>{error.field + " " + error.message}</p>)
+                            <h1 className="title">Add project</h1>
+                        {this.state.errors.map((error) => <p style={{color: 'red', fontSize: '12px'}}
+                                                             key={error.field}>{error.field + " " + error.message}</p>)
+                        }
+                        <Form className="card-form" onSubmit={this.handleSubmit}>
+                            <div className="input1">
+                                <input type="text" className="input-field" name="title" id="title"
+                                                               value={item.title || ''}
+                                                               onChange={this.handleChange} />
+                                <label className="input-label">Title</label>
+                            </div>
+                            <div className="input1">
+                                <input type="text" className="input-field" name="address" id="address"
+                                       value={item.address || ''}
+                                       onChange={this.handleChange} />
+                                <label className="input-label">Address</label>
+                            </div>
+                            <div className="input1">
+
+                                <input type="text" className="input-field" name="budget" id="budget" value={item.budget || ''}
+                                       onChange={this.handleChange}/>
+                                <label className="input-label">Budget</label>
+                            </div>
+
+                            <div className={"input1"}>
+                                <input className="input-field" type="date" name="startingDate" id="startingDate"
+                                       value={item.startingDate || ''}
+                                       onChange={this.handleChange}/>
+                                <label className="input-label">Starting date</label>
+                            </div>
+
+
+                    <div className="input1">
+                    <input className="input-field" type="date" name="finishingDate" id="finishingDate"
+                    value={item.finishingDate || ''}
+                    onChange={this.handleChange}/>
+                        <label className="input-label">Finishing date</label>
+                    </div>
+
+                    <div className="input1">
+
+                    <input className="input-field" type="text" name="contractors" id="contractors"
+                    value={item.contractors || ''}
+                    onChange={this.handleChange}/>
+                        <label className="input-label">Contractors</label>
+
+                    </div>
+                    <div className="input1">
+
+                    <input className="input-field" type="text" name="advisers" id="advisers"
+                    value={item.advisers || ''}
+                    onChange={this.handleChange}/>
+                        <label className="input-label">Advisers</label>
+                    </div>
+                            <div className="input-container ic3">
+                                <button className="btn">Add</button>
+                            </div>
+                        </Form>
+                    </div>
+                    // <div className={"card"}>
+                    //     <div className={"card-form"}>
+
+                    //         <Form onSubmit={this.handleSubmit}>
+                    //             <h1 className={"title"}>Add new project</h1>
+                    //             <div className="input">
+                    //                     <input className="input-field" type="text" name="title" id="title"
+                    //                            value={item.title || ''}
+                    //                            onChange={this.handleChange} autoComplete="title"/>
+                    //                     <label className="input-label">Full name</label>
+                    //             </div>
+                    //             <div className="input">
+
+                                        // <input className="input-field" type="text" name="address" id="address"
+                                        //        value={item.address || ''}
+                                        //        onChange={this.handleChange} autoComplete="address"/>
+                    //
+                    //                     <label className="input-label">Full name</label>
+                    //
+                    //                 {/*<div className="input-container ic2">*/}
+                    // //
+                    //                     <input className="input" type="text" name="budget" id="budget" value={item.budget || ''}
+                    //                            onChange={this.handleChange} autoComplete="budget"/>
+                    //                     <div className="cut"></div>
+
+                    //                 {/*</div>*/}
+                    //                 {/*<div className="input-container ic2">*/}
+                    //
+
+                    //
+                    //
+                    //                 {/*</div>*/}
+                    //                 {/*<div className="input-container ic3">*/}
+                    //                 {/*    <button type="submit" className={"btn"}>Save</button>*/}
+                    //                 {/*</div>*/}
+                    //             </div>
+                    //         </Form>
+                    //     </div>
+                    // </div>
+                }
+                </div>
             }
-            <div className={"form-box"}>
-                <Form onSubmit={this.handleSubmit}>
-                    <h1>Add new project</h1>
-
-                        <label for="title">Title</label>
-                        <input type="text" name="title" id="title" value={item.title || ''}
-                               onChange={this.handleChange} autoComplete="title"/>
-
-                        <label for="address">Address</label>
-                        <input type="text" name="address" id="address" value={item.address || ''}
-                               onChange={this.handleChange} autoComplete="address"/>
-
-                        <label for="budget">Budget</label>
-                        <input type="text" name="budget" id="budget" value={item.budget || ''}
-                               onChange={this.handleChange} autoComplete="budget"/>
-
-                        <label for="startingDate">Starting date</label>
-                        <input type="date" name="startingDate" id="startingDate" value={item.startingDate || ''}
-                               onChange={this.handleChange} />
-
-                        <label for="finishingDate">Finishing date</label>
-                        <input type="date" name="finishingDate" id="finishingDate" value={item.finishingDate || ''}
-                               onChange={this.handleChange} />
-
-                        <label for="contractors">Contractors</label>
-                        <input type="text" name="contractors" id="contractors" value={item.contractors || ''}
-                               onChange={this.handleChange} />
-
-                        <label for="advisers">Advisers</label>
-                        <input type="text" name="advisers" id="advisers" value={item.advisers || ''}
-                               onChange={this.handleChange} />
-
-                        <button type="submit" className={"btn"}>Save</button>
-
-
-                </Form>
-            </div>
-
         </div>
-
     }
+
 }
 
 export default withRouter(AddProject);

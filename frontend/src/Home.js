@@ -14,11 +14,11 @@ class Home extends Component {
 
 
 
-                        <Button className="button" > <Link to="/auth/login">Log in</Link></Button>
+                        <button className="btn" > <Link to="/auth/login">Log in</Link></button>
                         <br/>
                         <br/>
                         <br/>
-                        <Button classname="button" > <Link to="/auth/reg">Sign up</Link></Button>
+                        <button className="btn" > <Link to="/auth/reg" >Sign up</Link></button>
 
 
 

@@ -129,9 +129,10 @@ class ProjectList extends Component {
 
                 <div className={"main"}>
                     <ul>
+                        {AuthenticationService.getAuthorities()[0] === "ROLE_ADMIN" ?
                         <li>
                             <a href={"/api/admin/projects"}><span>Add project</span></a>
-                        </li>
+                        </li> : ""}
                     </ul>
                 </div>
                 <Container fluid>

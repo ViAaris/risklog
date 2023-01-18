@@ -36,8 +36,6 @@ class Registration extends Component {
     }
 
 
-
-
     handleChange(event) {
         const target = event.target;
         const value = target.value;
@@ -66,29 +64,30 @@ class Registration extends Component {
                 firstnameError: "",
                 surnameError: "",
                 passwordError: "",
-                departmentError: ""});
+                departmentError: ""
+            });
 
             if (response.status === 200) {
                 this.setState({success: true});
             }
             return response.json();
         }).then(data => {
-                if (data.fieldErrors) {
-                    //this.setState({errors: data.fieldErrors})
-                    data.fieldErrors.map((error) => {
-                        if (error.field === 'username') {
-                            this.setState({usernameError: error.message})
-                        } else if (error.field === 'password') {
-                            this.setState({passwordError: error.message})
-                        } else if (error.field === 'firstName') {
-                            this.setState({firstnameError: error.message})
-                        } else if (error.field === 'surname') {
-                            this.setState({surnameError: error.message})
-                        } else if (error.field === 'department') {
-                            this.setState({departmentError: error.message})
-                        }
-                    })
-                }
+            if (data.fieldErrors) {
+                //this.setState({errors: data.fieldErrors})
+                data.fieldErrors.map((error) => {
+                    if (error.field === 'username') {
+                        this.setState({usernameError: error.message})
+                    } else if (error.field === 'password') {
+                        this.setState({passwordError: error.message})
+                    } else if (error.field === 'firstName') {
+                        this.setState({firstnameError: error.message})
+                    } else if (error.field === 'surname') {
+                        this.setState({surnameError: error.message})
+                    } else if (error.field === 'department') {
+                        this.setState({departmentError: error.message})
+                    }
+                })
+            }
 
             console.log(data);
         })
@@ -101,78 +100,90 @@ class Registration extends Component {
 
     render() {
 
-        if (this.state.success) {
-            return (<p>User registered successfully!
-                <br/>
-                <br/>
-                <Button size="sm" color="primary" tag={Link} to={"/auth/login"}>Log in</Button>
-            </p>);
-        }
-
 
         const {item} = this.state;
 
 
         return <div className={"body"}>
-            <div className={"form-box"}>
+
+            {this.state.success ? <div className="input-container ic3">
+                <h3>User was registered successfully!</h3>
+                    <button className="btn" > <Link to="/auth/login">Log in</Link></button>
+                </div>
+                :
+                <div className={"form reg"}>
             {this.state.errors.map((error) => <p style={{color: 'red', fontSize: '12px'}}
-                                                 key={error.field}>{error.field + " " + error.message}</p>)
+                key={error.field}>{error.field + " " + error.message}</p>)
             }
-
-
                 <Form onSubmit={this.handleSubmit}>
-                    <h1>User Registration</h1>
+                <h1 className={"title"}>User Registration</h1>
+                <div className="input-container ic1">
+                <input id="username" className="input" type="text" placeholder="Username*" name="username"
+                value={item.username || ''}
+                onChange={this.handleChange} autoComplete="username"/>
+                <div className="cut"></div>
+            {
+                this.state.usernameError ?
+                    <div className={"error"}> {this.state.usernameError}</div> : ''
+            }
+                </div>
 
-                        <label for="username">Username</label>
-                        <input type="text" name="username" id="username" value={item.username || ''}
-                               onChange={this.handleChange} autoComplete="username"/>
-                        {
-                            this.state.usernameError ?
-                                <span style={{color: 'red', fontSize: '12px'}}>{this.state.usernameError}</span> : ''
-                        }
 
-                        <label for="firstName">First name</label>
-                        <input type="text" name="firstName" id="firstName" value={item.firstName || ''}
-                               onChange={this.handleChange} autoComplete="firstName"/>
-                        {
-                            this.state.firstnameError ?
-                                <span style={{color: 'red', fontSize: '12px'}}>{this.state.firstnameError}</span> : ''
-                        }
+                <div className="input-container ic2">
+                <input type="text" className="input" name="firstName" id="firstName"
+                value={item.firstName || ''}
+                onChange={this.handleChange} autoComplete="firstName" placeholder="First name*"/>
+                <div className="cut"></div>
+            {
+                this.state.firstnameError ?
+                    <div className={"error"}>{this.state.firstnameError}</div> : ''
+            }
+                </div>
 
-                        <label for="surname">Surname</label>
-                        <input type="text" name="surname" id="surname" value={item.surname || ''}
-                               onChange={this.handleChange} autoComplete="surname"/>
-                        {
-                            this.state.surnameError ?
-                                <span style={{color: 'red', fontSize: '12px'}}>{this.state.surnameError}</span> : ''
-                        }
 
-                        <label for="password">Password</label>
-                        <input type="password" name="password" id="password" value={item.password || ''}
-                               onChange={this.handleChange} autoComplete="password"/>
-                        {
-                            this.state.passwordError ?
-                                <span style={{color: 'red', fontSize: '12px'}}>{this.state.passwordError}</span> : ''
-                        }
+                <div className="input-container ic2">
+                <input type="text" className="input" name="surname" id="surname" value={item.surname || ''}
+                onChange={this.handleChange} autoComplete="surname" placeholder="Surname*"/>
+            {
+                this.state.surnameError ?
+                    <div className={"error"}>{this.state.surnameError}</div> : ''
+            }
+                </div>
+                <div className="input-container ic2">
+                <input id="password" className="input" type={"password"} name="password"
+                value={item.password || ''}
+                onChange={this.handleChange} autoComplete="password" placeholder="Password*"/>
+                <div className="cut cut-short"></div>
+            {
+                this.state.passwordError ?
+                    <div className={"error"}>{this.state.passwordError}</div> : ''
+            }
+                </div>
 
-                        <label for="department">Department :</label>
-                        <select value={item.department || ''} name="department" id="department"
-                                onChange={this.handleChange}>
-                            <option></option>
-                            <option value="Risks and planning">Risks and planning</option>
-                            <option value="Project management">Project management</option>
-                        </select>
-                        {
-                            this.state.departmentError ?
-                                <span style={{color: 'red', fontSize: '12px'}}>{this.state.departmentError}</span> : ''
-                        }
+                <div className="input-container ic2">
+                <select className="input" value={item.department || ''} placeholder={"Department*"}
+                name="department" id="department"
+                onChange={this.handleChange}
+                        defaultValue={""}>
+                <option hidden value="">Department*</option>
+                <option value="Risks and planning">Risks and planning</option>
+                <option value="Project management">Project management</option>
+                </select>
+            {
+                this.state.departmentError ?
+                    <div className={"error"}>{this.state.departmentError}</div> : ''
+            }
+                </div>
 
-                        <button type="submit" className={"btn"}>Save</button>
-
+                <div className="input-container ic3">
+                <button type="text" className="btn">Submit</button>
+                </div>
 
                 </Form>
-            </div>
-
+                <div className={"qst"}><h3>Already have an account?</h3>
+                <a href={"/auth/login"}>Log in</a></div>
+                </div>
+            }
         </div>
 
     }

@@ -103,20 +103,47 @@ class LoginComponent extends Component {
 
             <div className={"body"}>
 
-                {this.state.serverMessage.error}
-                <div className={"form-box"}>
-                <Form onSubmit={(e) => this.loginClicked(e)}>
-                        <label> Login </label>
-                        <input placeholder="Username" name="username" value={this.state.username}
+
+
+                <div className="form">
+                    <Form onSubmit={(e) => this.loginClicked(e)}>
+                    <h1 className={"title"}>Login</h1>
+                        <div className={"error"}> {this.state.serverMessage.error}</div>
+                    <div className="input-container ic1">
+                        <input id="username" className="input" type="text" placeholder="Username" name="username" value={this.state.username}
                                onChange={this.handleChange}/>
-                        <input placeholder="Password" type={"password"} name="password" value={this.state.password}
-                               onChange={this.handleChange}/>
+                        <div className="cut"></div>
 
-                    <button className="btn" type="submit" name="login" value="Login" >Login</button>
+                    </div>
+
+                    <div className="input-container ic2">
+                        <input id="password" className="input" type={"password"} name="password" value={this.state.password}
+                               onChange={this.handleChange} placeholder="Password"/>
+                        <div className="cut cut-short"></div>
+
+                    </div>
+                        <div className="input-container ic3"><button type="text" className="btn">Submit</button></div>
+                    </Form>
+
+                    <div className={"qst"}> <h3>Do not have an account?</h3>
+                        <a href={"/auth/reg"}>Sign up</a></div>
+                </div>
+                {/*<div className={"form-box"}>*/}
+
+
+                {/*        <label> Login </label>*/}
+                {/*    <div className="form-input-material">*/}
+                {/*        <input className="form-control-material" placeholder="Username" name="username" value={this.state.username}*/}
+                {/*               onChange={this.handleChange}/></div>*/}
+                {/*        <div className="form-input-material">*/}
+                {/*        <input className="form-control-material" placeholder="Password" type={"password"} name="password" value={this.state.password}*/}
+                {/*               onChange={this.handleChange}/></div>*/}
+
+                {/*    <button className="btn" type="submit" name="login" value="Login" >Login</button>*/}
 
 
 
-                </Form></div>
+                {/*</Form></div>*/}
             </div>
 
         )

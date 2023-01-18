@@ -337,15 +337,48 @@ nav.main > ul > li > a {
 
 
 .form-box {
-    width: 50%;
-    height: 50%;
-    align-content: center;
-
-    margin: 0 auto;
-    padding: 20px 20px 20px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #eceffc;
+    height: 50px;
     position: relative;
-    outline: 3px solid #007D85;
+    width: 100%;
+    flex-direction: column;
+    margin-top: 40px;
+    padding: 50px 40px;
+    color: white;
+    background: rgba(0, 0, 0, 0.8);
+
+    box-shadow: 0 0 0 rgba(128, 128, 128, 0.109),
+    0 1px 1px rgba(128, 128, 128, 0.155),
+    0 2px 2px rgba(128, 128, 128, 0.195),
+    0 4px 4px rgba(128, 128, 128, 0.241),
+    0 12px 12px rgba(128, 128, 128, 0.35);
     /* position:relative for .prevBtn and .nextBtn position:absolute; */
+}
+
+.form-box .form-input-material {
+    margin: 12px 0;
+}
+
+.form-box .form-input-material .form-control-material {
+    background-color: #303245;
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: #eee;
+    font-size: 18px;
+    height: 100%;
+    outline: 0;
+    padding: 4px 20px 0;
+    width: 100%;
+
+}
+
+.form-box .form-input-material input {
+    color: white;
 }
 
 .form-box label {
@@ -417,6 +450,8 @@ nav.main > ul > li > a {
 
 }
 
+/*buttons*/
+
 .btn {
     width: 80px;
     height: 50px;
@@ -461,57 +496,168 @@ nav.main > ul > li > a {
 }
 
 
-/*.btn, [class*="btn-"] {*/
-/*    display: inline-block;*/
-/*    text-align: left;*/
-/*    width: 30px;*/
-/*    text-decoration: none;*/
-/*    -webkit-box-sizing: border-box;*/
-/*    -moz-box-sizing: border-box;*/
-/*    box-sizing: border-box;*/
-/*    font-size: 14px;*/
-/*    line-height: 1.6;*/
-/*    -moz-transition: all .1s ease-in;*/
-/*    -webkit-transition: all .1s ease-in;*/
-/*    -o-transition: all .1s ease-in;*/
-/*    transition: all .1s ease-in;*/
-/*    -moz-border-radius: 0;*/
-/*    -webkit-border-radius: 0;*/
-
-/*    border-radius: 0;*/
-/*    background: #007d85;*/
-/*    color: #fff;*/
-/*    font-family: "Helvetica Neue LT", Arial, sans-serif;*/
-/*    font-weight: 600;*/
-/*    padding: 7px 15px;*/
-/*    text-transform: none;*/
-/*    margin: 2px;*/
-
-/*}*/
-
-
-/*button, input[type="reset"], input[type="button"], input[type="submit"] {*/
-/*    overflow: visible;*/
-/*    width: auto;*/
-/*}*/
-
-/*button, input[type=reset], input[type=button], input[type=submit], input[type=checkbox], input[type=radio], select {*/
-/*    -webkit-box-sizing: border-box;*/
-/*    -moz-box-sizing: border-box;*/
-/*    box-sizing: border-box;*/
-/*}*/
-
-/*button, html input[type="button"], input[type="reset"], input[type="submit"] {*/
-/*    -webkit-appearance: button;*/
-/*    cursor: pointer;*/
-/*}*/
-
 .btn, .external-cookies-warning button.external-cookies-ok, [class*="btn-"] {
 
 }
 
 
+/*login and reg forms */
+
+.form {
+    background-color: #343536;
+    border-radius: 10px;
+    box-sizing: border-box;
+    height: auto;
+    padding: 40px;
+    width: 400px;
+    margin: 50px auto;
+}
+
+.reg {
+    margin: 30px auto;
+    width: 500px;
+}
+
+.add-project{
+    margin: 20px auto;
+    width: 800px;
+}
+
+.title {
+    color: #eee;
+    text-align: center;
+    font-family: "Geogrotesque", Arial, sans-serif;
+    font-size: 36px;
+    font-weight: 600;
+    margin-top: 30px;
+}
+
+
+.form .input-container {
+    height: 50px;
+    position: relative;
+    width: 100%;
+}
+
+.ic1 {
+    margin-top: 40px;
+}
+
+.ic2 {
+    margin-top: 30px;
+}
+
+.input {
+    background-color: #cbcbcb;
+    border-radius: 6px;
+    border: 0;
+    box-sizing: border-box;
+    color: #007d85;
+    font-size: 18px;
+    height: 100%;
+    outline: 0;
+    padding: 4px 20px 0;
+    width: 100%;
+}
+
+.error {
+    color: #e05454;
+    font-family: "Geogrotesque", Arial, sans-serif;
+}
+
+.ic3 {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.qst {
+    margin-top: 30px;
+    color: #eee;
+}
+
+.qst a {
+    margin-top: 0;
+    color: #0ba5af;
+    font-size: 18px;
+    text-align: center;
+    display: block;
+    text-decoration: underline;
+}
+
+/*add project form*/
+
+.card {
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 425px;
+    background-color: #cbcbcb;
+    border-radius: 10px;
+    padding: .75rem;
+}
+.card .card-form {
+    padding: 2rem 1rem 0;
+}
 
 
 
 
+.input1 {
+    display: flex;
+    flex-direction: column-reverse;
+    position: relative;
+    padding-top: 1.5rem;
+    appearance: none;
+}
+.input1.input {
+     margin-top: 1.5rem;
+ }
+
+
+.input-field {
+    border: 0;
+    z-index: 1;
+    background-color: transparent;
+    border-bottom: 2px solid #eee;
+    font: inherit;
+    font-size: 1.125rem;
+    padding: .25rem 0;
+}
+
+
+
+.card-form {
+    padding: 2rem 1rem 0;
+}
+
+.input-label {
+    color: #343536;
+    position: absolute;
+    top: 1.5rem;
+    transition: .25s ease;
+}
+
+input[type="text"]:focus ~ .input-label, input[type="text"]:valid ~ .input-label {
+    top: -0;
+    transform: translateY(-20px);
+}
+
+
+input:focus + label, input:valid + label{
+    transform: translateY(-20px);
+}
+
+.input1 .input-field:focus, .input1.input-field:valid {
+    outline: 0;
+    border-bottom-color: #007d85;
+    color: #007d85;
+
+}
+label:focus, label:valid{
+    outline: 0;
+    border-bottom-color: #007d85;
+    color: #007d85;
+    transform: translateY(-20px);
+
+}
