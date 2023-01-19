@@ -99,39 +99,39 @@ class AddProject extends Component {
                 :
                 <div> {this.state.success ? <div className="input-container ic3">
                         <h3>Project added successfully</h3>
-                        <button className="btn"><Link to="/api/projects">Back to all projects</Link></button>
+                        <button className="btn-add"><Link to="/api/projects">Back to all projects</Link></button>
                     </div>
                     :
                     <div className="card">
 
                             <h1 className="title">Add project</h1>
                         {this.state.errors.map((error) => <p style={{color: 'red', fontSize: '12px'}}
-                                                             key={error.field}>{error.field + " " + error.message}</p>)
+                                                             key={error.field}>{"Error in field " + error.field + " : " + error.message}</p>)
                         }
                         <Form className="card-form" onSubmit={this.handleSubmit}>
                             <div className="input1">
-                                <input type="text" className="input-field" name="title" id="title"
+                                <input type="text" className="input-field" name="title" id="title" placeholder={"a"}
                                                                value={item.title || ''}
                                                                onChange={this.handleChange} />
                                 <label className="input-label">Title</label>
                             </div>
                             <div className="input1">
-                                <input type="text" className="input-field" name="address" id="address"
+                                <input type="text" className="input-field" name="address" id="address" placeholder={"a"}
                                        value={item.address || ''}
-                                       onChange={this.handleChange} />
+                                       onChange={this.handleChange}/>
                                 <label className="input-label">Address</label>
                             </div>
                             <div className="input1">
 
                                 <input type="text" className="input-field" name="budget" id="budget" value={item.budget || ''}
-                                       onChange={this.handleChange}/>
+                                       onChange={this.handleChange} placeholder={"a"}/>
                                 <label className="input-label">Budget</label>
                             </div>
 
                             <div className={"input1"}>
                                 <input className="input-field" type="date" name="startingDate" id="startingDate"
                                        value={item.startingDate || ''}
-                                       onChange={this.handleChange}/>
+                                       onChange={this.handleChange} placeholder={"a"}/>
                                 <label className="input-label">Starting date</label>
                             </div>
 
@@ -139,7 +139,7 @@ class AddProject extends Component {
                     <div className="input1">
                     <input className="input-field" type="date" name="finishingDate" id="finishingDate"
                     value={item.finishingDate || ''}
-                    onChange={this.handleChange}/>
+                    onChange={this.handleChange} placeholder={"a"}/>
                         <label className="input-label">Finishing date</label>
                     </div>
 
@@ -147,7 +147,7 @@ class AddProject extends Component {
 
                     <input className="input-field" type="text" name="contractors" id="contractors"
                     value={item.contractors || ''}
-                    onChange={this.handleChange}/>
+                    onChange={this.handleChange} placeholder={"a"}/>
                         <label className="input-label">Contractors</label>
 
                     </div>
@@ -155,7 +155,7 @@ class AddProject extends Component {
 
                     <input className="input-field" type="text" name="advisers" id="advisers"
                     value={item.advisers || ''}
-                    onChange={this.handleChange}/>
+                    onChange={this.handleChange} placeholder={"a"}/>
                         <label className="input-label">Advisers</label>
                     </div>
                             <div className="input-container ic3">

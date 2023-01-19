@@ -336,119 +336,119 @@ nav.main > ul > li > a {
 }
 
 
-.form-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: #eceffc;
-    height: 50px;
-    position: relative;
-    width: 100%;
-    flex-direction: column;
-    margin-top: 40px;
-    padding: 50px 40px;
-    color: white;
-    background: rgba(0, 0, 0, 0.8);
+/*.form-box {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    min-height: 100vh;*/
+/*    background: #eceffc;*/
+/*    height: 50px;*/
+/*    position: relative;*/
+/*    width: 100%;*/
+/*    flex-direction: column;*/
+/*    margin-top: 40px;*/
+/*    padding: 50px 40px;*/
+/*    color: white;*/
+/*    background: rgba(0, 0, 0, 0.8);*/
 
-    box-shadow: 0 0 0 rgba(128, 128, 128, 0.109),
-    0 1px 1px rgba(128, 128, 128, 0.155),
-    0 2px 2px rgba(128, 128, 128, 0.195),
-    0 4px 4px rgba(128, 128, 128, 0.241),
-    0 12px 12px rgba(128, 128, 128, 0.35);
-    /* position:relative for .prevBtn and .nextBtn position:absolute; */
-}
+/*    box-shadow: 0 0 0 rgba(128, 128, 128, 0.109),*/
+/*    0 1px 1px rgba(128, 128, 128, 0.155),*/
+/*    0 2px 2px rgba(128, 128, 128, 0.195),*/
+/*    0 4px 4px rgba(128, 128, 128, 0.241),*/
+/*    0 12px 12px rgba(128, 128, 128, 0.35);*/
+/*    !* position:relative for .prevBtn and .nextBtn position:absolute; *!*/
+/*}*/
 
-.form-box .form-input-material {
-    margin: 12px 0;
-}
+/*.form-box .form-input-material {*/
+/*    margin: 12px 0;*/
+/*}*/
 
-.form-box .form-input-material .form-control-material {
-    background-color: #303245;
-    border-radius: 12px;
-    border: 0;
-    box-sizing: border-box;
-    color: #eee;
-    font-size: 18px;
-    height: 100%;
-    outline: 0;
-    padding: 4px 20px 0;
-    width: 100%;
+/*.form-box .form-input-material .form-control-material {*/
+/*    background-color: #303245;*/
+/*    border-radius: 12px;*/
+/*    border: 0;*/
+/*    box-sizing: border-box;*/
+/*    color: #eee;*/
+/*    font-size: 18px;*/
+/*    height: 100%;*/
+/*    outline: 0;*/
+/*    padding: 4px 20px 0;*/
+/*    width: 100%;*/
 
-}
+/*}*/
 
-.form-box .form-input-material input {
-    color: white;
-}
+/*.form-box .form-input-material input {*/
+/*    color: white;*/
+/*}*/
 
-.form-box label {
-    display: block;
-    text-align: center;
-    font-size: 20px;
-    margin: 0 auto;
-}
+/*.form-box label {*/
+/*    display: block;*/
+/*    text-align: center;*/
+/*    font-size: 20px;*/
+/*    margin: 0 auto;*/
+/*}*/
 
-.form-box h5, .form-box h3, .form-box h1 {
-    font-size: 35px;
-    text-align: center;
-    color: #343536;
-    margin: 0 0 .5vh 0;
-}
-
-
-.form-box input, textarea, label, button {
-    display: block;
-
-    width: 50%;
-    padding: 25px 25px 25px 25px;
-
-    margin: 0 auto;
-    border: 0;
-
-    font-size: 15px;
-}
-
-.form-box select {
-    display: block;
-    margin: 0 auto;
-}
-
-.form-box .btn {
-    display: block;
-    margin: 15px auto;
-
-    width: 80px;
-    height: 50px;
-    text-align: center;
-
-    line-height: 25px;
-    font-size: 1.1em;
+/*.form-box h5, .form-box h3, .form-box h1 {*/
+/*    font-size: 35px;*/
+/*    text-align: center;*/
+/*    color: #343536;*/
+/*    margin: 0 0 .5vh 0;*/
+/*}*/
 
 
-    text-decoration: none;
+/*.form-box input, textarea, label, button {*/
+/*    display: block;*/
+
+/*    width: 50%;*/
+/*    padding: 25px 25px 25px 25px;*/
+
+/*    margin: 0 auto;*/
+/*    border: 0;*/
+
+/*    font-size: 15px;*/
+/*}*/
+
+/*.form-box select {*/
+/*    display: block;*/
+/*    margin: 0 auto;*/
+/*}*/
+
+/*.form-box .btn {*/
+/*    display: block;*/
+/*    margin: 15px auto;*/
+
+/*    width: 80px;*/
+/*    height: 50px;*/
+/*    text-align: center;*/
+
+/*    line-height: 25px;*/
+/*    font-size: 1.1em;*/
 
 
-    background: #007d85;
-    color: #fff;
-    box-sizing: border-box;
-    font-family: "Helvetica Neue LT", Arial, sans-serif;
-    font-weight: bolder;
-    padding: 10px 10px 10px 10px;
-    vertical-align: middle;
+/*    text-decoration: none;*/
 
-    border: 10px;
 
-    -webkit-transition: All 0.5s ease;
+/*    background: #007d85;*/
+/*    color: #fff;*/
+/*    box-sizing: border-box;*/
+/*    font-family: "Helvetica Neue LT", Arial, sans-serif;*/
+/*    font-weight: bolder;*/
+/*    padding: 10px 10px 10px 10px;*/
+/*    vertical-align: middle;*/
 
-    -moz-transition: All 0.5s ease;
+/*    border: 10px;*/
 
-    -o-transition: All 0.5s ease;
+/*    -webkit-transition: All 0.5s ease;*/
 
-    -ms-transition: All 0.5s ease;
+/*    -moz-transition: All 0.5s ease;*/
 
-    transition: All 0.5s ease;
+/*    -o-transition: All 0.5s ease;*/
 
-}
+/*    -ms-transition: All 0.5s ease;*/
+
+/*    transition: All 0.5s ease;*/
+
+/*}*/
 
 /*buttons*/
 
@@ -587,28 +587,46 @@ nav.main > ul > li > a {
 /*add project form*/
 
 .card {
-    margin: 2rem auto;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+
+    margin: 2rem auto;
+
     flex-direction: column;
     width: 100%;
-    max-width: 425px;
-    background-color: #cbcbcb;
+    max-width: 600px;
+    background-color: #282a2a;
     border-radius: 10px;
-    padding: .75rem;
+    padding: 20px 40px 60px 40px;
 }
 .card .card-form {
-    padding: 2rem 1rem 0;
+    padding: 1rem 1rem 2rem 1rem;
+
+
 }
 
+.card-form{
+    background-color: #d7d7d7;
+    width: 95%;
+    border-radius: 8px;
+    padding: 20px 40px;
+    box-shadow: 0 10px 25px rgba(92, 99, 105, .2);
 
+}
 
 
 .input1 {
     display: flex;
     flex-direction: column-reverse;
     position: relative;
-    padding-top: 1.5rem;
+    padding: 2rem 2rem 0 0;
     appearance: none;
+    height: 45px;
+    width: 100%;
+    margin-bottom: 17px;
+
 }
 .input1.input {
      margin-top: 1.5rem;
@@ -616,48 +634,88 @@ nav.main > ul > li > a {
 
 
 .input-field {
-    border: 0;
+
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    border: 1px solid #343536;
+    border-radius: 7px;
+    font-size: 16px;
+    padding: 0 20px;
+    outline: none;
+    background: none;
     z-index: 1;
-    background-color: transparent;
-    border-bottom: 2px solid #eee;
-    font: inherit;
-    font-size: 1.125rem;
-    padding: .25rem 0;
+
 }
 
 
+.input-field::placeholder{
+     color: transparent;
+ }
+/*.input-field[type="text"]:focus~label,*/
+/*.input-field[type="text"]:valid {*/
+/*    top: -5px;*/
+/*}*/
 
-.card-form {
-    padding: 2rem 1rem 0;
-}
+
 
 .input-label {
-    color: #343536;
     position: absolute;
-    top: 1.5rem;
-    transition: .25s ease;
+    top: 15px;
+    left: 15px;
+    padding: 0 4px;
+    background-color: #d7d7d7;
+    color: #343536;
+    font-size: 16px;
+    transition: 0.5s;
+    z-index: 0;
 }
-
-input[type="text"]:focus ~ .input-label, input[type="text"]:valid ~ .input-label {
-    top: -0;
-    transform: translateY(-20px);
-}
-
-
-input:focus + label, input:valid + label{
-    transform: translateY(-20px);
-}
-
-.input1 .input-field:focus, .input1.input-field:valid {
-    outline: 0;
-    border-bottom-color: #007d85;
+.input-field:focus + .input-label {
+    top: -7px;
+    left: 3px;
+    z-index: 10;
+    font-size: 14px;
+    font-weight: 600;
     color: #007d85;
-
 }
-label:focus, label:valid{
-    outline: 0;
-    border-bottom-color: #007d85;
-    color: #007d85;
-    transform: translateY(-20px);
 
+.input-field:focus {
+    border: 2px solid #007d85;
+}
+
+.input-field:not(:placeholder-shown)+ .input-label {
+    top: -7px;
+    left: 3px;
+    z-index: 10;
+    font-size: 14px;
+    font-weight: 600;
+}
+/*.input-label-2{*/
+/*    top: 0.2rem;*/
+/*    position: absolute;*/
+/*    transition: .25s ease;*/
+/*    color: #cbcbcb;*/
+/*}*/
+
+
+
+/*input:focus + label, input:valid + label{*/
+/*    transform: translateY(-20px);*/
+/*}*/
+
+/*.input1 .input-field:focus, .input1.input-field:valid {*/
+/*    outline: 0;*/
+/*    border-bottom-color: #007d85;*/
+/*    color: #007d85;*/
+
+/*}*/
+
+
+
+.btn-add{
+    position: relative;
+    background-color: #007d85;
+    font-family: "Geogrotesque", Arial, sans-serif;
 }

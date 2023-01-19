@@ -128,22 +128,7 @@ class LoginComponent extends Component {
                     <div className={"qst"}> <h3>Do not have an account?</h3>
                         <a href={"/auth/reg"}>Sign up</a></div>
                 </div>
-                {/*<div className={"form-box"}>*/}
 
-
-                {/*        <label> Login </label>*/}
-                {/*    <div className="form-input-material">*/}
-                {/*        <input className="form-control-material" placeholder="Username" name="username" value={this.state.username}*/}
-                {/*               onChange={this.handleChange}/></div>*/}
-                {/*        <div className="form-input-material">*/}
-                {/*        <input className="form-control-material" placeholder="Password" type={"password"} name="password" value={this.state.password}*/}
-                {/*               onChange={this.handleChange}/></div>*/}
-
-                {/*    <button className="btn" type="submit" name="login" value="Login" >Login</button>*/}
-
-
-
-                {/*</Form></div>*/}
             </div>
 
         )

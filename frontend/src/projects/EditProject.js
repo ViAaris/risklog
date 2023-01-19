@@ -122,7 +122,7 @@ class EditProject extends Component {
         return <div className={"body"}>
 
             {this.state.errors.map((error) => <p style={{color: 'red', fontSize: '12px'}}
-                                                 key={error.field}>{error.field + " " + error.message}</p>)
+                                                 key={error.field}>{"Error in field " + error.field + " : " + error.message}</p>)
             }
 
             {/*{this.state.updated && <div>Project updated successfully</div>}*/}
