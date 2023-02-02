@@ -3,6 +3,8 @@ import AuthenticationService from './AuthenticationService';
 import {withRouter} from "react-router-dom";
 
 import {Form} from "reactstrap";
+import {Button} from "antd";
+import BottomBar from "../BottomBar";
 
 
 class LoginComponent extends Component {
@@ -122,13 +124,13 @@ class LoginComponent extends Component {
                         <div className="cut cut-short"></div>
 
                     </div>
-                        <div className="input-container ic3"><button type="text" className="btn">Submit</button></div>
+                        <div className="input-container ic3"><button type="text" className="btn-submit">Submit</button></div>
                     </Form>
 
                     <div className={"qst"}> <h3>Do not have an account?</h3>
                         <a href={"/auth/reg"}>Sign up</a></div>
                 </div>
-
+                <BottomBar/>
             </div>
 
         )

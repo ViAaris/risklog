@@ -6,6 +6,7 @@ import AuthenticationService from "../auth/AuthenticationService";
 
 import {ApproveRequest} from "./ApproveRequest";
 import {DeclineRequest} from "./DeclineRequest";
+import BottomBar from "../BottomBar";
 
 
 
@@ -75,23 +76,23 @@ class AllRequests extends Component {
 
                     {
                         request.status === "PENDING" ? <td>
-                                <Button onClick={e => this.declineRequest(e, request)} color="primary"
-                                        type="submit">Decline</Button>{' '}
-                                <Button onClick={e => this.approveRequest(e, request)} color="primary"
-                                        type="submit">Approve</Button>{' '}
+                                <button onClick={e => this.declineRequest(e, request)} className={"btn-delete"}
+                                        type="submit">Decline</button>{' '}
+                                <button onClick={e => this.approveRequest(e, request)} className={"btn-edit-pr"}
+                                        type="submit">Approve</button>{' '}
 
                             </td>
                             :
                             <td>
                                 {
                                     request.status === "APPROVED" ? <td>
-                                            <Button onClick={e => this.declineRequest(e, request)} color="primary"
-                                                    type="submit">Cancel access</Button>{' '}
+                                            <button onClick={e => this.declineRequest(e, request)} className={"btn-cancel"}
+                                                    type="submit">Cancel access</button>{' '}
 
                                         </td>
                                         :
-                                        <td><Button onClick={e => this.approveRequest(e, request)} color="primary"
-                                                    type="submit">Grand access</Button>{' '}
+                                        <td><button onClick={e => this.approveRequest(e, request)} className={"btn-grand"}
+                                                    type="submit">Grand access</button>{' '}
 
                                         </td>
                                 }
@@ -104,15 +105,15 @@ class AllRequests extends Component {
         return (
             <div className={"body"}>
 
-                <h3>Requests</h3>
+                <h2>Requests</h2>
                     <table className="tableRequests">
                         <thead>
 
                         <tr >
-                            <th>Username</th>
-                            <th>Project id</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th width={25}>Username</th>
+                            <th width={5}>Project id</th>
+                            <th width={25}>Status</th>
+                            <th width={45}>Action</th>
                         </tr>
                         </thead>
                         <tbody >
@@ -121,7 +122,7 @@ class AllRequests extends Component {
                     </table>
                     <br/>
                     <br/>
-
+                <BottomBar/>
             </div>
         );
     }

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Form} from 'reactstrap';
 import {Link, withRouter} from 'react-router-dom';
+import BottomBar from "../BottomBar";
 
 
 class Registration extends Component {
@@ -176,14 +177,14 @@ class Registration extends Component {
                 </div>
 
                 <div className="input-container ic3">
-                <button type="text" className="btn">Submit</button>
+                <button type="text" className="btn-submit">Submit</button>
                 </div>
 
                 </Form>
                 <div className={"qst"}><h3>Already have an account?</h3>
                 <a href={"/auth/login"}>Log in</a></div>
                 </div>
-            }
+            }  <BottomBar/>
         </div>
 
     }

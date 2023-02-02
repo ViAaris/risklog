@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {Button, Form} from 'reactstrap';
 import {Link, withRouter} from 'react-router-dom';
 import '../App.css';
+import AuthenticationService from "../auth/AuthenticationService";
+import BottomBar from "../BottomBar";
 
 
 class AddProject extends Component {
@@ -27,6 +29,10 @@ class AddProject extends Component {
             },
             body: JSON.stringify(""),
         }).then(response => {
+            if (response.status === 405) {
+                AuthenticationService.logout();
+                this.props.history.push('/auth/login');
+            }
             if (response.status === 403) {
                 this.setState({allowed: false});
             }
@@ -125,7 +131,7 @@ class AddProject extends Component {
 
                                 <input type="text" className="input-field" name="budget" id="budget" value={item.budget || ''}
                                        onChange={this.handleChange} placeholder={"a"}/>
-                                <label className="input-label">Budget</label>
+                                <label className="input-label">Budget, kr.</label>
                             </div>
 
                             <div className={"input1"}>
@@ -202,7 +208,7 @@ class AddProject extends Component {
                     //         </Form>
                     //     </div>
                     // </div>
-                }
+                }<BottomBar/>
                 </div>
             }
         </div>

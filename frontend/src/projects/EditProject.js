@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import {Button, Form} from "reactstrap";
 import {Link, withRouter} from "react-router-dom";
 import '../App.css';
+import AuthenticationService from "../auth/AuthenticationService";
+import BottomBar from "../BottomBar";
 class EditProject extends Component {
 
     emptyItem = {
@@ -92,6 +94,10 @@ class EditProject extends Component {
             },
             body: JSON.stringify(item),
         }).then(response=>{
+            if (response.status === 405) {
+                AuthenticationService.logout();
+                this.props.history.push('/auth/login');
+            }
             this.setState({errors:[]});
             if (response.status === 200) {
                 this.setState({success: true});
@@ -108,69 +114,85 @@ class EditProject extends Component {
 
 
     render() {
-        if (this.state.success) {
-            return (<p>Project updated successfully!
-                <br/>
-                <br/>
-                <Button size="sm" color="primary" tag={Link} to={"/api/projects"}>Back to all projects</Button>
-            </p>);
-        }
+
         const {item} = this.state;
-        if(!this.state.allowed){
-            return <p>You don't have access for this page</p>
-        }
+
         return <div className={"body"}>
+            {!this.state.allowed ? <h3>You don't have access for this page</h3>
+                :
+                <div> {this.state.success ? <div className="input-container ic3">
+                        <h3>Project updated successfully</h3>
+                        <button className="btn-add"><Link to="/api/projects">Back to all projects</Link></button>
+                    </div>
+                    :
+            <div className={"card"}>
+                <h1 className={"title"}>Edit project id# {this.props.match.params.id}</h1>
+                {this.state.errors.map((error) => <p style={{color: 'red', fontSize: '12px'}}
+                                                     key={error.field}>{"Error in field " + error.field + " : " + error.message}</p>)
+                }
+                <Form className="card-form" onSubmit={this.handleSubmit}>
 
-            {this.state.errors.map((error) => <p style={{color: 'red', fontSize: '12px'}}
-                                                 key={error.field}>{"Error in field " + error.field + " : " + error.message}</p>)
-            }
-
-            {/*{this.state.updated && <div>Project updated successfully</div>}*/}
-            <div className={"form-box"}>
-                <Form onSubmit={this.handleSubmit}>
-                    <h1>Edit project id# {this.props.match.params.id}</h1>
-
-                        <label for="id">ID</label>
-                        <input type="text" name="id" id="id" value={item.id || ''}
+                    <div className="input1">
+                        <input type="text" className="input-field" name="title" id="title" placeholder={"a"}
+                               value={item.title || ''}
                                onChange={this.handleChange} />
+                        <label className="input-label">Title</label>
+                    </div>
+                    <div className="input1">
+                        <input type="text" className="input-field" name="address" id="address" placeholder={"a"}
+                               value={item.address || ''}
+                               onChange={this.handleChange}/>
+                        <label className="input-label">Address</label>
+                    </div>
+                    <div className="input1">
 
-                        <label for="title">Title</label>
-                        <input type="text" name="title" id="title" value={item.title || ''}
-                               onChange={this.handleChange} autoComplete="title"/>
+                        <input type="text" className="input-field" name="budget" id="budget" value={item.budget || ''}
+                               onChange={this.handleChange} placeholder={"a"}/>
+                        <label className="input-label">Budget, kr.</label>
+                    </div>
 
-                        <label for="address">Address</label>
-                        <input type="text" name="address" id="address" value={item.address || ''}
-                               onChange={this.handleChange} autoComplete="address"/>
-
-                        <label for="budget">Budget</label>
-                        <input type="text" name="budget" id="budget" value={item.budget || ''}
-                               onChange={this.handleChange} autoComplete="budget"/>
-
-                        <label for="startingDate">Starting date</label>
-                        <input type="date" name="startingDate" id="startingDate" value={item.startingDate || ''}
-                               onChange={this.handleChange} />
-
-                        <label for="finishingDate">Finishing date</label>
-                        <input type="date" name="finishingDate" id="finishingDate" value={item.finishingDate || ''}
-                               onChange={this.handleChange} />
-
-                        <label for="contractors">Contractors</label>
-                        <input type="text" name="contractors" id="contractors" value={item.contractors || ''}
-                               onChange={this.handleChange} />
-
-                        <label for="advisers">Advisers</label>
-                        <input type="text" name="advisers" id="advisers" value={item.advisers || ''}
-                               onChange={this.handleChange} />
-
-                        <button className={"btn"} type="submit">Save</button>
+                    <div className={"input1"}>
+                        <input className="input-field" type="date" name="startingDate" id="startingDate"
+                               value={item.startingDate || ''}
+                               onChange={this.handleChange} placeholder={"a"}/>
+                        <label className="input-label">Starting date</label>
+                    </div>
 
 
+                    <div className="input1">
+                        <input className="input-field" type="date" name="finishingDate" id="finishingDate"
+                               value={item.finishingDate || ''}
+                               onChange={this.handleChange} placeholder={"a"}/>
+                        <label className="input-label">Finishing date</label>
+                    </div>
+
+                    <div className="input1">
+
+                        <input className="input-field" type="text" name="contractors" id="contractors"
+                               value={item.contractors || ''}
+                               onChange={this.handleChange} placeholder={"a"}/>
+                        <label className="input-label">Contractors</label>
+
+                    </div>
+                    <div className="input1">
+
+                        <input className="input-field" type="text" name="advisers" id="advisers"
+                               value={item.advisers || ''}
+                               onChange={this.handleChange} placeholder={"a"}/>
+                        <label className="input-label">Advisers</label>
+                    </div>
+                    <div className="input-container ic3">
+                        <button className="btn">Save</button>
+                    </div>
                 </Form>
             </div>
 
+                }
+                </div>
+            }  <BottomBar/>
         </div>
-
     }
 }
+
 
 export default withRouter(EditProject);

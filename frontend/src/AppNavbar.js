@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {NavbarBrand} from 'reactstrap';
+import {Button, Form, FormGroup, NavbarBrand} from 'reactstrap';
 import './App.css';
 import MyLogo from './logo.png';
 import AuthenticationService from "./auth/AuthenticationService";
+import {Logout} from "./auth/Logout";
 
 
 export default class AppNavbar extends Component {
@@ -39,7 +40,7 @@ export default class AppNavbar extends Component {
 
                         {
                             this.state.isAdmin ?
-                            <div>
+                            <div className={"admin"}>
                                     <ul>
                                         <li className="links"><a href={"/api/admin/users"}><span>Users</span></a></li>
                                         <li className="links"><a href={"/api/admin/requests"}><span>Requests</span></a>
@@ -53,6 +54,19 @@ export default class AppNavbar extends Component {
                     </nav>
 
                 </div>
+                <div className={"hello"}>
+                    {
+                        AuthenticationService.isUserLoggedIn() ?
+                            <span>Welcome, {AuthenticationService.getLoggedInUserName()}
+                            <form className={"logout"} onSubmit={(e) => Logout(e)}>
+
+                                <button type="submit" className={"btn-logout"}>Logout</button>
+                                {' '}
+
+                            </form> </span>:''
+                    }
+            </div>
+
             </div>
         </div>
 

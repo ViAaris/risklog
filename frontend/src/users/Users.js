@@ -3,6 +3,7 @@ import {Button, Container} from 'reactstrap';
 import {Link, withRouter} from 'react-router-dom';
 import '../App.css';
 import AuthenticationService from "../auth/AuthenticationService";
+import BottomBar from "../BottomBar";
 
 
 class Users extends Component {
@@ -81,10 +82,10 @@ class Users extends Component {
 
 
                 <td>
-                    <Button className={"btn-btn"} tag={Link} to={'/api/admin/users/' + user.id}>Edit user</Button>
+                    <Button tag={Link} to={"/api/admin/users/" + user.id} className={"btn-edit-pr"}>Edit user</Button>
                 </td>
                 <td>
-                    <Button className={"btn-btn"} onClick={() => this.remove(user.id)}>Delete</Button>
+                    <Button className={"btn-delete"} onClick={() => this.remove(user.id)}>Delete</Button>
                 </td>
 
             </tr>
@@ -98,7 +99,7 @@ class Users extends Component {
                 <Container fluid>
 
 
-                    <h3>Users</h3>
+                    <h2>Users</h2>
                     <hr></hr>
                     <br/>
                     <table className="table">
@@ -119,7 +120,7 @@ class Users extends Component {
                     </table>
 
                 </Container>
-
+                <BottomBar/>
             </div>
 
         );

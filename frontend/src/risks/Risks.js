@@ -4,6 +4,7 @@ import '../App.css';
 import {withRouter} from 'react-router-dom';
 
 import cellEditFactory, {Type} from "react-bootstrap-table2-editor";
+import AuthenticationService from "../auth/AuthenticationService";
 
 
 class Risks extends Component {
@@ -30,10 +31,9 @@ class Risks extends Component {
         super(props);
         this.state = {
             risks: [],
-
-
             serverStatus: '',
-            error: ''
+            error: '',
+            allowed: true
         };
 
     }
@@ -54,6 +54,9 @@ class Risks extends Component {
                 if (response.status !== 200) {
                     this.setState({serverStatus: response.status})
                 }
+                if (response.status === 403) {
+                    this.setState({allowed: false});
+                }
                 return response.json()
             })
             .then(data => {
@@ -69,7 +72,7 @@ class Risks extends Component {
 
     handleChange = (oldValue, newValue, row) => {
 
-        if (row.id === null) {
+        if (row.id === null && newValue !== oldValue) {
 
             fetch('/api/projects/' + this.props.match.params.id + '/risks', {
                 method: 'POST',
@@ -78,7 +81,13 @@ class Risks extends Component {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(row),
-            }).then((response) => response.json())
+            })   .then((response) => {
+                if (response.status === 405) {
+                    AuthenticationService.logout();
+                    this.props.history.push('/auth/login');
+                }
+                return response.json();
+            })
                 .then(window.location.reload())
                 .then((data) => {
                     console.log(data);
@@ -104,12 +113,6 @@ class Risks extends Component {
     }
 
     render() {
-
-        if (this.state.serverStatus) {
-            return (
-                <p>{this.state.error}</p>
-            )
-        }
 
 
         const {risks} = this.state;
@@ -148,6 +151,7 @@ class Risks extends Component {
                 editor: {
                     type: Type.SELECT,
                     options: [
+                        {label: "", value: null},
                         {label: "Organisation and cooperation", value: 'Organisation and cooperation'},
                         {label: "Environment and surroundings", value: 'Environment and surroundings'},
                         {label: "Functionality, test and hand over", value: 'Functionality, test and hand over'},
@@ -255,7 +259,7 @@ class Risks extends Component {
                 formatter: (cell, row) => {
                     console.log(row);
                     if (row.minCost != null && row.midCost != null && row.maxCost != null && row.probability != null)
-                        return <div>{`${(row.minCost + (row.midCost * 0.43) + row.maxCost) / 2.43 * row.probability / 100} kr.`}</div>;
+                        return <div>{`${Math.round((row.minCost + (row.midCost * 0.43) + row.maxCost) / 2.43 * row.probability / 100)} kr.`}</div>;
                 },
             },
             {dataField: 'owner', width: "col col-lg-1", text: 'Owner'},
@@ -285,15 +289,18 @@ class Risks extends Component {
             //beforeSaveCell: this.handleSet,
         })
 
-
-        return (
-            <div className={"body"}>
-                <BootstrapTable class={"table"}
-                                keyField="id"
-                                data={risks}
-                                columns={columns}
-                                cellEdit={cellEditProp}
-                />
+        return (<div className={"body"}>
+                { !this.state.allowed ?
+                    <h3>You don't have access for this page</h3>
+                    :
+                    <div>
+                    <BootstrapTable class={"table-risks"}
+                                    keyField="id"
+                                    data={risks}
+                                    columns={columns}
+                                    cellEdit={cellEditProp}
+                    /></div>
+                }
             </div>
         );
     }

@@ -5,23 +5,32 @@ import '../App.css';
 import AuthenticationService from "../auth/AuthenticationService";
 import {Logout} from "../auth/Logout";
 import {SendRequest} from "../requests/SendRequest";
-
+import BottomBar from "../BottomBar";
 
 
 class ProjectList extends Component {
+    authorities = [];
 
     constructor(props) {
         super(props);
         this.state = {
             projects: [],
             showMessage: false,
-            requestId: ""
+            requestId: "",
+            allowedProjects: this.authorities
         };
         this.requestIsSent = this.requestIsSent.bind(this)
+
     }
 
 
     componentDidMount() {
+        AuthenticationService.getAuthorities().forEach((authority, index) => {
+            if (index !== 0) {
+                this.authorities.push(authority);
+            }
+        })
+        console.log(this.authorities);
 
         const options = {
             method: "GET",
@@ -68,8 +77,19 @@ class ProjectList extends Component {
         });
     }
 
+    isFound(val) {
+        let res;
+        this.authorities.map(element => {
+
+            //console.log(element, val, parseInt(element) === parseInt(val))
+            res = (parseInt(element) === parseInt(val));
+        });
+        console.log(!res);
+        return !res;
+    }
 
     render() {
+
         const {projects} = this.state;
 
 
@@ -90,33 +110,42 @@ class ProjectList extends Component {
                 <td>{project.contractors}</td>
                 <td>{project.advisers}</td>
 
-
                 <td>
-                    <Button className={"btn"} tag={Link} to={"/api/projects/" + project.id + "/risks"}>Risks</Button>
-                </td>
+
+                    {this.state.showMessage && this.state.requestId === project.id
+                                    ?
+                                    <p>Your request was sent to the administrator</p>
+                                    :
+
+                                    this.isFound(project.id) && AuthenticationService.getAuthorities()[0] !== "ROLE_ADMIN"
+                                        ?
+
+                                            <Button className={"btn-risks"}
+                                                    onClick={e => this.requestIsSent(e, project.id)}
+                                                    type="submit">
+                                                Require access
+                                            </Button>
+                                         :
+                                                <Button className={"btn-risks"} tag={Link}
+                                                        to={"/api/projects/" + project.id + "/risks"}>Risk
+                                                    log</Button>
 
 
-                <td>
-                    {AuthenticationService.getAuthorities()[0] !== "ROLE_ADMIN" ?
 
-                        this.state.showMessage && this.state.requestId === project.id
-                            ?
-                            <p>Your request was sent to the administrator</p>
-                            :
-                            <td>
-                                <Button className={"btn"} onClick={e => this.requestIsSent(e, project.id)} type="submit">Send
-                                    request</Button>{' '}
-
-                            </td>
-                        : <div>
-                            {/*<Button className={"btn"} tag={Link} to={'/api/admin/projects/' + project.id}>Edit*/}
-                            {/*    Project</Button>*/}
-                            <div className={"buttons"}>
-                            <a href={'/api/admin/projects/' + project.id} className={"btn"}>Edit</a>
-                            <a className={"btn"} onClick={() => this.remove(project.id)}>Delete</a></div>
-                        </div>
                     }
                 </td>
+
+
+                    {
+
+                        AuthenticationService.getAuthorities()[0] === "ROLE_ADMIN"
+                        ? <td><div className={"buttons"}>
+                            <a href={'/api/admin/projects/' + project.id} className={"btn-edit-pr"}>Edit</a>
+                            <a className={"btn-delete"} onClick={() => this.remove(project.id)}>Delete</a>
+                        </div></td>:null
+
+                    }
+
 
 
             </tr>
@@ -130,16 +159,14 @@ class ProjectList extends Component {
                 <div className={"main"}>
                     <ul>
                         {AuthenticationService.getAuthorities()[0] === "ROLE_ADMIN" ?
-                        <li>
-                            <a href={"/api/admin/projects"}><span>Add project</span></a>
-                        </li> : ""}
+                            <li>
+                                <a href={"/api/admin/projects"}><span>Add project</span></a>
+                            </li> : ""}
                     </ul>
                 </div>
-                <Container fluid>
+                <div className={"projects"}>
 
-                    <h3>Projects</h3>
-                    <hr></hr>
-                    <br/>
+                    <h1>Projects</h1>
                     <table className="table">
                         <thead>
 
@@ -153,8 +180,8 @@ class ProjectList extends Component {
                             <th>Contractors</th>
                             <th>Advisers</th>
                             <th>Risks</th>
-                            {AuthenticationService.getAuthorities()[0] !== "ROLE_ADMIN" ? <th>Request access</th>
-                                : <th> Edit/delete </th>}
+                            {AuthenticationService.getAuthorities()[0] === "ROLE_ADMIN" ?
+                                 <th> Edit/delete </th> : ''}
                         </tr>
                         </thead>
                         <tbody>
@@ -165,15 +192,11 @@ class ProjectList extends Component {
                     <br/>
                     <br/>
                     <div>
-                        <Form onSubmit={(e) => Logout(e)}>
-                            <FormGroup>
-                                <Button type="submit">Logout</Button>{' '}
-                            </FormGroup>
-                        </Form>
+
                     </div>
 
-                </Container>
-
+                </div>
+                <BottomBar/>
             </div>
 
         );

@@ -21,12 +21,6 @@ import AppNavbar from "./AppNavbar";
 import React from 'react';
 
 
-
-
-
-
-
-
 function App() {
 
 
@@ -43,6 +37,7 @@ function App() {
         <AppNavbar/>
 
             <Switch>
+
 
                 <Route path='/auth/login' component={LoginComponent}/>
                 <Route path='/auth/reg' component={Registration}/>
@@ -65,11 +60,9 @@ function App() {
                 <AuthenticatedRoute path='/api/projects' exact={true} component={ProjectList}/>
                 <AuthenticatedRoute path='/api/projects/:id/risks' component={Risks}/>
 
-
-
-
-
             </Switch>
+
+
         </Router>
     )
 }
