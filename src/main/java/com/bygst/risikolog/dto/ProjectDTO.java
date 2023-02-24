@@ -1,6 +1,8 @@
 package com.bygst.risikolog.dto;
 
 
+import com.bygst.risikolog.util.OnCreate;
+import com.bygst.risikolog.util.OnUpdate;
 import com.bygst.risikolog.util.UniqueProject;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
@@ -18,12 +20,12 @@ public class ProjectDTO {
     private Long id;
 
     @JsonView({Details.class})
-    @NotBlank(message = "cannot be empty")
-    @UniqueProject(message = "project already exists")
+    @NotBlank(message = "cannot be empty", groups = {OnCreate.class, OnUpdate.class})
+    @UniqueProject(message = "project already exists", groups = {OnCreate.class})
     private String title;
 
     @JsonView({Details.class})
-    @NotBlank(message = "cannot be empty")
+    @NotBlank(message = "cannot be empty", groups = {OnCreate.class, OnUpdate.class})
     private String address;
 
     @JsonView({Details.class})

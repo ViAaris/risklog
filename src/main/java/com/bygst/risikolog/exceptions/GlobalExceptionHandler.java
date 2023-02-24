@@ -31,19 +31,27 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(data, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+    @ExceptionHandler(value = {MethodArgumentNotValidException.class, TitleIsNotUniqueException.class})
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(Exception ex) {
         FieldErrorResponse fieldErrorResponse = new FieldErrorResponse();
 
         List<CustomFieldError> fieldErrors = new ArrayList<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            CustomFieldError fieldError = new CustomFieldError();
-            fieldError.setField(((FieldError) error).getField());
-            fieldError.setMessage(error.getDefaultMessage());
-            fieldErrors.add(fieldError);
-        });
+        if(ex instanceof MethodArgumentNotValidException){
+            MethodArgumentNotValidException exception = (MethodArgumentNotValidException)ex;
+            exception.getBindingResult().getAllErrors().forEach((error) -> {
+                CustomFieldError fieldError = new CustomFieldError();
+                fieldError.setField(((FieldError) error).getField());
+                fieldError.setMessage(error.getDefaultMessage());
+                fieldErrors.add(fieldError);
+            });
+        }
 
+        if(ex instanceof TitleIsNotUniqueException){
+            TitleIsNotUniqueException exception = (TitleIsNotUniqueException)ex;
+            fieldErrors.add(new CustomFieldError(exception.getField(), exception.getMessage()));
+        }
         fieldErrorResponse.setFieldErrors(fieldErrors);
+
         return new ResponseEntity<>(fieldErrorResponse, HttpStatus.BAD_REQUEST);
     }
 

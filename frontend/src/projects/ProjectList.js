@@ -27,7 +27,10 @@ class ProjectList extends Component {
     componentDidMount() {
         AuthenticationService.getAuthorities().forEach((authority, index) => {
             if (index !== 0) {
-                this.authorities.push(authority);
+                if (!this.authorities.includes(authority)) {
+                    this.authorities.push(parseInt(authority));
+                }
+
             }
         })
         console.log(this.authorities);
@@ -77,15 +80,18 @@ class ProjectList extends Component {
         });
     }
 
-    isFound(val) {
+    isFound(projectId) {
         let res;
-        this.authorities.map(element => {
+        this.authorities.map(authority => {
 
             //console.log(element, val, parseInt(element) === parseInt(val))
-            res = (parseInt(element) === parseInt(val));
+            res = ((parseInt(authority)) === (parseInt(projectId)));
+            console.log(res);
         });
-        console.log(!res);
+
         return !res;
+
+
     }
 
     render() {
@@ -93,7 +99,8 @@ class ProjectList extends Component {
         const {projects} = this.state;
 
 
-        const projectList = projects.map(project => {
+        const projectList = projects.map((project) => {
+
 
             return <tr key={project.id}>
                 <td>{project.title} </td>
@@ -103,49 +110,54 @@ class ProjectList extends Component {
                 <td>{project.finishingDate}</td>
 
                 <td>{project.team.map(user => {
-                    return <td key={user.id}>
-                        <div>{user.fullName}</div>
-                    </td>
+                    return <div key={user.id}>
+                        <div>{user.fullName} </div>
+                    </div>
                 })}</td>
                 <td>{project.contractors}</td>
                 <td>{project.advisers}</td>
-
                 <td>
 
+
                     {this.state.showMessage && this.state.requestId === project.id
-                                    ?
-                                    <p>Your request was sent to the administrator</p>
-                                    :
-
-                                    this.isFound(project.id) && AuthenticationService.getAuthorities()[0] !== "ROLE_ADMIN"
-                                        ?
-
-                                            <Button className={"btn-risks"}
-                                                    onClick={e => this.requestIsSent(e, project.id)}
-                                                    type="submit">
-                                                Require access
-                                            </Button>
-                                         :
-                                                <Button className={"btn-risks"} tag={Link}
-                                                        to={"/api/projects/" + project.id + "/risks"}>Risk
-                                                    log</Button>
-
-
-
+                        ?
+                        <td><p>Your request was sent to the administrator</p></td>
+                        :
+                        !this.authorities.includes(project.id) && AuthenticationService.getAuthorities()[0] !== "ROLE_ADMIN" ?
+                            [<Button className={"btn-risks"}
+                                     key={project.id}
+                                     onClick={e => this.requestIsSent(e, project.id)} type="submit">
+                                Require access</Button>]  :
+                            [<Button className={"btn-risks"} tag={Link} key={project.id}
+                                                                  to={"/api/projects/" + project.id + "/risks"}>Risk
+                                log</Button>]
                     }
-                </td>
+                    </td>
+
+                {/*    */}
+                {/*[this.isFound(project.id) && AuthenticationService.getAuthorities()[0] !== "ROLE_ADMIN"*/}
+                {/*    ? <td key={project.id}><Button className={"btn-risks"}*/}
+                {/*              key={project.id}*/}
+                {/*              onClick={e => this.requestIsSent(e, project.id)}*/}
+                {/*              type="submit">*/}
+                {/*        Require access*/}
+                {/*    </Button> </td>: <td key={project.id}><Button className={"btn-risks"} tag={Link} key={project.id}*/}
+                {/*                        to={"/api/projects/" + project.id + "/risks"}>Risk*/}
+                {/*        log</Button></td>]*/}
+                {/*}*/}
 
 
-                    {
+                {
 
-                        AuthenticationService.getAuthorities()[0] === "ROLE_ADMIN"
-                        ? <td><div className={"buttons"}>
-                            <a href={'/api/admin/projects/' + project.id} className={"btn-edit-pr"}>Edit</a>
-                            <a className={"btn-delete"} onClick={() => this.remove(project.id)}>Delete</a>
-                        </div></td>:null
+                    AuthenticationService.getAuthorities()[0] === "ROLE_ADMIN"
+                        ? <td key={project.id}>
+                            <div className={"buttons"}>
+                                <a href={'/api/admin/projects/' + project.id} className={"btn-edit-pr"}>Edit</a>
+                                <a className={"btn-delete"} onClick={() => this.remove(project.id)}>Delete</a>
+                            </div>
+                        </td> : null
 
-                    }
-
+                }
 
 
             </tr>
@@ -181,7 +193,7 @@ class ProjectList extends Component {
                             <th>Advisers</th>
                             <th>Risks</th>
                             {AuthenticationService.getAuthorities()[0] === "ROLE_ADMIN" ?
-                                 <th> Edit/delete </th> : ''}
+                                <th> Edit/delete </th> : ''}
                         </tr>
                         </thead>
                         <tbody>

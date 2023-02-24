@@ -3,16 +3,20 @@ package com.bygst.risikolog.controllers;
 import com.bygst.risikolog.dto.Details;
 import com.bygst.risikolog.dto.ProjectDTO;
 import com.bygst.risikolog.dto.RiskDTO;
+import com.bygst.risikolog.exceptions.TitleIsNotUniqueException;
 import com.bygst.risikolog.model.Project;
 import com.bygst.risikolog.model.Risk;
 import com.bygst.risikolog.service.ProjectService;
 
+import com.bygst.risikolog.util.OnCreate;
+import com.bygst.risikolog.util.OnUpdate;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,7 +26,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
-
+@Validated
 public class ProjectsController {
 
     private final ProjectService projectService;
@@ -45,7 +49,7 @@ public class ProjectsController {
     @PostMapping("/admin/projects")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @JsonView({Details.class})
-    public ResponseEntity<ProjectDTO> addNewProject(@RequestBody @Valid ProjectDTO projectDTO) {
+    public ResponseEntity<ProjectDTO> addNewProject(@RequestBody @Validated(OnCreate.class) ProjectDTO projectDTO) throws TitleIsNotUniqueException {
         ProjectDTO dtoForResponse = convertToDto(projectService.add(projectDTO));
         return new ResponseEntity<>(dtoForResponse, HttpStatus.OK);
     }
@@ -53,8 +57,7 @@ public class ProjectsController {
 
     @PutMapping("/admin/projects/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    //@Validated(OnUpdate.class)
-    public ResponseEntity<ProjectDTO> updateProject(@RequestBody @Valid ProjectDTO projectDTO) {
+    public ResponseEntity<ProjectDTO> updateProject(@RequestBody @Validated(OnUpdate.class) ProjectDTO projectDTO) throws TitleIsNotUniqueException {
         ProjectDTO dtoForResponse = convertToDto(projectService.add(projectDTO));
         return new ResponseEntity<>(dtoForResponse, HttpStatus.OK);
     }
