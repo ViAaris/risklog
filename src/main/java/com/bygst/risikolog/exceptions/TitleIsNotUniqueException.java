@@ -1,17 +1,14 @@
 package com.bygst.risikolog.exceptions;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
-@Getter
-@Setter
-public class CustomFieldError {
+@NoArgsConstructor
+public class TitleIsNotUniqueException extends Exception{
 
     private String field;
     private String message;
-
 }

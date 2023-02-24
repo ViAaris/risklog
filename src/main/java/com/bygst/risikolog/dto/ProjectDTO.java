@@ -5,7 +5,6 @@ import com.bygst.risikolog.util.OnCreate;
 import com.bygst.risikolog.util.OnUpdate;
 import com.bygst.risikolog.util.UniqueProject;
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,14 +14,13 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class ProjectDTO {
 
     @JsonView({Details.class})
     private Long id;
 
     @JsonView({Details.class})
-    @NotBlank(message = "cannot be empty", groups = {OnCreate.class})
+    @NotBlank(message = "cannot be empty", groups = {OnCreate.class, OnUpdate.class})
     @UniqueProject(message = "project already exists", groups = {OnCreate.class})
     private String title;
 
@@ -47,8 +45,4 @@ public class ProjectDTO {
 
     @JsonView({Details.class})
     private List<TeamMemberDTO> team;
-
-    public ProjectDTO(Long id) {
-        this.id = id;
-    }
 }
