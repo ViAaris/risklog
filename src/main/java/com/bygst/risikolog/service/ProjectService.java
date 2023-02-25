@@ -25,14 +25,12 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final ModelMapper modelMapper;
-    private final UsersRepository usersRepository;
     private final RequestRepository requestRepository;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository, ModelMapper modelMapper, UsersRepository usersRepository, RequestRepository requestRepository) {
+    public ProjectService(ProjectRepository projectRepository, ModelMapper modelMapper, RequestRepository requestRepository) {
         this.projectRepository = projectRepository;
         this.modelMapper = modelMapper;
-        this.usersRepository = usersRepository;
         this.requestRepository = requestRepository;
     }
 
@@ -85,10 +83,12 @@ public class ProjectService {
             project.setTeam(projectRepository.findById(project.getId()).get().getTeam());
             project.setRisks(projectRepository
                     .findByIdAndFetchRisks(project.getId()).getRisks());
-            if (!(projectRepository.findByTitle(title).get().getId().equals(projectDTO.getId()))
-            && projectRepository.findByTitle(title).isPresent()){
-                throw new TitleIsNotUniqueException("title", "project already exists");
+            if(projectRepository.findByTitle(title).isPresent()){
+                if (!(projectRepository.findByTitle(title).get().getId().equals(projectDTO.getId()))){
+                    throw new TitleIsNotUniqueException("title", "project already exists");
+                }
             }
+
         }
         return projectRepository.save(project);
     }

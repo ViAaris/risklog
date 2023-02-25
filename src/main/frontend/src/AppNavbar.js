@@ -42,8 +42,8 @@ export default class AppNavbar extends Component {
                             this.state.isAdmin ?
                             <div className={"admin"}>
                                     <ul>
-                                        <li className="links"><a href={"/api/admin/users"}><span>Users</span></a></li>
-                                        <li className="links"><a href={"/api/admin/requests"}><span>Requests</span></a>
+                                        <li className="links"><a href={"/admin/users"}><span>Users</span></a></li>
+                                        <li className="links"><a href={"/admin/requests"}><span>Requests</span></a>
                                         </li>
                                     </ul>
                                 </div>

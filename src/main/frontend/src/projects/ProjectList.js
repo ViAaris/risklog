@@ -50,6 +50,7 @@ class ProjectList extends Component {
                 if (response.status === 405) {
                     AuthenticationService.logout();
                     this.props.history.push('/auth/login');
+                    Logout();
                 }
                 return response.json();
             })
@@ -129,7 +130,7 @@ class ProjectList extends Component {
                                      onClick={e => this.requestIsSent(e, project.id)} type="submit">
                                 Require access</Button>]  :
                             [<Button className={"btn-risks"} tag={Link} key={project.id}
-                                                                  to={"/api/projects/" + project.id + "/risks"}>Risk
+                                                                  to={"/projects/" + project.id + "/risks"}>Risk
                                 log</Button>]
                     }
                     </td>
@@ -152,7 +153,7 @@ class ProjectList extends Component {
                     AuthenticationService.getAuthorities()[0] === "ROLE_ADMIN"
                         ? <td key={project.id}>
                             <div className={"buttons"}>
-                                <a href={'/api/admin/projects/' + project.id} className={"btn-edit-pr"}>Edit</a>
+                                <a href={'/admin/projects/' + project.id} className={"btn-edit-pr"}>Edit</a>
                                 <a className={"btn-delete"} onClick={() => this.remove(project.id)}>Delete</a>
                             </div>
                         </td> : null
@@ -172,7 +173,7 @@ class ProjectList extends Component {
                     <ul>
                         {AuthenticationService.getAuthorities()[0] === "ROLE_ADMIN" ?
                             <li>
-                                <a href={"/api/admin/projects"}><span>Add project</span></a>
+                                <a href={"/admin/projects"}><span>Add project</span></a>
                             </li> : ""}
                     </ul>
                 </div>
