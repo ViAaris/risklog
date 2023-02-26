@@ -104,7 +104,7 @@ class EditProject extends Component {
                 :
                 <div> {this.state.success ? <div className="input-container ic3">
                         <h3>Project updated successfully</h3>
-                        <button className="btn-add"><Link to="/api/projects">Back to all projects</Link></button>
+                        <button className="btn-add"><Link to="/projects">Back to all projects</Link></button>
                     </div>
                     :
             <div className={"card"}>

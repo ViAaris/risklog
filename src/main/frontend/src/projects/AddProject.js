@@ -93,7 +93,7 @@ class AddProject extends Component {
                 this.setState({errors: data.fieldErrors})
             }
         });
-        this.props.history.push('/api/admin/projects');
+        this.props.history.push('/admin/projects');
     }
 
 
@@ -105,13 +105,13 @@ class AddProject extends Component {
                 :
                 <div> {this.state.success ? <div className="input-container ic3">
                         <h3>Project added successfully</h3>
-                        <button className="btn-add"><Link to="/api/projects">Back to all projects</Link></button>
+                        <button className="btn-add"><Link to="/projects">Back to all projects</Link></button>
                     </div>
                     :
                     <div className="card">
 
                             <h1 className="title">Add project</h1>
-                        {this.state.errors.map((error) => <p style={{color: 'red', fontSize: '12px'}}
+                        {this.state.errors.map((error) => <p style={{color: 'red', fontSize: '13px'}}
                                                              key={error.field}>{"Error in field " + error.field + " : " + error.message}</p>)
                         }
                         <Form className="card-form" onSubmit={this.handleSubmit}>
@@ -169,45 +169,7 @@ class AddProject extends Component {
                             </div>
                         </Form>
                     </div>
-                    // <div className={"card"}>
-                    //     <div className={"card-form"}>
 
-                    //         <Form onSubmit={this.handleSubmit}>
-                    //             <h1 className={"title"}>Add new project</h1>
-                    //             <div className="input">
-                    //                     <input className="input-field" type="text" name="title" id="title"
-                    //                            value={item.title || ''}
-                    //                            onChange={this.handleChange} autoComplete="title"/>
-                    //                     <label className="input-label">Full name</label>
-                    //             </div>
-                    //             <div className="input">
-
-                                        // <input className="input-field" type="text" name="address" id="address"
-                                        //        value={item.address || ''}
-                                        //        onChange={this.handleChange} autoComplete="address"/>
-                    //
-                    //                     <label className="input-label">Full name</label>
-                    //
-                    //                 {/*<div className="input-container ic2">*/}
-                    // //
-                    //                     <input className="input" type="text" name="budget" id="budget" value={item.budget || ''}
-                    //                            onChange={this.handleChange} autoComplete="budget"/>
-                    //                     <div className="cut"></div>
-
-                    //                 {/*</div>*/}
-                    //                 {/*<div className="input-container ic2">*/}
-                    //
-
-                    //
-                    //
-                    //                 {/*</div>*/}
-                    //                 {/*<div className="input-container ic3">*/}
-                    //                 {/*    <button type="submit" className={"btn"}>Save</button>*/}
-                    //                 {/*</div>*/}
-                    //             </div>
-                    //         </Form>
-                    //     </div>
-                    // </div>
                 }<BottomBar/>
                 </div>
             }
