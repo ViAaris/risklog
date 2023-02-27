@@ -687,7 +687,27 @@ nav.main > ul > li > a {
     font-size: 18px;
 
 }
+.hint{
+    font-family: "Helvetica Neue LT",Arial,sans-serif;
+    hyphens: auto;
+    width:200px;
+    border-width: 3px;
+    border-style: solid;
+    border-color: #007d85 #10b3bd #007d85 #10b3bd;
 
+
+    width: 300px;
+    display: inline-block;
+    position: fixed;
+
+
+    border-radius: 10px;
+    box-sizing: border-box;
+    margin: 60px 75px 40px 75px;
+    padding: 10px 10px 10px 10px;
+    align-content: center;
+    text-align: center;
+}
 .note {
     text-align: center;
     margin: 50px;

@@ -30,19 +30,9 @@ class LoginComponent extends Component {
 
 
     loginClicked(event) {
-        // AuthenticationService.registerSuccessfulLogin(this.state.username, this.state.password);
 
         event.preventDefault();
-        // AuthenticationService
-        //     .executeBasicAuthenticationService(this.state.username, this.state.password)
-        //     .then(() => {
-        //         AuthenticationService.registerSuccessfulLogin(this.state.username, this.state.password)
-        //         this.props.history.push(`/api/projects`)
-        //     })
-        //     .catch(() => {
-        //     this.setState({ showSuccessMessage: false })
-        //     this.setState({ hasLoginFailed: true })
-        // })
+
         const options = {
             method: "POST",
             withCredentials: true,
@@ -104,7 +94,21 @@ class LoginComponent extends Component {
         return (
 
             <div className={"body"}>
+                <div className={"hint"}>
+                    admin account:
+                    <br/>
+                    login: admin
+                    <br/>
+                    password: password123
+                    <br/>
+                    <br/>
+                    user account:
+                    <br/>
+                    login: user
+                    <br/>
+                    password: password123
 
+                </div>
 
 
                 <div className="form">
